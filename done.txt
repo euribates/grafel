@@ -1,5 +1,6 @@
 # Done list
 
+* Añadir todos los mombres de colores soportados por Html 
 * Nuevo actor dado (Dice)
 * La estrella sale al reves
 

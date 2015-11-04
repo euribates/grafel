@@ -6,7 +6,6 @@
 * Parser para añadir un objeto a la escena: Un "Hola, mundo"
 * Nuevo Actor Texto
 * Nuevo Accion Traza (Igual que MoveTo, pero deja una linea por el recorrido)
-* Añadir todos los mombres de colores soportados por Html / Pygame
 * Posibilidad de hacer PAN en la escena
 * Nueva accion cambiar color gradualmente a otro
 * Nueva accion de trazar

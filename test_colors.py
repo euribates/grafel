@@ -23,7 +23,7 @@ class TestColor(unittest.TestCase):
         assert red.red == 0 and red.green == 0 and red.blue == 255
 
         red = Color('green')
-        assert red.red == 0 and red.green == 255 and red.blue == 0
+        assert red.red == 0 and red.green == 128 and red.blue == 0
 
         black = Color('black')
         assert black.red == 0 and black.green == 0 and black.blue == 0
