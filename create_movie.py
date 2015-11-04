@@ -11,7 +11,7 @@ import sys
 import subprocess
 import glob
 
-for filename in sorted(glob.glob('/tmp/frame_*.svg')):
+for filename in sorted(glob.glob('/home/jileon/tmp/frame_*.svg')):
     print(filename, end=" ")
     target_filename = filename[:-4] + '.png'
     if os.path.exists(target_filename):
@@ -29,9 +29,9 @@ for filename in sorted(glob.glob('/tmp/frame_*.svg')):
 print('Preparando vídeo', end=' ')
 subprocess.call([
     'avconv',
-    '-i','/tmp/frame_%05d.png',
+    '-i','/home/jileon/tmp/frame_%05d.png',
     '-c:v',
     'libx264',
     '-pix_fmt', 'yuv420p',
-    '/tmp/out.mp4',
+    '/home/jileon/tmp/out.mp4',
     ])

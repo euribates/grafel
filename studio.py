@@ -39,7 +39,12 @@ class BaseEngine:
         self.debug = debug
 
     def clear(self):
-        logger.debug('Limpiamos la pantalla.')
+        logger.debug('Clear screen; prepare for start drawing.')
+
+    def draw_text(self, pos, text, color):
+        logger.debug('draw text "{}" in color {} at position {}'.format(
+            text, color, pos
+            ))
 
     def lines(self, points, color):
         logger.debug('draw line {} for {} points: [{}]'.format(
@@ -69,6 +74,12 @@ class SVGEngine(BaseEngine):
                 fill=svgwrite.rgb(0,0,0),
                 )
             )
+
+    def draw_text(self, pos, text, color):
+        self.dwg.add(self.dwg.text(
+            text, insert=pos, fill=color,
+            font_size="27", text_anchor="middle"
+            ))
 
     def lines(self, points, color):
         stroke = svgwrite.rgb(color.red, color.green, color.blue)

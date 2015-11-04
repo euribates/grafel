@@ -88,7 +88,8 @@ class TestDice(unittest.TestCase):
     
     def test_sequence(self):
 
-        s = Stage(PyGameEngine(), num_frames=150)
+        #s = Stage(PyGameEngine(), num_frames=150)
+        s = Stage(SVGEngine('/home/jileon/tmp'), num_frames=150)
         middle = s.height // 2
         dice1 = Dice('D1', num=1)
         dice1.place(1*s.width//7, middle)
