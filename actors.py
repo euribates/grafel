@@ -24,6 +24,7 @@ ch.setFormatter(logging.Formatter(
     ))
 logger.addHandler(ch)
 
+
 class State:
 
     def __init__(self, pos=None, color='', scale=None, alpha=1.0):
@@ -75,6 +76,16 @@ class State:
             self.scale.y *= scale.y
         if alpha is not None:
             self.alpha = alpha
+
+def create_state(**kwargs):
+    state = State()
+    state.pos = kwargs.pop('pos', state.pos)
+    state.color = kwargs.pop('color', state.color)
+    state.scale = kwargs.pop('scale', state.scale)
+    state.alpha = kwargs.pop('alpha', state.alpha)
+    return state, copy(kwargs)
+
+
 
 
 class Actor():
@@ -245,11 +256,11 @@ class Star(Actor):
 
 class Square(Actor):
 
-    def __init__(self, name, state=None, width=50, height=50):
+    def __init__(self, name, state=None, size=Vector(50, 50)):
         super().__init__(name, state=state)
-        self.size = Vector(width, height)
-        ww = width // 2
-        hh = height // 2
+        self.size = size
+        ww = self.size.width // 2
+        hh = self.size.height // 2
         self.vertexs.append(Vector(-ww, -hh))
         self.vertexs.append(Vector(ww, -hh))
         self.vertexs.append(Vector(ww, hh))
@@ -435,6 +446,16 @@ class Dice(Actor):
                 )
             self.add_son(dot6)
 
+def create_actor(name, rol, **kwargs):
+    print('create_actor({}, {}, {})'.format(
+        name, rol, kwargs))
+    state, rest_of_options = create_state(**kwargs)
+    print('state', state)
+    print('rest_of_options', rest_of_options) 
+    if rol == 'Square':
+        return Square(name, state, **rest_of_options)
+    elif rol == 'Star':
+        return Star(name, state, **rest_of_options)
 
 
 

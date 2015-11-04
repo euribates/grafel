@@ -194,6 +194,13 @@ class Color:
         else:
             return self.as_hex()
 
+    def __repr__(self):
+        if hasattr(self, 'name'):
+            return 'Color("{}")'.format(self.name)
+        else:
+            return 'Color("{}")'.format(self.as_hex())
+
+
 
 black = Color('black')
 white = Color('white')
