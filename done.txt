@@ -1,0 +1,5 @@
+# Done list
+
+* Nuevo actor dado (Dice)
+* La estrella sale al reves
+

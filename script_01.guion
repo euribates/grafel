@@ -1,0 +1,11 @@
+Cast:
+
+    bob = Square 50x50 color red
+
+Script:
+
+    0 bob intro at 50x50
+
+    0-24 bob move to 100x100
+
+    25-100 bob land 100x600
