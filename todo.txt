@@ -1,6 +1,6 @@
 # ToDo List
 
-
+* Normalizar la forma de creación de los actores.
 * Accion "Sigue A" (Ummmm Ni idea de como hacerlo por ahora)
 * Añadir color de borde (Ahora es es mismo que el de la figura)
 * Parser para añadir un objeto a la escena: Un "Hola, mundo"

@@ -188,6 +188,9 @@ class Color:
             self.red, self.green, self.blue
             )
 
+    def as_svg(self):
+        return "rgb({},{},{})".format(self.red, self.green, self.blue)
+
     def __str__(self):
         if hasattr(self, 'name'):
             return self.name

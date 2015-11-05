@@ -13,7 +13,7 @@ import pprint
 import logging
 from collections import defaultdict
 from vectors import Vector, origin, zero
-from colors import Color
+from colors import Color, black, white
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
@@ -27,11 +27,11 @@ logger.addHandler(ch)
 
 class State:
 
-    def __init__(self, pos=None, color='', scale=None, alpha=1.0):
-        self.pos = pos or Vector(0, 0)
-        self._color = Color(color) if color else Color('white')
-        self.scale = scale or Vector(1, 1)
-        self.alpha = alpha
+    def __init__(self, **kwargs):
+        self.pos = kwargs.pop('pos', zero)
+        self.color = kwargs.pop('color', white)
+        self.scale = kwargs.pop('scale', Vector(1, 1))
+        self.alpha = kwargs.pop('alpha', 1.0)
 
     def set_color(self, color):
         if isinstance(color, Color):
@@ -45,11 +45,11 @@ class State:
     color = property(get_color, set_color)
 
     def __repr__(self):
-        return 'State({}, "{}", {}, {})'.format(
+        return 'State({}, {}, {}, {})'.format(
             repr(self.pos),
             repr(self._color),
             repr(self.scale),
-            repr(self.alpha)
+            repr(self.alpha),
             )
 
     def __str__(self):
@@ -64,48 +64,70 @@ class State:
         logger.info('delta method called')
         logger.info('delta method kwargs: {}'.format(kwargs.keys()))
         d_pos = kwargs.pop('pos', None)
-        color = kwargs.pop('color', '')
-        scale = kwargs.pop('scale', '')
-        alpha = kwargs.pop('alpha', None)
-        if d_pos:
+        if d_pos is not None:
             self.pos += d_pos
-        if color:
+        color = kwargs.pop('color', None)
+        if color is not None:
             self.color = color
-        if scale:
+        scale = kwargs.pop('scale', None)
+        if scale is not None:
             self.scale.x *= scale.x
             self.scale.y *= scale.y
+        alpha = kwargs.pop('alpha', None)
         if alpha is not None:
             self.alpha = alpha
-
-def create_state(**kwargs):
-    state = State()
-    state.pos = kwargs.pop('pos', state.pos)
-    state.color = kwargs.pop('color', state.color)
-    state.scale = kwargs.pop('scale', state.scale)
-    state.alpha = kwargs.pop('alpha', state.alpha)
-    return state, copy(kwargs)
 
 
 
 
 class Actor():
     
-    def __init__(self, name, state=None):
-        self.name = name
-        if state:
-            self.initial_state = copy(state)
-        else:
-            self.initial_state = State()
-        self.vertexs = []
+    def __init__(self, name, **kwargs):
+        self.name = name 
         self.actions = defaultdict(list) 
         self.active_actions = []
         self.sons = []
         self.parent = None
+        self.initial_state = State(**kwargs)
         self.reset()
-        self.text = ''
+
+    def get_pos(self):
+        return self.state.pos
+
+    def set_pos(self, new_pos):
+        self.state.pos = new_pos
+
+    pos = property(get_pos, set_pos)
+
+    def get_color(self):
+        return self.state.color
+
+    def set_color(self, color):
+        self.state.color = color
+
+    color = property(get_color, set_color)
+
+    def get_scale(self):
+        return self.state.scale
+
+    def set_scale(self, new_scale):
+        self.state.scale = new_scale
+
+    scale = property(get_scale, set_scale)
+
+    def get_alpha(self):
+        return self.state.alpha
+
+    def set_alpha(self, new_alpha):
+        self.state.alpha = new_alpha
+
+    alpha = property(get_alpha, set_alpha)
 
     def get_offset(self):
-        return self.parent.state.pos if self.parent else zero
+        if self.parent:
+            return self.parent.get_offset() + self.parent.pos 
+        else:
+            return self.parent.pos
 
     def add_son(self, actor):
         actor.parent = self
@@ -155,7 +177,7 @@ Frame  N Active actions                                     X     Y
         return '\n'.join(buff)
 
     def place(self, x, y):
-        self.state.pos = Vector(x, y)
+        self.pos = Vector(x, y)
         self.initial_state.pos = Vector(x, y)
 
     def add_action(self, frame, action):
@@ -189,22 +211,19 @@ Frame  N Active actions                                     X     Y
         self.frame += 1
         self.actions_called = False
 
-    def get_color(self):
-        return self.state.color
+class Rect(Actor):
+    def __init__(self, name, size=Vector(50, 50), **kwargs):
+        super().__init__(name, **kwargs)
+        (self.width, self.height) = self.size = size
 
-    def set_color(self, color):
-        if isinstance(color, Color):
-            self.state.color = color
-            self.initial_state.color = color
-        else:
-            self.state.color = Color(color)
-            self.initial_state.color = Color(color)
+class Square(Actor):
 
-    color = property(get_color, set_color)
-    
+    def __init__(self, name, side=50, **kwargs):
+        super().__init__(name, **kwargs)
+        self.width = self.height = side
 
 class Circle(Actor):
-    def __init__(self, name, state=None, radius=50):
+    def __init__(self, name, radius=50, **kwargs):
         super().__init__(name, state=state)
         for i in range(36):
             angle = i * math.pi / 18
@@ -254,17 +273,7 @@ class Star(Actor):
         self.vertexs.insert(9, Vector(0, radius/2.0)) 
 
 
-class Square(Actor):
 
-    def __init__(self, name, state=None, size=Vector(50, 50)):
-        super().__init__(name, state=state)
-        self.size = size
-        ww = self.size.width // 2
-        hh = self.size.height // 2
-        self.vertexs.append(Vector(-ww, -hh))
-        self.vertexs.append(Vector(ww, -hh))
-        self.vertexs.append(Vector(ww, hh))
-        self.vertexs.append(Vector(-ww, hh))
 
 class RoundSquare(Actor):
     def __init__(self, name, state=None, width=50, height=50):
@@ -449,7 +458,12 @@ class Dice(Actor):
 def create_actor(name, rol, **kwargs):
     print('create_actor({}, {}, {})'.format(
         name, rol, kwargs))
-    state, rest_of_options = create_state(**kwargs)
+    state = State()
+    state.pos = kwargs.pop('pos', state.pos)
+    state.color = kwargs.pop('color', state.color)
+    state.scale = kwargs.pop('scale', state.scale)
+    state.alpha = kwargs.pop('alpha', state.alpha)
+    
     print('state', state)
     print('rest_of_options', rest_of_options) 
     if rol == 'Square':
