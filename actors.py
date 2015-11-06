@@ -16,9 +16,9 @@ from vectors import Vector, origin, zero
 from colors import Color, black, white
 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.WARNING)
 ch = logging.StreamHandler(stream=sys.stderr)
-ch.setLevel(logging.DEBUG)
+ch.setLevel(logging.WARNING)
 ch.setFormatter(logging.Formatter(
     '%(asctime)s %(name)s %(levelname)s %(message)s'
     ))
@@ -29,6 +29,8 @@ class State:
 
     def __init__(self, **kwargs):
         self.pos = kwargs.pop('pos', zero)
+        if isinstance(self.pos, tuple):
+            self.pos = Vector(self.pos[0], self.pos[1])
         self.color = kwargs.pop('color', white)
         self.scale = kwargs.pop('scale', Vector(1, 1))
         self.alpha = kwargs.pop('alpha', 1.0)
@@ -95,6 +97,8 @@ class Actor():
         return self.state.pos
 
     def set_pos(self, new_pos):
+        if isinstance(new_pos, tuple):
+            new_pos = Vector(new_pos[0], new_pos[1])
         self.state.pos = new_pos
 
     pos = property(get_pos, set_pos)
@@ -127,7 +131,7 @@ class Actor():
         if self.parent:
             return self.parent.get_offset() + self.parent.pos 
         else:
-            return self.parent.pos
+            return zero 
 
     def add_son(self, actor):
         actor.parent = self
@@ -211,10 +215,23 @@ Frame  N Active actions                                     X     Y
         self.frame += 1
         self.actions_called = False
 
+    def start_draw(self, engine):
+        for son in self.sons:
+            son.start_draw(engine)
+        self.draw(engine)
+
 class Rect(Actor):
+
     def __init__(self, name, size=Vector(50, 50), **kwargs):
         super().__init__(name, **kwargs)
         (self.width, self.height) = self.size = size
+
+    def draw(self, engine):
+        pos = self.pos + self.get_offset()
+        engine.rect(pos.x, pos.y, self.width, self.height,
+            color=self.color,
+            alpha=self.alpha,
+            )
 
 class Square(Actor):
 
@@ -222,14 +239,51 @@ class Square(Actor):
         super().__init__(name, **kwargs)
         self.width = self.height = side
 
+    def draw(self, engine):
+        pos = self.pos + self.get_offset()
+        engine.rect(pos.x, pos.y, self.width, self.height,
+            color=self.color,
+            alpha=self.alpha,
+            )
+
 class Circle(Actor):
+
     def __init__(self, name, radius=50, **kwargs):
-        super().__init__(name, state=state)
-        for i in range(36):
-            angle = i * math.pi / 18
-            v = Vector(math.sin(angle)*radius, math.cos(angle)*radius)
-            self.vertexs.append(v)
-        self.size = Vector(radius*2, radius*2)
+        super().__init__(name, **kwargs)
+        self.radius = radius
+
+    def draw(self, engine):
+        pos = self.pos + self.get_offset()
+        engine.circle(pos.x, pos.y, self.radius,
+            color=self.color,
+            alpha=self.alpha,
+            )
+
+
+class Polygon(Actor):
+
+    def __init__(self, name, points=None, **kwargs):
+        super().__init__(name, **kwargs)  
+        self.points = points or []
+ 
+    def draw(self, engine):
+        pos = self.pos + self.get_offset()
+        engine.polygon(pos.x, pos.y, self.points,
+            color=self.color,
+            alpha=self.alpha,
+            )
+
+class Triangle(Polygon):
+    def __init__(self, name, a, b, c, **kwargs):
+        super().__init__(name, **kwargs)    
+        if isinstance(a, tuple):
+            a = Vector(a[0], a[1])
+        if isinstance(b, tuple):
+            b = Vector(b[0], b[1])
+        if isinstance(c, tuple):
+            c = Vector(c[0], c[1])
+        self.points = [a, b, c]
+
 
 
 class Path(Actor):
@@ -245,39 +299,30 @@ class Text(Actor):
         self.text = text or self.name
 
 
-class Star(Actor):
-    def __init__(self, name, state=None, radius=50):
-        super().__init__(name, state=state)
-        self.size = Vector(radius*2, radius*2)
-        for angle in (36, 108, 180, 252, 324):
-            r = angle * math.pi / 180.0
-            self.vertexs.append(
-                Vector(math.sin(r)*radius, math.cos(r)*radius)
-                )
-        r = 72. * math.pi / 180.0
-        self.vertexs.insert(1, 
-            Vector(math.sin(r)*radius/2.0, math.cos(r)*radius/2.0)
-            ) 
-        r = 144. * math.pi / 180.0
-        self.vertexs.insert(3, 
-            Vector(math.sin(r)*radius/2.0, math.cos(r)*radius/2.0)
-            ) 
-        r = 216. * math.pi / 180.0
-        self.vertexs.insert(5, 
-            Vector(math.sin(r)*radius/2.0, math.cos(r)*radius/2.0)
-            ) 
-        r = 288. * math.pi / 180.0
-        self.vertexs.insert(7, 
-            Vector(math.sin(r)*radius/2.0, math.cos(r)*radius/2.0)
-            ) 
-        self.vertexs.insert(9, Vector(0, radius/2.0)) 
+class Star(Polygon):
+
+    def __init__(self, name, radius=100, **kwargs):
+        super().__init__(name, **kwargs)
+        
+        x, y = 0, -radius
+        self.points = []
+        for i in range(1, 10):
+            a = i * math.pi / 5
+            r = radius/2.5 if i % 2 else radius
+            new_x = math.sin(a) * r
+            new_y = -math.cos(a) * r
+            self.points.append(Vector(new_x - x, new_y - y))
+            x = new_x 
+            y = new_y
 
 
 
 
-class RoundSquare(Actor):
-    def __init__(self, name, state=None, width=50, height=50):
-        super().__init__(name, state)
+
+
+class RoundSquare(Polygon):
+    def __init__(self, name, width=50, height=50, **kwargs):
+        super().__init__(name, **kwargs)
         if width < 20:
             width = 20
         if height < 20:
@@ -287,41 +332,43 @@ class RoundSquare(Actor):
 
         self.size = Vector(width, height)
 
-        self.vertexs.append(Vector(10, 0)-offset)
-        self.vertexs.append(Vector(self.size.x-10, 0)-offset)
+        self.points.append(Vector(10, 0))
+        self.points.append(Vector(width-10, 0))
 
-        self.vertexs.append(Vector(self.size.x-6, 1)-offset)
-        self.vertexs.append(Vector(self.size.x-3, 3)-offset)
-        self.vertexs.append(Vector(self.size.x-1, 6)-offset)
+        self.points.append(Vector(-6, 1))
+        self.points.append(Vector(-3, 3))
+        self.points.append(Vector(-1, 6))
 
-        self.vertexs.append(Vector(self.size.x, 10)-offset)
-        self.vertexs.append(Vector(self.size.x, self.size.y-10)-offset)
+        self.points.append(Vector(0, 10))
+        self.points.append(Vector(0, height-10))
 
-        self.vertexs.append(Vector(self.size.x-1, self.size.y-6)-offset)
-        self.vertexs.append(Vector(self.size.x-3, self.size.y-3)-offset)
-        self.vertexs.append(Vector(self.size.x-6, self.size.y-1)-offset)
+        self.points.append(Vector(-1, -6))
+        self.points.append(Vector(-3, -3))
+        self.points.append(Vector(-6, -1))
 
-        self.vertexs.append(Vector(self.size.x-10, self.size.y)-offset)
-        self.vertexs.append(Vector(10, self.size.y)-offset)
+        self.points.append(Vector(-width+10, 0))
+        self.points.append(Vector(10, 0))
 
-        self.vertexs.append(Vector(6, self.size.y-1)-offset)
-        self.vertexs.append(Vector(3, self.size.y-3)-offset)
-        self.vertexs.append(Vector(1, self.size.y-6)-offset)
+        self.points.append(Vector(6, -1))
+        self.points.append(Vector(3, -3))
+        self.points.append(Vector(1, -6))
 
-        self.vertexs.append(Vector(0, self.size.y-10)-offset)
-        self.vertexs.append(Vector(0, 10)-offset)
+        self.points.append(Vector(0, -10))
+        self.points.append(Vector(0, 10))
         
-        self.vertexs.append(Vector(1, 6)-offset)
-        self.vertexs.append(Vector(3, 3)-offset)
-        self.vertexs.append(Vector(6, 1)-offset)
+        self.points.append(Vector(1, 6))
+        self.points.append(Vector(3, 3))
+        self.points.append(Vector(6, 1))
 
 
 class Dice(Actor):
-    def __init__(self, name, state=None, width=50, height=50, num=1):
-        super().__init__(name, state=state)
+    def __init__(self, name, num=1, width=50, height=50, **kwargs):
+        super().__init__(name, **kwargs)
+        self.num = num
+        self.width, self.height = (width, height)
         self.size = Vector(width, height)
-        border = RoundSquare('dice.border', 
-            state=State(pos=zero, color='ghostgray'),
+        border = Square('dice.border', 
+            color='ghostgray',
             width=width,
             height=height
             )
@@ -329,131 +376,137 @@ class Dice(Actor):
         r = width // 10
         if num == 1:
             dot1 = Circle('dice.dot1', 
-                state=State(pos=Vector(0, 0), color='dimgray'),
+                pos=Vector(0, 0),
+                color='dimgray',
                 radius = width // 5,
                 )
             self.add_son(dot1)
         elif num == 2:
             dot1 = Circle('dice.dot1', 
-                state=State(pos=Vector(0, -height//4), color='dimgray'),
+                pos=Vector(0, -height//4), 
+                color='dimgray',
                 radius = r,
                 )
             self.add_son(dot1)
             dot2 = Circle('dice.dot2', 
-                state=State(pos=Vector(0, height//4), color='dimgray'),
+                pos=Vector(0, height//4),
+                color='dimgray',
                 radius = r,
                 )
             self.add_son(dot2)
         elif num == 3:
             dot1 = Circle('dice.dot1', 
-                state=State(pos=Vector(width//4, -height//4), color='dimgray'),
+                pos=Vector(width//4, -height//4), color='dimgray',
                 radius = r,
                 )
             self.add_son(dot1)
 
             dot2 = Circle('dice.dot2', 
-                state=State(pos=zero, color='dimgray'),
+                pos=zero, color='dimgray',
                 radius = r,
                 )
             self.add_son(dot2)
 
             dot3 = Circle('dice.dot3', 
-                state=State(pos=Vector(-width//4, height//4), color='dimgray'),
+                pos=Vector(-width//4, height//4), color='dimgray',
                 radius = r,
                 )
             self.add_son(dot3)
         elif num == 4:
             dot1 = Circle('dice.dot1', 
-                state=State(pos=Vector(-width//4, -height//4), color='dimgray'),
+                pos=Vector(-width//4, -height//4), color='dimgray',
                 radius = r,
                 )
             self.add_son(dot1)
 
             dot2 = Circle('dice.dot2', 
-                state=State(pos=Vector(width//4, -height//4), color='dimgray'),
+                pos=Vector(width//4, -height//4), color='dimgray',
                 radius = r,
                 )
             self.add_son(dot2)
 
             dot3 = Circle('dice.dot3', 
-                state=State(pos=Vector(-width//4, height//4), color='dimgray'),
+                pos=Vector(-width//4, height//4), color='dimgray',
                 radius = r,
                 )
             self.add_son(dot3)
 
             dot4 = Circle('dice.dot4', 
-                state=State(pos=Vector(width//4, height//4), color='dimgray'),
+                pos=Vector(width//4, height//4), color='dimgray',
                 radius = r,
                 )
             self.add_son(dot4)
 
         elif num == 5:
             dot1 = Circle('dice.dot1', 
-                state=State(pos=Vector(-width//4, -height//4), color='dimgray'),
+                pos=Vector(-width//4, -height//4), color='dimgray',
                 radius = r,
                 )
             self.add_son(dot1)
 
             dot2 = Circle('dice.dot2', 
-                state=State(pos=Vector(width//4, -height//4), color='dimgray'),
+                pos=Vector(width//4, -height//4), color='dimgray',
                 radius = r,
                 )
             self.add_son(dot2)
 
             dot3 = Circle('dice.dot3', 
-                state=State(pos=Vector(-width//4, height//4), color='dimgray'),
+                pos=Vector(-width//4, height//4), color='dimgray',
                 radius = r,
                 )
             self.add_son(dot3)
 
             dot4 = Circle('dice.dot4', 
-                state=State(pos=Vector(width//4, height//4), color='dimgray'),
+                pos=Vector(width//4, height//4), color='dimgray',
                 radius = r,
                 )
             self.add_son(dot4)
 
             dot5 = Circle('dice.dot5', 
-                state=State(pos=zero, color='dimgray'),
+                pos=zero, color='dimgray',
                 radius = r,
                 )
             self.add_son(dot5)
 
         elif num == 6:
             dot1 = Circle('dice.dot1', 
-                state=State(pos=Vector(-width//4, -height//3), color='dimgray'),
+                pos=Vector(-width//4, -height//3), color='dimgray',
                 radius = r,
                 )
             self.add_son(dot1)
 
             dot2 = Circle('dice.dot2', 
-                state=State(pos=Vector(-width//4, 0), color='dimgray'),
+                pos=Vector(-width//4, 0), color='dimgray',
                 radius = r,
                 )
             self.add_son(dot2)
 
             dot3 = Circle('dice.dot3', 
-                state=State(pos=Vector(-width//4, height//3), color='dimgray'),
+                pos=Vector(-width//4, height//3), color='dimgray',
                 radius = r,
                 )
             self.add_son(dot3)
 
             dot4 = Circle('dice.dot4', 
-                state=State(pos=Vector(width//4, -height//3), color='dimgray'),
+                pos=Vector(width//4, -height//3), color='dimgray',
                 radius = r,
                 )
             self.add_son(dot4)
 
             dot5 = Circle('dice.dot5', 
-                state=State(pos=Vector(width//4, 0), color='dimgray'),
+                pos=Vector(width//4, 0), color='dimgray',
                 radius = r,
                 )
             self.add_son(dot5)
 
             dot6 = Circle('dice.dot6', 
-                state=State(pos=Vector(width//4, height//3), color='dimgray'),
+                pos=Vector(width//4, height//3), color='dimgray',
                 radius = r,
                 )
             self.add_son(dot6)
+
+    def draw(self, engine):
+        pass
 
 def create_actor(name, rol, **kwargs):
     print('create_actor({}, {}, {})'.format(

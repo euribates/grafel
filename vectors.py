@@ -70,8 +70,13 @@ class Vector(object):
         return Vector(self.x // op2, self.y // op2)
 
     def __eq__(self, op2):
-        return round(self.x, 6) == round(op2.x, 6)  \
-           and round(self.y, 6) == round(op2.y, 6)
+        if isinstance(op2, tuple):
+            x, y = op2
+        else:
+            x = op2.x
+            y = op2.y
+        return round(self.x, 6) == round(x, 6)  \
+           and round(self.y, 6) == round(y, 6)
 
     def __iter__(self):
         self._index = 0

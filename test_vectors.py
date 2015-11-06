@@ -108,6 +108,9 @@ class Uso(unittest.TestCase):
         v1 = Vector(3, 4)
         v2 = Vector(3, 4)
         self.assertEqual(v1, v2)
+        self.assertEqual(v1, (3, 4))
+        self.assertEqual(v2, (3, 4))
+
 
     def test_tuple_asigment(self):
         v = Vector(3, 4)

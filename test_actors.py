@@ -27,7 +27,12 @@ class TestState(unittest.TestCase):
         self.assertEqual(state.alpha, 1.0)
 
     def test_create_state_with_params(self):
-        state = State(Vector(3,4), 'red', Vector(50, 100), 0.5)
+        state = State(
+            pos=Vector(3,4),
+            color='red',
+            scale=Vector(50, 100),
+            alpha=0.5
+            )
         self.assertEqual(state.pos, Vector(3, 4))
         self.assertEqual(state.color.name, 'red')
         self.assertEqual(state.scale.x, 50)
@@ -111,18 +116,15 @@ class CreateManyActors(unittest.TestCase):
     def test(self):
         from actions import Fall, MoveTo
 
-        charles = Square('Charles', 
-            State(pos=Vector(100, 0), color='brown4'), 
-            width=75, height=25
-            )
+        charles = Square('Charles', pos=(100, 0), color='brown4', side=75)
+
         self.assertEqual(len(charles.actions[0]), 0)
         Fall(charles, 0, 40, Vector(100, 300))
         self.assertEqual(len(charles.actions[0]), 1)
 
-        dorothy = Square('Dorothy', 
-            state=State(pos=Vector(400, 5), color='#32BF98'),
-            width=75, height=25
-            )
+
+
+        dorothy = Square('Dorothy', pos=(400, 5), color='#32BF98', side=25)
 
         self.assertEqual(len(dorothy.actions[0]), 0)
         MoveTo(dorothy, 0, 40, Vector(100, 300))
@@ -133,9 +135,9 @@ class CreateManyActors(unittest.TestCase):
         self.assertEqual(len(charles.actions[0]), 1)
         self.assertEqual(len(dorothy.actions[0]), 1)
         
-        self.assertEqual(charles.state.pos.x, 100)
-        self.assertEqual(charles.state.pos.y, 0)
-        self.assertEqual(str(charles.state.color), 'brown4')
+        self.assertEqual(charles.pos.x, 100)
+        self.assertEqual(charles.pos.y, 0)
+        self.assertEqual(str(charles.color), 'brown4')
 
         self.assertEqual(dorothy.state.pos.x, 400)
         self.assertEqual(dorothy.state.pos.y, 5)
@@ -145,11 +147,14 @@ class CreateManyActors(unittest.TestCase):
 class TestSquare(unittest.TestCase):
 
     def test_creacion_square_bob(self):
-        bob = Square('Bob', State(pos=Vector(23, 74)))
+        bob = Square('Bob', pos=(23, 74))
         self.assertEqual(bob.name, 'Bob')
+        self.assertEqual(bob.pos.x, 23)
+        self.assertEqual(bob.pos.y, 74)
         self.assertEqual(bob.initial_state.pos.x, 23)
         self.assertEqual(bob.initial_state.pos.y, 74)
-        self.assertEqual( len(bob.vertexs), 4 )
+        self.assertEqual(bob.width, 50)
+        self.assertEqual(bob.height, 50)
 
     def test_as_string(self):
         bob = Square('Bob')
@@ -160,11 +165,42 @@ class ComposeActors(unittest.TestCase):
 
     def test_creation_of_combined_actors(self):
         p = Actor('Parent')
-        p.place(100, 100)
-        box = Square('bob')
-        p.sons.append(box)
+        bob = Square('bob')
+        p.add_son(bob)
         star = Star('star')
-        p.sons.append(star)
+        p.add_son(star)
+        self.assertEqual(len(p.sons), 2)
+        self.assertEqual(p.sons[0].name, 'bob')
+        self.assertEqual(p.sons[1].name, 'star')
+        self.assertEqual(bob.parent, p)
+        self.assertEqual(star.parent, p)
+        self.assertEqual(p.parent, None)
+
+
+
+    def test_get_offset(self):
+        a = Actor('A', pos=(50, 70))
+        self.assertEqual(a.pos, (50, 70))
+        self.assertEqual(a.get_offset(), (0, 0))
+        b = Actor('B', pos=(10, 10))
+        self.assertEqual(b.pos, (10, 10))
+        self.assertEqual(b.get_offset(), (0, 0))
+        a.add_son(b)
+        self.assertEqual(b.pos, (10, 10))
+        self.assertEqual(b.get_offset(), (50, 70))
+        c = Actor('C', pos=(11, 22))
+        self.assertEqual(c.pos, (11, 22))
+        self.assertEqual(c.get_offset(), (0, 0))
+        b.add_son(c)
+        self.assertEqual(c.pos, (11, 22))
+        self.assertEqual(c.get_offset(), (60, 80))
+
+
+
+
+
+
+
 
 if __name__ == '__main__':
     unittest.main()

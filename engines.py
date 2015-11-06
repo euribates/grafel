@@ -14,6 +14,7 @@ from six.moves import reduce
 import sys
 
 import colors
+from colors import white
 import vectors
 
 import svgwrite
@@ -21,9 +22,9 @@ import pygame
 import logging
 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.WARNING)
 ch = logging.StreamHandler(stream=sys.stderr)
-ch.setLevel(logging.DEBUG)
+ch.setLevel(logging.WARNING)
 ch.setFormatter(logging.Formatter(
     '%(asctime)s %(name)s %(levelname)s %(message)s'
     ))
@@ -32,24 +33,44 @@ logger.addHandler(ch)
 
 class BaseEngine:
 
-    def __init__(self, width=1280, height=720, fps=25, bg_color=colors.black):
+    def __init__(self, width=1280, height=720, fps=25):
         self.width = width
         self.height = height
         self.size = vectors.Vector(width, height)
         self.fps = fps
-        self.bg_color = bg_color
+        self.bg_color = colors.black
+        self.fg_color = colors.white
         self.frame = 0
 
     def clear(self, frame):
         logger.info('Clear screen; prepare for start drawing frame {}.'.format(frame))
         self.frame = frame
 
-    def draw_actor(self, actor):
-        logger.info('draw actor "{}" ({}) in color {} at position {}'.format(
-            actor.name,
-            actor.__class__.__name__,
-            actor.color,
-            actor.pos,
+    def line(self, x0, y0, x1, y1, color=colors.white, alpha=1.0):
+        logger.error('Draw line from {}x{} to {}x{} [color:{}|alpha:{}]'.format(
+            x0, y0, x1, y1,
+            color, alpha
+            ))
+
+    def grid(self, step=100):
+        for x in range(step, self.width, step):
+            self.line(x, 0, x, self.height)
+        for y in range(step, self.height, step):
+            self.line(0, y, self.width, y)
+
+    def rect(self, x, y, width, height, color=white, alpha=1.0):
+        logger.info('Draw rect ({}, {}, {}, {}) [color:{}|alpha:{}]'.format(
+            x, y, width, height, color, alpha,
+            ))
+
+    def circle(self, x, y, r, color=white, alpha=1.0):
+        logger.info('Draw circle at {}x{}, radius {} [color:{}|alpha:{}]'.format(
+            x, y, r, color, alpha,
+            ))
+
+    def polygon(self, x, y, rpoints, color=white, alpha=1.0):
+        logger.info('Draw polygon starting as {}x{}+{} points [color:{}|alpha:{}]'.format(
+            x, y, len(rpoints), color, alpha,
             ))
 
     def end(self):
@@ -75,47 +96,97 @@ class SVGEngine(BaseEngine):
                 )
             )
 
-    def draw_actor(self, actor):
-        super().draw_actor(actor)
-        self.dwg.add(self.dwg.text(
-            actor.name, insert=actor.pos, fill=actor.color,
-            font_size="27", text_anchor="middle"
-            ))
-        self.dwg.add(self.dwg.rect(
-            actor.pos,
-            (actor.width, actor.height),
-            fill=actor.color,
+    def line(self, x0, y0, x1, y1, color=white, alpha=1.0):
+         self.dwg.add(self.dwg.line(
+            start=(x0, y0),
+            end=(x1, y1),
+            stroke=color.as_svg(),
             ))
 
-    def lines(self, points, color):
-        stroke = svgwrite.rgb(color.red, color.green, color.blue)
-        logger.debug('color: {}'.format(color))
-        logger.debug('stroke: {}'.format(stroke))
-        points.append(points[0])
-        def f(a, b):
-            self.dwg.add(self.dwg.line(a, b, stroke=stroke))
-            return b
-        reduce(f, points)
+    def rect(self, x, y, width, height, color=white, alpha=1.0):
+        self.dwg.add(self.dwg.rect((x, y), (width, height),
+            fill=color,
+            opacity=alpha,
+            ))
+
+    def circle(self, x, y, r, color=white, alpha=1.0):
+        self.dwg.add(self.dwg.circle(
+            (x, y), r,
+            fill=color,
+            opacity=alpha,
+            ))
+
+    def polygon(self, x, y, rpoints, color=white, alpha=1.0):
+        super().polygon(x, y, rpoints, color, alpha)
+        points = [(x,y)]
+        for p in rpoints:
+            x += p[0]
+            y += p[1]
+            points.append((x, y))
+        self.dwg.add(self.dwg.polygon(
+            points,
+            fill=color,
+            opacity=alpha,
+            ))
 
     def end(self):
         self.dwg.save()
 
 class PyGameEngine(BaseEngine):
 
-    def __init__(self):
+    def __init__(self, width=1280, height=720, fps=25):
+        super().__init__(width, height, fps)
         pygame.init()
         self.clock = pygame.time.Clock()
-
-
-    def prepare(self, scene, debug=False):
-        super().prepare(scene, debug)
         self.screen = pygame.display.set_mode(
-            self.scene.size,
+            self.size,
             pygame.HWSURFACE|pygame.DOUBLEBUF|pygame.SRCALPHA
             )
 
-    def clear(self):
-        self.screen.fill(self.scene.background.as_rgb())
+    def clear(self, frame):
+        super().clear(frame)
+        self.screen.fill(self.bg_color.as_rgb())
+
+    def line(self, x0, y0, x1, y1, color=white, alpha=1.0):
+        super().line(x0, y0, x1, y1, color, alpha)
+        logger.error('llega a llamar a line')
+        color = self.add_alpha_color(color, alpha)
+        pygame.draw.line(self.screen, color, (x0, y0), (x1, y1), 1) 
+
+    def add_alpha_color(self, color, alpha):
+        if not isinstance(color, colors.Color):
+            color = colors.Color(color)
+        color = (color.red, color.green, color.blue, int(round(alpha*255)))
+        return color
+
+
+    def rect(self, x, y, width, height, color=white, alpha=1.0):
+        color = self.add_alpha_color(color, alpha)
+        s = pygame.Surface((width, height), pygame.SRCALPHA)   # per-pixel alpha
+        s.fill(color)
+        self.screen.blit(s, (x, y))
+
+    def circle(self, x, y, r, color=white, alpha=1.0):
+        color = self.add_alpha_color(color, alpha)
+        side = r << 2
+        s = pygame.Surface((side, side), pygame.SRCALPHA)   # per-pixel alpha
+        pygame.draw.circle(s, color, (r, r), r, 0)
+        self.screen.blit(s, (x-r, y-r))
+
+    def polygon(self, x, y, rpoints, color=white, alpha=1.0):
+        color = self.add_alpha_color(color, alpha)
+        points = [(x,y)]
+        for p in rpoints:
+            x += p[0]
+            y += p[1]
+            points.append((x, y))
+        s = pygame.Surface((self.width, self.height), pygame.SRCALPHA)   # per-pixel alpha
+        pygame.draw.polygon(s, color, points, 0)
+        for p in points:
+            v = vectors.Vector(p[0], p[1])
+            pygame.draw.circle(s, colors.red.as_rgb(), v, 3, 0)
+        self.screen.blit(s, (0, 0))
+
 
     def lines(self, points, color):
         pygame.draw.polygon(self.screen, color.as_rgb(), points, 0)
@@ -138,7 +209,7 @@ class PyGameEngine(BaseEngine):
 
     def end(self):
         pygame.display.flip()
-        self.clock.tick(self.scene.fps)
+        self.clock.tick(self.fps)
 
 
 

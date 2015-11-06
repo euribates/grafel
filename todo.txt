@@ -1,5 +1,8 @@
 # ToDo List
 
+* el dado no se pinta bien
+* las RoundSquare (RoundRect) no se pintan bien
+* convertir test_parser.py en una antentica bateria de pruebas
 * Normalizar la forma de creación de los actores.
 * Accion "Sigue A" (Ummmm Ni idea de como hacerlo por ahora)
 * Añadir color de borde (Ahora es es mismo que el de la figura)

@@ -13,7 +13,8 @@ import unittest
 from unittest.mock import Mock
 import vectors
 from vectors import Vector, origin, zero
-from studio import Stage, BaseEngine, SVGEngine, PyGameEngine
+from studio import Stage
+from engines import BaseEngine, SVGEngine, PyGameEngine
 from actors import Actor, Square, Star, Dice, Text
 from actions import MoveTo, Land, Fall
 from colors import Color
@@ -22,8 +23,9 @@ class TestBaseEngine(unittest.TestCase):
 
     def test_calls(self):
         eng = BaseEngine()
-        eng.clear()
-        eng.lines([(0,0), (50, 0), (50, 50), (0, 50)], Color('white'))
+        eng.clear(0)
+        eng.polygon(0, 0, [(50, 0), (50, 50), (0, 50)], color=Color('white'))
+        eng.end()
 
 class TestSVGEngine(unittest.TestCase):
 
@@ -89,7 +91,7 @@ class TestDice(unittest.TestCase):
     def test_sequence(self):
 
         #s = Stage(PyGameEngine(), num_frames=150)
-        s = Stage(SVGEngine('/home/jileon/tmp'), num_frames=150)
+        s = Stage(SVGEngine(output_dir='./tmp'), num_frames=150)
         middle = s.height // 2
         dice1 = Dice('D1', num=1)
         dice1.place(1*s.width//7, middle)
@@ -121,13 +123,12 @@ class TestDice(unittest.TestCase):
         MoveTo(dice6, 0, 150, Vector(6*s.width//7, 50))
         s.add_actor(dice6)
 
-        t1 = Text('Texto1')
-        t1.place(s.width//2, 50)
-        for i in range(0, 150, 25):
-            Land(t1, i, i+25, vectors.get_random_position_vector(s.width, s.height))
+#        t1 = Text('Texto1')
+#        t1.place(s.width//2, 50)
+#        for i in range(0, 150, 25):
+#            Land(t1, i, i+25, vectors.get_random_position_vector(s.width, s.height))
 #            Fall(t1, i, i+25, vectors.get_random_position_vector(s.width, s.height))
-
-        s.add_actor(t1)
+#        s.add_actor(t1)
 
         for frame in range(0, 250):
             s.draw()

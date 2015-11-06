@@ -203,6 +203,10 @@ class Color:
         else:
             return 'Color("{}")'.format(self.as_hex())
 
+    def get_red(self): return self.red
+    def set_red(self, new_red): self.red = new_red
+    r = property(get_red, set_red)
+
 
 
 black = Color('black')
