@@ -12,24 +12,45 @@ from colors import Color
 
 class TestColor(unittest.TestCase):
 
+    def test_creation_from_tuple(self):
+        c = Color(12, 33, 211)
+        self.assertEqual(c.red, 12)
+        self.assertEqual(c.r, 12)
+        self.assertEqual(c.green, 33)
+        self.assertEqual(c.g, 33)
+        self.assertEqual(c.blue, 211)
+        self.assertEqual(c.b, 211)
+    
+    def test_as_rgb(self):
+        c = Color(12, 33, 211)
+        self.assertEqual(c.as_rgb(), (12, 33, 211))
+
+    def test_as_hex(self):
+        c = Color(12, 33, 211)
+        self.assertEqual(c.as_hex(), '#0c21d3')
+
+    def test_as_rgb(self):
+        c = Color(12, 33, 211)
+        self.assertEqual(c.as_svg(), 'rgb(12,33,211)')
+
+    def test_equal(self):
+        r1 = Color('azure')
+        r2 = Color(240, 255, 255)
+        self.assertEqual(r1, r2)
+
     def test_pure_colors(self):
         white = Color('white')
-        assert white.red == 255 and white.green == 255 and white.blue == 255
-
+        assert white.r == 255 and white.g == 255 and white.b == 255
         red = Color('red')
-        assert red.red == 255 and red.green == 0 and red.blue == 0
-        
+        assert red.r == 255 and red.g == 0 and red.b == 0
         red = Color('blue')
-        assert red.red == 0 and red.green == 0 and red.blue == 255
-
+        assert red.r == 0 and red.g == 0 and red.b == 255
         red = Color('green')
-        assert red.red == 0 and red.green == 128 and red.blue == 0
-
+        assert red.r == 0 and red.g == 128 and red.b == 0
         black = Color('black')
-        assert black.red == 0 and black.green == 0 and black.blue == 0
-
+        assert black.r == 0 and black.g == 0 and black.b == 0
         yellow = Color('yellow')
-        assert yellow.red == 255 and yellow.green == 255 and yellow.blue == 0
+        assert yellow.r == 255 and yellow.g == 255 and yellow.b == 0
 
 
     def test_names(self):
@@ -66,3 +87,5 @@ class TestColor(unittest.TestCase):
                     self.assertEqual(c.green, g)
                     self.assertEqual(c.blue, b)
 
+if __name__ == '__main__':
+    unittest.main()

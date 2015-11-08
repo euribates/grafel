@@ -1,16 +1,16 @@
 # ToDo List
 
-* el dado no se pinta bien
-* las RoundSquare (RoundRect) no se pintan bien
-* convertir test_parser.py en una antentica bateria de pruebas
+* Nuevo Actor Etiqueta (box + txt) 
+* Nuevo Actor Texto
+* Cambiar el par start_draw/draw por draw/draw_sons
 * Normalizar la forma de creación de los actores.
 * Accion "Sigue A" (Ummmm Ni idea de como hacerlo por ahora)
 * Añadir color de borde (Ahora es es mismo que el de la figura)
 * Parser para añadir un objeto a la escena: Un "Hola, mundo"
-* Nuevo Actor Texto
 * Nuevo Accion Traza (Igual que MoveTo, pero deja una linea por el recorrido)
 * Posibilidad de hacer PAN en la escena
 * Nueva accion cambiar color gradualmente a otro
 * Nueva accion de trazar
 * Niveles en el escenario: Background, main y foreground
 * Nueva Accion MoveTo con ease in y ease out. Renombrar el antiguo MoveTo a GoTo
+Añadir algunos de los nombres de colos de pygame

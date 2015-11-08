@@ -19,17 +19,9 @@ import vectors
 
 import svgwrite
 import pygame
-import logging
+import logs
 
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.WARNING)
-ch = logging.StreamHandler(stream=sys.stderr)
-ch.setLevel(logging.WARNING)
-ch.setFormatter(logging.Formatter(
-    '%(asctime)s %(name)s %(levelname)s %(message)s'
-    ))
-logger.addHandler(ch)
-
+logger = logs.create(__name__)
 
 class BaseEngine:
 
@@ -41,22 +33,23 @@ class BaseEngine:
         self.bg_color = colors.black
         self.fg_color = colors.white
         self.frame = 0
+        self.debug = False
 
     def clear(self, frame):
         logger.info('Clear screen; prepare for start drawing frame {}.'.format(frame))
         self.frame = frame
 
     def line(self, x0, y0, x1, y1, color=colors.white, alpha=1.0):
-        logger.error('Draw line from {}x{} to {}x{} [color:{}|alpha:{}]'.format(
+        logger.info('Draw line from {}x{} to {}x{} [color:{}|alpha:{}]'.format(
             x0, y0, x1, y1,
             color, alpha
             ))
 
     def grid(self, step=100):
         for x in range(step, self.width, step):
-            self.line(x, 0, x, self.height)
+            self.line(x, 0, x, self.height, alpha=0.25)
         for y in range(step, self.height, step):
-            self.line(0, y, self.width, y)
+            self.line(0, y, self.width, y, alpha=0.25)
 
     def rect(self, x, y, width, height, color=white, alpha=1.0):
         logger.info('Draw rect ({}, {}, {}, {}) [color:{}|alpha:{}]'.format(
@@ -76,12 +69,17 @@ class BaseEngine:
     def end(self):
         logger.debug('End of drawing.')
 
+def as_color_svg(c):
+    if not isinstance(c, colors.Color):
+        c = colors.Color(c)
+    return c.as_svg()
 
 class SVGEngine(BaseEngine):
 
     def __init__(self, width=1280, height=720, fps=25, output_dir='/tmp'):
         super().__init__(width, height, fps)
         self.output_dir = output_dir
+
 
     def clear(self, frame):
         super().clear(frame)
@@ -100,19 +98,25 @@ class SVGEngine(BaseEngine):
          self.dwg.add(self.dwg.line(
             start=(x0, y0),
             end=(x1, y1),
-            stroke=color.as_svg(),
+            stroke=as_color_svg(color),
             ))
 
     def rect(self, x, y, width, height, color=white, alpha=1.0):
         self.dwg.add(self.dwg.rect((x, y), (width, height),
-            fill=color,
+            fill=as_color_svg(color),
+            opacity=alpha,
+            ))
+
+    def roundrect(self, x, y, width, height, r, color=white, alpha=1.0):
+        self.dwg.add(self.dwg.rect((x, y), (width, height), rx=r, ry=r,
+            fill=as_color_svg(color),
             opacity=alpha,
             ))
 
     def circle(self, x, y, r, color=white, alpha=1.0):
         self.dwg.add(self.dwg.circle(
             (x, y), r,
-            fill=color,
+            fill=as_color_svg(color),
             opacity=alpha,
             ))
 
@@ -125,8 +129,23 @@ class SVGEngine(BaseEngine):
             points.append((x, y))
         self.dwg.add(self.dwg.polygon(
             points,
-            fill=color,
+            fill=as_color_svg(color),
             opacity=alpha,
+            ))
+
+    def text(self, x, y, text, color=white, alpha=1.0):
+        self.dwg.add(self.dwg.text(
+            text,
+            insert=(x, y),
+            text_anchor='middle',
+            font_family='Delicious',
+            font_size=32,
+            fill=as_color_svg(color),
+            opacity=alpha,
+            ))
+        self.dwg.add(self.dwg.circle(
+            (x, y+ (32 * 90 / 72.)), 3,
+            fill='rgb(255,0,0)',
             ))
 
     def end(self):
@@ -149,7 +168,6 @@ class PyGameEngine(BaseEngine):
 
     def line(self, x0, y0, x1, y1, color=white, alpha=1.0):
         super().line(x0, y0, x1, y1, color, alpha)
-        logger.error('llega a llamar a line')
         color = self.add_alpha_color(color, alpha)
         pygame.draw.line(self.screen, color, (x0, y0), (x1, y1), 1) 
 
@@ -165,6 +183,18 @@ class PyGameEngine(BaseEngine):
         s = pygame.Surface((width, height), pygame.SRCALPHA)   # per-pixel alpha
         s.fill(color)
         self.screen.blit(s, (x, y))
+
+    def roundrect(self, x, y, width, height, r, color=white, alpha=1.0):
+        color = self.add_alpha_color(color, alpha)
+        s = pygame.Surface((width, height), pygame.SRCALPHA)   # per-pixel alpha
+        pygame.draw.circle(s, color, (r, r), r)
+        pygame.draw.circle(s, color, (width-r,r), r)
+        pygame.draw.circle(s, color, (r, height-r),r)
+        pygame.draw.circle(s, color, (width-r, height-r),r)
+
+        pygame.draw.rect(s, color, (r, 0, width-(2*r), height))
+        pygame.draw.rect(s, color, (0, r, width, height-2*r))
+        self.screen.blit(s,(x, y))
 
     def circle(self, x, y, r, color=white, alpha=1.0):
         color = self.add_alpha_color(color, alpha)
@@ -182,9 +212,10 @@ class PyGameEngine(BaseEngine):
             points.append((x, y))
         s = pygame.Surface((self.width, self.height), pygame.SRCALPHA)   # per-pixel alpha
         pygame.draw.polygon(s, color, points, 0)
-        for p in points:
-            v = vectors.Vector(p[0], p[1])
-            pygame.draw.circle(s, colors.red.as_rgb(), v, 3, 0)
+        if self.debug:
+            for p in points:
+                v = vectors.Vector(p[0], p[1])
+                pygame.draw.circle(s, colors.red.as_rgb(), v, 3, 0)
         self.screen.blit(s, (0, 0))
 
 
@@ -200,11 +231,14 @@ class PyGameEngine(BaseEngine):
             for v in points:
                 pygame.draw.circle(scr, (255, 0, 0), v, 3, 0)
 
-    def draw_text(self, pos, text, color):
-        f = pygame.font.SysFont('Helvetica,arial', 24, bold=False, italic=False)
+    def text(self, x, y, text, color=white, alpha=1.0):
+        #f = pygame.font.SysFont('Helvetica,arial', 32, bold=False, italic=False)
+        f = pygame.font.SysFont('Delicious', 32, bold=False, italic=False)
         s = f.render(text, True, color.as_rgb())
         rect = s.get_rect()
-        rect.center = pos
+        logger.error(rect)
+        rect.y = y
+        rect.centerx = x
         self.screen.blit(s, rect)
 
     def end(self):

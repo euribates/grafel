@@ -118,7 +118,8 @@ class TestActions(unittest.TestCase):
 class TestMoveTo(unittest.TestCase):
 
     def test_move_to_not_in_origin(self):
-        a = MoveTo(Actor('A', state=State(pos=Vector(50, 50))), 0, 5, Vector(50, 0))
+        sujeto = Actor('A', pos=Vector(50, 50))
+        a = MoveTo(sujeto, 0, 5, Vector(50, 0))
         a.start(0)
         self.assertEqual(a(0), {})
         self.assertEqual(a(1), {'pos': Vector(0, -10)})
@@ -172,7 +173,8 @@ class TestFall(unittest.TestCase):
     def test_fall_not_in_origin(self):
         import actors
         actors.logger.setLevel(logging.DEBUG)
-        a = Fall(Actor('A', state=State(pos=Vector(100,0))), 0, 5, Vector(200, 0))
+        actor = Actor('A', pos=(100,0))
+        a = Fall(actor, 0, 5, Vector(200, 0))
         a.start(0)
         self.assertEqual(a(0), {'pos': Vector(0, 0)})
         self.assertEqual(a(1), {'pos': Vector(4, 0)})

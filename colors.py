@@ -3,6 +3,7 @@
 #
 # colors.py
 
+import six
 import re
 
 _name_map = {
@@ -164,32 +165,45 @@ class Color:
         if argc == 1:
             self.name = args[0]
             if self.name in _name_map:
-                self.red, self.green, self.blue = _name_map[self.name]
+                self.r, self.g, self.b = _name_map[self.name]
             else:
                 m = Color.pat_hex_color.match(self.name)
                 if m:
-                    self.red = int(m.group(1), 16)
-                    self.green = int(m.group(2), 16)
-                    self.blue = int(m.group(3), 16)
+                    self.r = int(m.group(1), 16)
+                    self.g = int(m.group(2), 16)
+                    self.b = int(m.group(3), 16)
                 else:
                     raise ValueError('No se ha especificado correctamente el color')
         elif argc == 3:
-            self.red = args[0]
-            self.green = args[1]
-            self.blue = args[2]
+            self.r = args[0]
+            self.g = args[1]
+            self.b = args[2]
         else:
             raise ValueError('No se ha especificado correctamente el color')
 
     def as_rgb(self):
-        return (self.red, self.green, self.blue,)
+        return (self.r, self.g, self.b,)
 
     def as_hex(self):
-        return '#{:02x}{:02x}{:02x}'.format(
-            self.red, self.green, self.blue
-            )
+        return '#{:02x}{:02x}{:02x}'.format(self.r, self.g, self.b)
 
     def as_svg(self):
-        return "rgb({},{},{})".format(self.red, self.green, self.blue)
+        return "rgb({},{},{})".format(self.r, self.g, self.b)
+
+    def __eq__(self, op2):
+        if isinstance(op2, six.string_types):
+            op2 = Color(op2)
+        return (
+            self.r == op2.r and 
+            self.g == op2.g and
+            self.b == op2.b
+            )
+
+    def inverse(self):
+        r = 255 - self.r
+        g = 255 - self.g
+        b = 255 - self.b
+        return Color(r, g, b)
 
     def __str__(self):
         if hasattr(self, 'name'):
@@ -203,9 +217,17 @@ class Color:
         else:
             return 'Color("{}")'.format(self.as_hex())
 
-    def get_red(self): return self.red
-    def set_red(self, new_red): self.red = new_red
-    r = property(get_red, set_red)
+    def get_red(self): return self.r
+    def set_red(self, new_red): self.r = new_red
+    red = property(get_red, set_red)
+
+    def get_green(self): return self.g
+    def set_green(self, new_green): self.g = new_green
+    green = property(get_green, set_green)
+
+    def get_blue(self): return self.b
+    def set_blue(self, new_blue): self.b = new_blue
+    blue = property(get_blue, set_blue)
 
 
 

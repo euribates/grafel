@@ -1,6 +1,6 @@
 Cast:
 
-    bob = Square size 50x50 color red;
+    bob = Square size 50x50 color red
 
 Script:
 

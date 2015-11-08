@@ -5,6 +5,7 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import unicode_literals
 
+import six
 import re
 import sys
 import math
@@ -216,15 +217,24 @@ Frame  N Active actions                                     X     Y
         self.actions_called = False
 
     def start_draw(self, engine):
+        self.draw(engine)
         for son in self.sons:
             son.start_draw(engine)
-        self.draw(engine)
+
+    def draw(self, engine):
+        raise NotImplementedError(
+            'La clase {} debe definir su método draw'.format(
+                self.__class__.__name__
+                )
+            )
 
 class Rect(Actor):
 
-    def __init__(self, name, size=Vector(50, 50), **kwargs):
+    def __init__(self, name, width=50, height=50, **kwargs):
         super().__init__(name, **kwargs)
-        (self.width, self.height) = self.size = size
+        self.width = width
+        self.height = height
+        self.size = (self.width, self.height)
 
     def draw(self, engine):
         pos = self.pos + self.get_offset()
@@ -316,197 +326,116 @@ class Star(Polygon):
             y = new_y
 
 
+class RoundRect(Actor):
 
-
-
-
-class RoundSquare(Polygon):
     def __init__(self, name, width=50, height=50, **kwargs):
         super().__init__(name, **kwargs)
-        if width < 20:
-            width = 20
-        if height < 20:
-            height = 20
-
-        offset = Vector(width // 2, height // 2)
-
-        self.size = Vector(width, height)
-
-        self.points.append(Vector(10, 0))
-        self.points.append(Vector(width-10, 0))
-
-        self.points.append(Vector(-6, 1))
-        self.points.append(Vector(-3, 3))
-        self.points.append(Vector(-1, 6))
-
-        self.points.append(Vector(0, 10))
-        self.points.append(Vector(0, height-10))
-
-        self.points.append(Vector(-1, -6))
-        self.points.append(Vector(-3, -3))
-        self.points.append(Vector(-6, -1))
-
-        self.points.append(Vector(-width+10, 0))
-        self.points.append(Vector(10, 0))
-
-        self.points.append(Vector(6, -1))
-        self.points.append(Vector(3, -3))
-        self.points.append(Vector(1, -6))
-
-        self.points.append(Vector(0, -10))
-        self.points.append(Vector(0, 10))
-        
-        self.points.append(Vector(1, 6))
-        self.points.append(Vector(3, 3))
-        self.points.append(Vector(6, 1))
-
-
-class Dice(Actor):
-    def __init__(self, name, num=1, width=50, height=50, **kwargs):
-        super().__init__(name, **kwargs)
-        self.num = num
-        self.width, self.height = (width, height)
-        self.size = Vector(width, height)
-        border = Square('dice.border', 
-            color='ghostgray',
-            width=width,
-            height=height
-            )
-        self.add_son(border)
-        r = width // 10
-        if num == 1:
-            dot1 = Circle('dice.dot1', 
-                pos=Vector(0, 0),
-                color='dimgray',
-                radius = width // 5,
-                )
-            self.add_son(dot1)
-        elif num == 2:
-            dot1 = Circle('dice.dot1', 
-                pos=Vector(0, -height//4), 
-                color='dimgray',
-                radius = r,
-                )
-            self.add_son(dot1)
-            dot2 = Circle('dice.dot2', 
-                pos=Vector(0, height//4),
-                color='dimgray',
-                radius = r,
-                )
-            self.add_son(dot2)
-        elif num == 3:
-            dot1 = Circle('dice.dot1', 
-                pos=Vector(width//4, -height//4), color='dimgray',
-                radius = r,
-                )
-            self.add_son(dot1)
-
-            dot2 = Circle('dice.dot2', 
-                pos=zero, color='dimgray',
-                radius = r,
-                )
-            self.add_son(dot2)
-
-            dot3 = Circle('dice.dot3', 
-                pos=Vector(-width//4, height//4), color='dimgray',
-                radius = r,
-                )
-            self.add_son(dot3)
-        elif num == 4:
-            dot1 = Circle('dice.dot1', 
-                pos=Vector(-width//4, -height//4), color='dimgray',
-                radius = r,
-                )
-            self.add_son(dot1)
-
-            dot2 = Circle('dice.dot2', 
-                pos=Vector(width//4, -height//4), color='dimgray',
-                radius = r,
-                )
-            self.add_son(dot2)
-
-            dot3 = Circle('dice.dot3', 
-                pos=Vector(-width//4, height//4), color='dimgray',
-                radius = r,
-                )
-            self.add_son(dot3)
-
-            dot4 = Circle('dice.dot4', 
-                pos=Vector(width//4, height//4), color='dimgray',
-                radius = r,
-                )
-            self.add_son(dot4)
-
-        elif num == 5:
-            dot1 = Circle('dice.dot1', 
-                pos=Vector(-width//4, -height//4), color='dimgray',
-                radius = r,
-                )
-            self.add_son(dot1)
-
-            dot2 = Circle('dice.dot2', 
-                pos=Vector(width//4, -height//4), color='dimgray',
-                radius = r,
-                )
-            self.add_son(dot2)
-
-            dot3 = Circle('dice.dot3', 
-                pos=Vector(-width//4, height//4), color='dimgray',
-                radius = r,
-                )
-            self.add_son(dot3)
-
-            dot4 = Circle('dice.dot4', 
-                pos=Vector(width//4, height//4), color='dimgray',
-                radius = r,
-                )
-            self.add_son(dot4)
-
-            dot5 = Circle('dice.dot5', 
-                pos=zero, color='dimgray',
-                radius = r,
-                )
-            self.add_son(dot5)
-
-        elif num == 6:
-            dot1 = Circle('dice.dot1', 
-                pos=Vector(-width//4, -height//3), color='dimgray',
-                radius = r,
-                )
-            self.add_son(dot1)
-
-            dot2 = Circle('dice.dot2', 
-                pos=Vector(-width//4, 0), color='dimgray',
-                radius = r,
-                )
-            self.add_son(dot2)
-
-            dot3 = Circle('dice.dot3', 
-                pos=Vector(-width//4, height//3), color='dimgray',
-                radius = r,
-                )
-            self.add_son(dot3)
-
-            dot4 = Circle('dice.dot4', 
-                pos=Vector(width//4, -height//3), color='dimgray',
-                radius = r,
-                )
-            self.add_son(dot4)
-
-            dot5 = Circle('dice.dot5', 
-                pos=Vector(width//4, 0), color='dimgray',
-                radius = r,
-                )
-            self.add_son(dot5)
-
-            dot6 = Circle('dice.dot6', 
-                pos=Vector(width//4, height//3), color='dimgray',
-                radius = r,
-                )
-            self.add_son(dot6)
+        self.width = int(width) if width > 20 else 20
+        self.height = int(height) if height > 20 else 20
+        self.size = Vector(self.width, self.height)
+        if 'border_radius' in kwargs:
+            self.border_radius = kwargs['border_radius'] 
+        else:
+            self.border_radius = int(round(min(self.width, self.height) // 12))
 
     def draw(self, engine):
-        pass
+        pos = self.pos + self.get_offset()
+        engine.roundrect(
+            pos.x, pos.y, self.width, self.height, 
+            self.border_radius,
+            color=self.color,
+            alpha=self.alpha,
+            )
+
+class Dice(RoundRect):
+
+    def __init__(self, name, num=1, side=50, **kwargs):
+        super().__init__(name, width=side, height=side, **kwargs)
+        self.num = num
+        self.side = side
+        self.dot_color = self.color.inverse()
+        x1q = self.width // 4 ; y1q = self.height // 4
+        x2q = x1q + x1q       ; y2q = y1q + y1q
+        x3q = 3 * x1q         ; y3q = 3 * y1q
+        default_dot_radius = self.width // 10
+        if num == 1:
+            self.add_dot(Vector(x2q, y2q), r=2*default_dot_radius)
+        elif num == 2:
+            self.add_dot(Vector(x2q, y1q))
+            self.add_dot(Vector(x2q, y3q))
+        elif num == 3:
+            self.add_dot(Vector(x3q, y1q))
+            self.add_dot(Vector(x2q, y2q))
+            self.add_dot(Vector(x1q, y3q))
+        elif num == 4:
+            self.add_dot(Vector(x1q, y1q))
+            self.add_dot(Vector(x3q, y1q))
+            self.add_dot(Vector(x1q, y3q))
+            self.add_dot(Vector(x3q, y3q))
+        elif num == 5:
+            self.add_dot(Vector(x1q, y1q))
+            self.add_dot(Vector(x3q, y1q))
+            self.add_dot(Vector(x1q, y3q))
+            self.add_dot(Vector(x3q, y3q))
+            self.add_dot(Vector(x2q, y2q))
+        elif num == 6:
+            y1 = self.side // 5 
+            y2 = y2q
+            y3 = 4 * y1
+            self.add_dot(Vector(x1q, y1))
+            self.add_dot(Vector(x1q, y2))
+            self.add_dot(Vector(x1q, y3))
+            self.add_dot(Vector(x3q, y1))
+            self.add_dot(Vector(x3q, y2))
+            self.add_dot(Vector(x3q, y3))
+
+    def add_dot(self, pos, r=None):
+        if hasattr(self.add_dot, '_counter'):
+            self._dot_counter += 1
+        else:
+            setattr(self, '_dot_counter', 1)
+        radius = r if r else self.side // 10
+        name = '{}.dot{}'.format(self.name, self._dot_counter)
+        new_dot = Circle(name, radius=radius,
+            pos=pos,
+            color=self.dot_color,
+            alpha=self.alpha,
+            )
+        self.add_son(new_dot)
+
+
+class Label(Actor):
+    
+    def __init__(self, name, text, **kwargs):
+        if six.PY2:
+            super(Label, self).__init__(name, **kwargs)
+        else:
+            super().__init__(name, **kwargs)
+        self.text = text
+        self.font_size = kwargs.get('fontsize', 31)
+
+        scale = 90/72.  # 90dpi / 72 points in one inch
+        self.height = self.font_size * scale
+        self.width = len(text) * self.height / 2.0
+        self.border = RoundRect('{}.border'.format(self.name),
+            width=self.width,
+            height=self.height,
+            color=self.color.inverse(),
+            pos=(0,0)
+            )
+
+    def draw(self, engine):
+        
+        #width-offwet = self.pos.x 
+        engine.circle(self.pos.x, self.pos.y, 3, color='green') 
+        self.border.pos.x = self.pos.x - self.width//2
+        self.border.pos.y = self.pos.y
+        self.border.draw(engine)
+
+        engine.text(self.pos.x, self.pos.y, self.text,
+            color=self.color,
+            alpha=self.alpha,
+            )
 
 def create_actor(name, rol, **kwargs):
     print('create_actor({}, {}, {})'.format(

@@ -144,6 +144,13 @@ class CreateManyActors(unittest.TestCase):
         self.assertEqual(str(dorothy.state.color), '#32BF98')
 
 
+class TestLabel(unittest.TestCase):
+
+    def test_create_label(self):
+        label = actors.Label('l1', 'L1')
+        self.assertEqual(label.name, 'l1')
+        self.assertEqual(label.text, 'L1')
+
 class TestSquare(unittest.TestCase):
 
     def test_creacion_square_bob(self):
