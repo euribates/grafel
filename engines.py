@@ -133,19 +133,16 @@ class SVGEngine(BaseEngine):
             opacity=alpha,
             ))
 
-    def text(self, x, y, text, color=white, alpha=1.0):
+    def text(self, x, y, text, color=white, alpha=1.0, font_size=32):
         self.dwg.add(self.dwg.text(
             text,
             insert=(x, y),
             text_anchor='middle',
+            dominant_baseline="middle",
             font_family='Delicious',
-            font_size=32,
+            font_size=font_size,
             fill=as_color_svg(color),
             opacity=alpha,
-            ))
-        self.dwg.add(self.dwg.circle(
-            (x, y+ (32 * 90 / 72.)), 3,
-            fill='rgb(255,0,0)',
             ))
 
     def end(self):
@@ -236,9 +233,7 @@ class PyGameEngine(BaseEngine):
         f = pygame.font.SysFont('Delicious', 32, bold=False, italic=False)
         s = f.render(text, True, color.as_rgb())
         rect = s.get_rect()
-        logger.error(rect)
-        rect.y = y
-        rect.centerx = x
+        rect.center = (x, y)
         self.screen.blit(s, rect)
 
     def end(self):

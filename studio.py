@@ -55,20 +55,14 @@ class Stage:
         self.bottom_left = Vector(0, self.height)
         self.actors = []
         self.on_stage = []
-        self.tick = 0
 
     def add_actor(self, actor, on_stage=True):
         self.actors.append(actor)
         if on_stage:
             self.on_stage.append(actor)
 
-    def next(self):
-        self.tick += 1
-        for actor in self.actors:
-            actor.next()
-
-    def draw(self):
-        self.engine.clear(self.tick)
+    def draw(self, frame):
+        self.engine.clear(frame)
         for actor in self.on_stage:
             actor.start_draw(self.engine)
         self.engine.end()

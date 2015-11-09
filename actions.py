@@ -130,7 +130,7 @@ class MoveTo(MoveAction):
         logger.info('delta: {}'.format(self.delta))
 
     def __call__(self, frame):
-        logger.error('Called {} on frame {}'.format(self, frame))
+        logger.info('Called {} on frame {}'.format(self, frame))
         super().__call__(frame)
         relative_frame = frame - self.interval.lower_bound
         logger.info('{} frame: {} | relative_frame:{}'.format(

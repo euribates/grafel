@@ -184,7 +184,7 @@ class TestPyGameEngine(unittest.TestCase):
         engine.grid()
         draw_all(engine)
         engine.end()
-        time.sleep(3.1)
+        time.sleep(1)
 
 class TestSVGEngine(unittest.TestCase):
 
@@ -246,6 +246,33 @@ class TestWithActors(unittest.TestCase):
         engine.end()
         time.sleep(1)
 
+class TestText(unittest.TestCase):
+   
+    def get_engine(self):
+        from engines import PyGameEngine, SVGEngine
+        # return SVGEngine(output_dir='./tmp')
+        return  PyGameEngine()
+
+
+    def test(self):
+        engine = self.get_engine()
+        engine.clear(0)
+        #engine.grid()
+        engine.line(200, 0, 200, 400)
+        engine.line(0, 200, 400, 200)
+
+        engine.text(400, 200, 'Hola, mundo')
+        engine.line(395, 200, 405, 200, color='yellow')
+        engine.line(400, 195, 400, 202, color='yellow')
+
+        t = actors.Text('t', 'Hola, mundo', pos=(200, 200), color='red')
+        t.start_draw(engine)
+
+        l = actors.Label('l', 'Hola, mundo', pos=(600, 200), color='coral')
+        l.start_draw(engine)
+
+        engine.end()
+        time.sleep(1)
 
 
 if __name__ == '__main__':

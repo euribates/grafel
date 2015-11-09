@@ -14,6 +14,7 @@ import pprint
 import logging
 from collections import defaultdict
 from vectors import Vector, origin, zero
+import colors
 from colors import Color, black, white
 import logs
 
@@ -78,12 +79,16 @@ class Actor():
     
     def __init__(self, name, **kwargs):
         self.name = name 
-        self.actions = defaultdict(list) 
-        self.active_actions = []
         self.sons = []
         self.parent = None
         self.initial_state = State(**kwargs)
         self.reset()
+
+    def reset(self):
+        self.frame = 0
+        self.state = copy(self.initial_state)
+        for son in self.sons:
+            son.reset()
 
     def get_pos(self):
         return self.state.pos
@@ -96,7 +101,11 @@ class Actor():
     pos = property(get_pos, set_pos)
 
     def get_color(self): return self.state.color
-    def set_color(self, new_color): self.state.color = new_color
+
+    def set_color(self, new_color):
+        if isinstance(new_color, six.string_types):
+            new_color = Color(new_color)
+        self.state.color = new_color
 
     color = property(get_color, set_color)
 
@@ -120,13 +129,6 @@ class Actor():
         actor.parent = self
         self.sons.append(actor)
 
-    def reset(self):
-        self.frame = 0
-        self.state = copy(self.initial_state)
-        self.actions_called = False
-        for son in self.sons:
-            son.reset()
-
     def __repr__(self):
         return '{}("{}", {})'.format(
             self.__class__.__name__,
@@ -135,9 +137,9 @@ class Actor():
             )
 
     def __str__(self):
-        return '{} {}'.format(
-            self.__class__.__name__,
-            self.name
+        return 'Actor {nom} as {rol}'.format(
+            rol=self.__class__.__name__,
+            nom=self.name
             )
 
 
@@ -157,6 +159,27 @@ class Actor():
                 )
             )
 
+    def spot_center(self, engine):
+        pos = self.get_offset() + self.pos
+        engine.line(pos.x, pos.y-5, pos.x, pos.y+5, color='red')
+        engine.line(pos.x-5, pos.y, pos.x+5, pos.y, color='red')
+        engine.circle(pos.x, pos.y, 3, color='red')
+
+class Square(Actor):
+
+    def __init__(self, name, side=50, **kwargs):
+        super().__init__(name, **kwargs)
+        self.width = self.height = side
+
+    def draw(self, engine):
+        pos = self.pos + self.get_offset()
+        x = pos.x - self.width / 2
+        y = pos.y - self.height / 2
+        engine.rect(x, y, self.width, self.height,
+            color=self.color,
+            alpha=self.alpha,
+            )
+
 class Rect(Actor):
 
     def __init__(self, name, width=50, height=50, **kwargs):
@@ -167,20 +190,9 @@ class Rect(Actor):
 
     def draw(self, engine):
         pos = self.pos + self.get_offset()
-        engine.rect(pos.x, pos.y, self.width, self.height,
-            color=self.color,
-            alpha=self.alpha,
-            )
-
-class Square(Actor):
-
-    def __init__(self, name, side=50, **kwargs):
-        super().__init__(name, **kwargs)
-        self.width = self.height = side
-
-    def draw(self, engine):
-        pos = self.pos + self.get_offset()
-        engine.rect(pos.x, pos.y, self.width, self.height,
+        x = pos.x - self.width / 2
+        y = pos.y - self.height / 2
+        engine.rect(x, y, self.width, self.height,
             color=self.color,
             alpha=self.alpha,
             )
@@ -202,11 +214,16 @@ class Circle(Actor):
 class Polygon(Actor):
 
     def __init__(self, name, points=None, **kwargs):
-        super().__init__(name, **kwargs)  
+        super().__init__(name, **kwargs) 
+        acc = total = zero
+        for _ in points:
+            acc += _
+            total += acc
+        self.centroid = total / ( len(points) + 1 )
         self.points = points or []
  
     def draw(self, engine):
-        pos = self.pos + self.get_offset()
+        pos = self.pos + self.get_offset() - self.centroid
         engine.polygon(pos.x, pos.y, self.points,
             color=self.color,
             alpha=self.alpha,
@@ -214,46 +231,28 @@ class Polygon(Actor):
 
 class Triangle(Polygon):
     def __init__(self, name, a, b, c, **kwargs):
-        super().__init__(name, **kwargs)    
         if isinstance(a, tuple):
             a = Vector(a[0], a[1])
         if isinstance(b, tuple):
             b = Vector(b[0], b[1])
         if isinstance(c, tuple):
             c = Vector(c[0], c[1])
-        self.points = [a, b, c]
-
-
-
-class Path(Actor):
-
-    def __init__(self, name, state=None, radius=50):
-        super().__init__(name, state=state)
-    
-
-class Text(Actor):
-    
-    def __init__(self, name, state=None, text=''):
-        super().__init__(name, state)
-        self.text = text or self.name
-
+        super().__init__(name, points=[b-a, c-b], **kwargs)    
 
 class Star(Polygon):
 
     def __init__(self, name, radius=100, **kwargs):
-        super().__init__(name, **kwargs)
-        
         x, y = 0, -radius
-        self.points = []
+        points = []
         for i in range(1, 10):
             a = i * math.pi / 5
             r = radius/2.5 if i % 2 else radius
             new_x = math.sin(a) * r
             new_y = -math.cos(a) * r
-            self.points.append(Vector(new_x - x, new_y - y))
+            points.append(Vector(new_x - x, new_y - y))
             x = new_x 
             y = new_y
-
+        super().__init__(name, points=points, **kwargs)
 
 class RoundRect(Actor):
 
@@ -269,12 +268,18 @@ class RoundRect(Actor):
 
     def draw(self, engine):
         pos = self.pos + self.get_offset()
+        x = pos.x - self.width / 2
+        y = pos.y - self.height / 2
         engine.roundrect(
-            pos.x, pos.y, self.width, self.height, 
+            x, y, self.width, self.height, 
             self.border_radius,
             color=self.color,
             alpha=self.alpha,
             )
+
+
+
+
 
 class Dice(RoundRect):
 
@@ -283,40 +288,37 @@ class Dice(RoundRect):
         self.num = num
         self.side = side
         self.dot_color = self.color.inverse()
-        x1q = self.width // 4 ; y1q = self.height // 4
-        x2q = x1q + x1q       ; y2q = y1q + y1q
-        x3q = 3 * x1q         ; y3q = 3 * y1q
+        x = self.width // 4 
+        y = self.height // 4
         default_dot_radius = self.width // 10
         if num == 1:
-            self.add_dot(Vector(x2q, y2q), r=2*default_dot_radius)
+            self.add_dot(zero, r=2*default_dot_radius)
         elif num == 2:
-            self.add_dot(Vector(x2q, y1q))
-            self.add_dot(Vector(x2q, y3q))
+            self.add_dot(Vector(0, -y))
+            self.add_dot(Vector(0, y))
         elif num == 3:
-            self.add_dot(Vector(x3q, y1q))
-            self.add_dot(Vector(x2q, y2q))
-            self.add_dot(Vector(x1q, y3q))
+            self.add_dot(Vector(-x, y))
+            self.add_dot(Vector(0, 0))
+            self.add_dot(Vector(x, -y))
         elif num == 4:
-            self.add_dot(Vector(x1q, y1q))
-            self.add_dot(Vector(x3q, y1q))
-            self.add_dot(Vector(x1q, y3q))
-            self.add_dot(Vector(x3q, y3q))
+            self.add_dot(Vector(-x, -y))
+            self.add_dot(Vector(x, -y))
+            self.add_dot(Vector(-x, y))
+            self.add_dot(Vector(x, y))
         elif num == 5:
-            self.add_dot(Vector(x1q, y1q))
-            self.add_dot(Vector(x3q, y1q))
-            self.add_dot(Vector(x1q, y3q))
-            self.add_dot(Vector(x3q, y3q))
-            self.add_dot(Vector(x2q, y2q))
+            self.add_dot(Vector(-x, -y))
+            self.add_dot(Vector(x, -y))
+            self.add_dot(Vector(-x, y))
+            self.add_dot(Vector(x, y))
+            self.add_dot(Vector(0, 0))
         elif num == 6:
-            y1 = self.side // 5 
-            y2 = y2q
-            y3 = 4 * y1
-            self.add_dot(Vector(x1q, y1))
-            self.add_dot(Vector(x1q, y2))
-            self.add_dot(Vector(x1q, y3))
-            self.add_dot(Vector(x3q, y1))
-            self.add_dot(Vector(x3q, y2))
-            self.add_dot(Vector(x3q, y3))
+            y = self.side // 4 
+            self.add_dot(Vector(-x, -y))
+            self.add_dot(Vector(-x, 0))
+            self.add_dot(Vector(-x, y))
+            self.add_dot(Vector(x, -y))
+            self.add_dot(Vector(x, 0))
+            self.add_dot(Vector(x, y))
 
     def add_dot(self, pos, r=None):
         if hasattr(self.add_dot, '_counter'):
@@ -332,39 +334,56 @@ class Dice(RoundRect):
             )
         self.add_son(new_dot)
 
-
-class Label(Actor):
+class Text(Actor):
     
-    def __init__(self, name, text, **kwargs):
+    def __init__(self, name, text='', **kwargs):
+        self.text = text or self.name
+        self.font_size = kwargs.pop('fontsize', 32)
+        scale = 90/72.  # 90dpi / 72 points in one inch
+        self.height = self.font_size * scale
+        self.width = len(text) * self.height / 2.0
         if six.PY2:
             super(Label, self).__init__(name, **kwargs)
         else:
             super().__init__(name, **kwargs)
-        self.text = text
-        self.font_size = kwargs.get('fontsize', 31)
-
-        scale = 90/72.  # 90dpi / 72 points in one inch
-        self.height = self.font_size * scale
-        self.width = len(text) * self.height / 2.0
-        self.border = RoundRect('{}.border'.format(self.name),
-            width=self.width,
-            height=self.height,
-            color=self.color.inverse(),
-            pos=(0,0)
-            )
 
     def draw(self, engine):
-        
-        #width-offwet = self.pos.x 
-        engine.circle(self.pos.x, self.pos.y, 3, color='green') 
-        self.border.pos.x = self.pos.x - self.width//2
-        self.border.pos.y = self.pos.y
-        self.border.draw(engine)
-
-        engine.text(self.pos.x, self.pos.y, self.text,
+        logger.info('Text {} draw method called'.format(self.name))
+        pos = self.pos + self.get_offset()
+        x = pos.x
+        y = pos.y
+        engine.line(x-30, y, x+30, y, color='gold')
+        engine.line(x, y-30, x, y+30, color='gold')
+        engine.text(x, y, self.text,
             color=self.color,
             alpha=self.alpha,
             )
+
+
+class Label(RoundRect):
+    
+    def __init__(self, name, text='', **kwargs):
+        color = kwargs.pop('color', white)
+        if isinstance(color, six.string_types):
+            color = colors.Color(color)
+        txt = Text(
+            '{}.text'.format(name),
+            text,
+            color=color,
+            pos=(0, 0) 
+            )
+        if six.PY2:
+            sup = super(Label, self)
+        else:
+            sup = super()
+        sup.__init__(name, 
+            width=txt.width,
+            height=txt.height,
+            color=color.inverse(),
+            **kwargs
+            )
+        self.add_son(txt)
+   
 
 def create_actor(name, rol, **kwargs):
     print('create_actor({}, {}, {})'.format(

@@ -70,7 +70,93 @@ class TestState(unittest.TestCase):
         state.delta(alpha=0.75)
         self.assertEqual(state.alpha, 0.75)
 
-            
+class TestActorCenter(unittest.TestCase):
+
+    def get_engine(self):
+        from engines import PyGameEngine, SVGEngine
+        return SVGEngine(output_dir='./tmp')
+        return  PyGameEngine()
+
+    def test_all(self):
+        import actors
+        from vectors import zero
+        import time
+
+        engine = self.get_engine()
+        engine.clear(0)
+        engine.grid() 
+        # Square
+        sq = actors.Square('square', pos=(50, 50))
+        sq.draw(engine)
+        sq.spot_center(engine)
+
+        # rect
+        r = actors.Rect('rect', width=100, height=50)
+        r.place(150, 50)
+        r.draw(engine)
+        r.spot_center(engine)
+
+        # circle
+        c = actors.Circle('circle', radius=25)
+        c.place(240, 50)
+        c.draw(engine)
+        c.spot_center(engine)
+
+        # polygon
+        points = [Vector(a,b) for a,b in (
+            (0, -20), (10, 0), (0, 20), (20, 0), (0, 10), (-20, 0),
+            (0, 20), (-10, 0), (0, -20), (-20, 0), (0, -10)
+            )]
+        p = actors.Polygon('polygon', points=points)
+        p.place(300, 50)
+        p.draw(engine)
+        p.spot_center(engine)
+
+        # triangle
+        t = actors.Triangle('triangle', (0,-25), (50, 0), (0, 25))
+        t.place(350, 50)
+        t.draw(engine)
+        t.spot_center(engine)
+
+        # star
+        star = actors.Star('star', radius=25)
+        star.place(420, 50)
+        star.draw(engine)
+        star.spot_center(engine)
+
+        # roundrect
+        round_rect = actors.RoundRect('round_rect',
+                width=100, height=50, border_radius=10
+                )
+        round_rect.place(510, 50)
+        round_rect.draw(engine)
+        round_rect.spot_center(engine)
+
+        # dices
+        for num in range(1, 7):
+            dice = actors.Dice('dice{}'.format(num),
+                num=num
+                )
+
+            dice.place(50 + (num-1)*60, 110)
+            dice.start_draw(engine)
+            dice.spot_center(engine)
+
+        # Text
+        txt = actors.Text('Text', "Hola, mundo", color='yellow')
+        txt.place(300, 170)
+        txt.start_draw(engine)
+        txt.spot_center(engine)
+        
+        # Label
+        lbl = actors.Label('Label', "Hola, mundo", color='#666666')
+        lbl.place(300, 220)
+        lbl.start_draw(engine)
+        lbl.spot_center(engine)
+
+
+        engine.end()
+        time.sleep(4.5)
 
 class TestActor(unittest.TestCase):
 
