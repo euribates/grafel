@@ -15,16 +15,10 @@ import logging
 from collections import defaultdict
 from vectors import Vector, origin, zero
 from colors import Color, black, white
+import logs
 
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.WARNING)
-ch = logging.StreamHandler(stream=sys.stderr)
-ch.setLevel(logging.WARNING)
-ch.setFormatter(logging.Formatter(
-    '%(asctime)s %(name)s %(levelname)s %(message)s'
-    ))
-logger.addHandler(ch)
 
+logger = logs.create(__name__)
 
 class State:
 
@@ -80,9 +74,6 @@ class State:
         if alpha is not None:
             self.alpha = alpha
 
-
-
-
 class Actor():
     
     def __init__(self, name, **kwargs):
@@ -104,27 +95,18 @@ class Actor():
 
     pos = property(get_pos, set_pos)
 
-    def get_color(self):
-        return self.state.color
-
-    def set_color(self, color):
-        self.state.color = color
+    def get_color(self): return self.state.color
+    def set_color(self, new_color): self.state.color = new_color
 
     color = property(get_color, set_color)
 
-    def get_scale(self):
-        return self.state.scale
-
-    def set_scale(self, new_scale):
-        self.state.scale = new_scale
+    def get_scale(self): return self.state.scale
+    def set_scale(self, new_scale): self.state.scale = new_scale
 
     scale = property(get_scale, set_scale)
 
-    def get_alpha(self):
-        return self.state.alpha
-
-    def set_alpha(self, new_alpha):
-        self.state.alpha = new_alpha
+    def get_alpha(self): return self.state.alpha
+    def set_alpha(self, new_alpha): self.state.alpha = new_alpha
 
     alpha = property(get_alpha, set_alpha)
 
@@ -158,63 +140,10 @@ class Actor():
             self.name
             )
 
-    def dump(self, num_frames=15):
-        buff = ['--[{}]----------------------'.format(self)]
-        buff.append(' - State: {}'.format(self.state))
-        buff.append(' - N of sons: {}'.format(len(self.sons)))
-        buff.append(' - Timeline')
-        buff.append('''\
-Frame  N Active actions                                     X     Y
------- - -------------------------------------------------- ----- -----
-''')
-        self.reset()
-        for frame in range(0, num_frames):
-            self.call_actions_on_frame(frame)
-            new_actions = frame in self.actions
-            buff.append('{:-6d} {} {:50} {:5.0f} {:5.0f}'.format(
-                frame,
-                '*' if new_actions else ' ',
-                ', '.join([str(_) for _ in self.active_actions]),
-                self.state.pos.x,
-                self.state.pos.y,
-                ))
-            self.next()
-        return '\n'.join(buff)
 
     def place(self, x, y):
         self.pos = Vector(x, y)
         self.initial_state.pos = Vector(x, y)
-
-    def add_action(self, frame, action):
-        self.actions[frame].append(action)
-
-    def call_actions_on_frame(self, frame):
-        #logger.info('actor {} execute call_actions_on_frame({})'.format(
-        #    self, frame
-        #    ))
-        if frame in self.actions:
-            for a in self.actions[frame]:
-                a.start(self.frame)
-                self.active_actions.append(a)
-        actions_to_remove = []
-        for a in self.active_actions:
-            data = a(self.frame)
-            if data:
-                self.state.delta(**data)
-            if a.interval.is_last(self.frame):
-                actions_to_remove.append(a)
-                a.end(self.frame)
-        for a in actions_to_remove:
-            self.active_actions.remove(a)
-        self.actions_called = True
-
-    def next(self):
-        if not self.actions_called:
-            self.call_actions_on_frame(self.frame)
-            for son in self.sons:
-                son.call_actions_on_frame(self.frame)
-        self.frame += 1
-        self.actions_called = False
 
     def start_draw(self, engine):
         self.draw(engine)

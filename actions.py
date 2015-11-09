@@ -7,19 +7,11 @@ from __future__ import print_function
 
 import sys
 from copy import copy
-import logging
-
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.WARNING) 
-
-#ch = logging.StreamHandler()
-#ch.setLevel(logging.INFO)
-#ch.setFormatter(logging.Formatter(
-#    '%(asctime)s %(name)s %(levelname)s %(message)s'
-#    ))
-#logger.addHandler(ch)
-
+import logs
 from vectors import Vector
+
+logger = logs.create(__name__)
+
 
 
 class Interval:
@@ -60,7 +52,6 @@ class Interval:
 class Action:
     def __init__(self, actor, from_frame, to_frame):
         self.actor = actor
-        self.actor.add_action(from_frame, self)
         self.interval = Interval(from_frame, to_frame)
         self.num_frames = len(self.interval) - 1
 
@@ -109,54 +100,56 @@ class Blink(Action):
     def __call__(self, frame):
         return {'color': self.colors[frame]}
 
-
-class MoveTo(Action):
+class MoveAction(Action):
     def __init__(self, actor, from_frame, to_frame, new_position):
         super().__init__(actor, from_frame, to_frame)
         self.new_position = new_position
+        if isinstance(self.new_position, tuple):
+            x, y = self.new_position
+            self.new_position = Vector(x, y)
+
+
+class MoveTo(MoveAction):
+
+    def end(self, frame):
+        logger.info('Ended action {} on frame {}'.format(self, frame))
+
 
     def start(self, frame):
+        logger.info('Started action {} on frame {}'.format(self, frame))
         super().start(frame)
         position = copy(self.actor.state.pos)
-        logger.debug('position: {}'.format(position))
-        logger.debug('new_position: {}'.format(self.new_position))
-        logger.debug('num_frames: {}'.format(self.num_frames))
+        logger.info('position: {}'.format(position))
+        logger.info('new_position: {}'.format(self.new_position))
+        logger.info('num_frames: {}'.format(self.num_frames))
 
         self.delta = Vector(
             (self.new_position.x - position.x) / self.num_frames,
             (self.new_position.y - position.y) / self.num_frames,
             )
-        logger.debug('delta: {}'.format(self.delta))
+        logger.info('delta: {}'.format(self.delta))
 
     def __call__(self, frame):
+        logger.error('Called {} on frame {}'.format(self, frame))
         super().__call__(frame)
         relative_frame = frame - self.interval.lower_bound
-        if relative_frame == 0:
-            return {}
-        else:
-            return {'pos': self.delta}
+        logger.info('{} frame: {} | relative_frame:{}'.format(
+            self.actor.name,
+            frame, relative_frame
+            ))
+        return {'pos': self.delta}
 
-class Fall(Action):
+class Fall(MoveAction):
     
-    def __init__(self, actor, from_frame, to_frame, new_position):
-        super().__init__(actor, from_frame, to_frame)
-        self.new_position = new_position
-
     def start(self, frame):
-        logger.debug('start({})'.format(frame))
         self.initial_position = copy(self.actor.state.pos)
-        logger.debug('initial_position = {}'.format(self.initial_position))
         self.change_value = self.new_position - self.initial_position
-        logger.debug('self.new_position = {}'.format(self.new_position))
-        logger.debug('self.change_value = {}'.format(self.change_value))
         self.previo = copy(self.initial_position)
 
     def __call__(self, frame):
-        logger.debug('__call__({})'.format(frame))
+        logger.info('Fall {} __call__({})'.format(self.actor, frame))
         relative_frame = frame - self.interval.lower_bound
-        logger.debug('relative_frame = {}'.format(relative_frame))
         t = relative_frame / self.num_frames
-        logger.debug('t = {}'.format(t))
         new_position = Vector(
             x = self.change_value.x * t**2 + self.initial_position.x,
             y = self.change_value.y * t**2 + self.initial_position.y,
@@ -165,12 +158,8 @@ class Fall(Action):
         self.previo = new_position
         return { 'pos': delta }
 
-class Land(Action):
+class Land(MoveAction):
     
-    def __init__(self, actor, from_frame, to_frame, new_position):
-        super().__init__(actor, from_frame, to_frame)
-        self.new_position = new_position
-
     def start(self, frame):
         logger.debug('start({})'.format(frame))
         self.initial_position = copy(self.actor.state.pos)

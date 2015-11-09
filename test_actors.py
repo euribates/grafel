@@ -16,6 +16,9 @@ from vectors import Vector
 import actors
 from actors import State, Actor, Square, Star
 from colors import Color
+import logs
+
+logger = logs.create(__name__)
 
 class TestState(unittest.TestCase):
 
@@ -79,69 +82,27 @@ class TestActor(unittest.TestCase):
         a = Actor('A')
         self.assertEqual(a.name, 'A')
         self.assertEqual(a.frame, 0)
-        self.assertEqual(a.state.pos.x, 0)
-        self.assertEqual(a.state.pos.y, 0)
-        self.assertEqual(a.state.color.name, 'white')
-        self.assertEqual(a.state.color.red, 255)
-        self.assertEqual(a.state.color.green, 255)
-        self.assertEqual(a.state.color.blue, 255)
+        self.assertEqual(a.pos.x, 0)
+        self.assertEqual(a.pos.y, 0)
+        self.assertEqual(a.color.name, 'white')
+        self.assertEqual(a.color.red, 255)
+        self.assertEqual(a.color.green, 255)
+        self.assertEqual(a.color.blue, 255)
 
-        self.assertEqual(a.state.scale.x, 1)
-        self.assertEqual(a.state.scale.y, 1)
-        self.assertEqual(a.state.alpha, 1.0)
+        self.assertEqual(a.scale.x, 1)
+        self.assertEqual(a.scale.y, 1)
+        self.assertEqual(a.alpha, 1.0)
 
 
     def test_move_actor(self):
         a = Actor('A')
         a.place(100, 200)
-        self.assertEqual(a.state.pos.x, 100)
-        self.assertEqual(a.state.pos.y, 200)
-        a.state.pos += Vector(-2, 4)
-        self.assertEqual(a.state.pos.x, 98)
-        self.assertEqual(a.state.pos.y, 204)
+        self.assertEqual(a.pos.x, 100)
+        self.assertEqual(a.pos.y, 200)
+        a.pos += Vector(-2, 4)
+        self.assertEqual(a.pos.x, 98)
+        self.assertEqual(a.pos.y, 204)
 
-class TestBob(unittest.TestCase):
-
-    def test(self):
-        import sys
-        from actors import Square
-        from actions import MoveTo
-
-        bob = Square('Bob', State(color='cadetblue'), width=50, height=50)
-        MoveTo(bob, 0, 10, Vector(100, 0))
-        dump = bob.dump(40)
-
-class CreateManyActors(unittest.TestCase):
-
-    def test(self):
-        from actions import Fall, MoveTo
-
-        charles = Square('Charles', pos=(100, 0), color='brown4', side=75)
-
-        self.assertEqual(len(charles.actions[0]), 0)
-        Fall(charles, 0, 40, Vector(100, 300))
-        self.assertEqual(len(charles.actions[0]), 1)
-
-
-
-        dorothy = Square('Dorothy', pos=(400, 5), color='#32BF98', side=25)
-
-        self.assertEqual(len(dorothy.actions[0]), 0)
-        MoveTo(dorothy, 0, 40, Vector(100, 300))
-        self.assertEqual(len(dorothy.actions[0]), 1)
-
-        charles.next()
-
-        self.assertEqual(len(charles.actions[0]), 1)
-        self.assertEqual(len(dorothy.actions[0]), 1)
-        
-        self.assertEqual(charles.pos.x, 100)
-        self.assertEqual(charles.pos.y, 0)
-        self.assertEqual(str(charles.color), 'brown4')
-
-        self.assertEqual(dorothy.state.pos.x, 400)
-        self.assertEqual(dorothy.state.pos.y, 5)
-        self.assertEqual(str(dorothy.state.color), '#32BF98')
 
 
 class TestLabel(unittest.TestCase):
