@@ -1,8 +1,5 @@
 # ToDo List
 
-* Normalizar posicion de los actores (Centro)
-* Nuevo Actor Etiqueta (box + txt) 
-* Nuevo Actor Texto
 * Cambiar el par start_draw/draw por draw/draw_sons
 * Normalizar la forma de creación de los actores.
 * Accion "Sigue A" (Ummmm Ni idea de como hacerlo por ahora)

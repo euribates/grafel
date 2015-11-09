@@ -162,7 +162,9 @@ class TestActor(unittest.TestCase):
 
     def test_as_string(self):
         a = Actor('A')
-        self.assertEqual(str(a), 'Actor A')
+        self.assertEqual(str(a), 'Actor A as Actor')
+        a = Square('B')
+        self.assertEqual(str(a), 'Actor B as Square')
 
     def test_creacion_actor(self):
         a = Actor('A')
@@ -212,7 +214,7 @@ class TestSquare(unittest.TestCase):
 
     def test_as_string(self):
         bob = Square('Bob')
-        self.assertEqual(str(bob), 'Square Bob')
+        self.assertEqual(str(bob), 'Actor Bob as Square')
 
 
 class ComposeActors(unittest.TestCase):

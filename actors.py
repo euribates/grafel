@@ -363,6 +363,7 @@ class Text(Actor):
 class Label(RoundRect):
     
     def __init__(self, name, text='', **kwargs):
+        self.text = text or self.name
         color = kwargs.pop('color', white)
         if isinstance(color, six.string_types):
             color = colors.Color(color)

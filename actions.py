@@ -17,33 +17,33 @@ logger = logs.create(__name__)
 class Interval:
     def __init__(self, lower_bound, upper_bound=None):
         self.lower_bound = lower_bound
-        self.upper_bound = (upper_bound or lower_bound) + 1
+        self.upper_bound = upper_bound or (lower_bound + 1)
 
     def __contains__(self, key):
-        return self.lower_bound <= key < self.upper_bound
+        return self.lower_bound <= key <= self.upper_bound
 
     def __str__(self):
-        return '[{}-{}]'.format(
+        return '[{}~{}]'.format(
             self.lower_bound,
-            self.upper_bound-1,
+            self.upper_bound,
             )
 
     def __len__(self):
-        return self.upper_bound - self.lower_bound
+        return self.upper_bound - self.lower_bound + 1
 
     def is_last(self, item):
-        if item < self.lower_bound or item >= self.upper_bound:
+        if item < self.lower_bound or item > self.upper_bound:
             raise ValueError(
                 'El valor cae fuera del intervalo {}'.format(self)
                 )
-        return item == self.upper_bound-1
+        return item == self.upper_bound
 
     def __iter__(self):
         self._next_result = self.lower_bound
         return self
 
     def __next__(self):
-        if self._next_result >= self.upper_bound:
+        if self._next_result > self.upper_bound:
             raise StopIteration 
         result = self._next_result
         self._next_result += 1
@@ -161,20 +161,13 @@ class Fall(MoveAction):
 class Land(MoveAction):
     
     def start(self, frame):
-        logger.debug('start({})'.format(frame))
         self.initial_position = copy(self.actor.state.pos)
-        logger.debug('initial_position = {}'.format(self.initial_position))
         self.change_value = self.new_position - self.initial_position
-        logger.debug('self.new_position = {}'.format(self.new_position))
-        logger.debug('self.change_value = {}'.format(self.change_value))
         self.previo = copy(self.initial_position)
 
     def __call__(self, frame):
-        logger.debug('__call__({})'.format(frame))
         relative_frame = frame - self.interval.lower_bound
-        logger.debug('relative_frame = {}'.format(relative_frame))
         t = relative_frame / self.num_frames
-        logger.debug('t = {}'.format(t))
         new_position = Vector(
             x = -self.change_value.x * t * (t-2) + self.initial_position.x,
             y = -self.change_value.y * t * (t-2) + self.initial_position.y,
@@ -184,6 +177,48 @@ class Land(MoveAction):
         return { 'pos': delta }
 
 
+class EasingIn(MoveAction):
+    
+    def start(self, frame):
+        self.initial_position = copy(self.actor.state.pos)
+        self.change_value = self.new_position - self.initial_position
+        self.previo = copy(self.initial_position)
 
+    def __call__(self, frame):
+        logger.info('EasingIn {} __call__({})'.format(self.actor, frame))
+        relative_frame = frame - self.interval.lower_bound
+        t = relative_frame / self.num_frames
+        new_position = Vector(
+            x = self.change_value.x * t**3 + self.initial_position.x,
+            y = self.change_value.y * t**3 + self.initial_position.y,
+            )
+        delta = new_position - self.previo
+        self.previo = new_position
+        return { 'pos': delta }
 
+class Swing(MoveAction):
+    
+    def start(self, frame):
+        self.initial_position = copy(self.actor.state.pos)
+        self.change_value = self.new_position - self.initial_position
+        self.previo = copy(self.initial_position)
+
+    def __call__(self, frame):
+        logger.info('EasingIn {} __call__({})'.format(self.actor, frame))
+        relative_frame = frame - self.interval.lower_bound
+        t = relative_frame / (self.num_frames / 2)
+        if t < 1:
+            new_position = Vector(
+                x = self.change_value.x / 2 * t**2 + self.initial_position.x,
+                y = self.change_value.y / 2 * t**2 + self.initial_position.y,
+                )
+        else:
+            t -= 1
+            new_position = Vector(
+                x = -self.change_value.x / 2 * (t * (t-2) -1) + self.initial_position.x,
+                y = -self.change_value.y / 2 * (t * (t-2) -1) + self.initial_position.y,
+                )
+        delta = new_position - self.previo
+        self.previo = new_position
+        return { 'pos': delta }
 

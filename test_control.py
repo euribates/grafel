@@ -14,6 +14,10 @@ import control
 
 from actors import Square
 from actions import Fall, MoveTo
+import logs
+
+logger = logs.create('__name__')
+
 
 class TestBob(unittest.TestCase):
 
@@ -48,13 +52,13 @@ class TestScheduler(unittest.TestCase):
         self.assertEqual(scheduler.next(), 1) # Frame 1
         
         self.assertEqual(charles.pos, (100, 0))
-        self.assertEqual(dorothy.pos, (20, 20))
+        self.assertEqual(dorothy.pos, (0, 0))
 
         self.assertEqual(scheduler.next(), 2) # Frame 2
-        self.assertEqual(dorothy.state.pos, (400, 5))
+        self.assertEqual(dorothy.pos, (20, 20))
 
         self.assertEqual(scheduler.next(), 3) # Frame 3
-        self.assertEqual(dorothy.state.pos, (400, 5))
+        self.assertEqual(dorothy.pos, (40, 40))
 
         #self.assertEqual(int(round(dorothy.pos.x)), 392)
         #self.assertEqual(int(round(dorothy.pos.y)), 12)

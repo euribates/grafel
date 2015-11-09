@@ -12,15 +12,18 @@ import actors
 from vectors import Vector
 from actors import (
     State, Actor, Square, RoundRect, 
-    Circle, Star, Rect,
+    Circle, Star, Rect, Label
     )
-from actions import Action, MoveTo, Blink, Fall, Land
+from actions import (
+    Action, MoveTo, Blink, Fall, Land,
+    EasingIn, Swing
+    )
 import engines
 from control import Scheduler
 
 DEBUG = False
 
-MAX_FRAMES = 150
+MAX_FRAMES = 200
 DEFAULT_FPS = 25 
 
 WIDTH = 1280
@@ -44,41 +47,58 @@ DEBUG = args.debug
 
 sch = Scheduler()
 
-dot = Square('dot', color='red', pos=Vector(100,100), width=3, height=3)
+f1 = Rect('f1', pos=(50, 0), color='brown', width=90, height=25)
+sch.add_action(EasingIn(f1, 0, 150, Vector(50, 700)))
 
-charles = Rect('Charles', pos=(100, 0), color='brown', width=75, height=25)
-sch.add_action(Fall(charles, 0, 40, Vector(100, 300)))
+f2 = Rect('f2', pos=(150, 0), color='white', width=90, height=25)
+sch.add_action(MoveTo(f2, 0, 150, Vector(150, 700)))
 
-dorothy = Square('Dorothy', pos=(200, 0), color='white', side=75)
-sch.add_action(MoveTo(dorothy, 0, 40, Vector(200, 300)))
+f3 = Rect('f3', pos=(250, 0), color='#334588', width=90, height=25)
+sch.add_action(Land(f3, 0, 150, Vector(250, 700)))
 
-evelyn = Square('Evelyn', pos=(300, 0), color='#334588', width=75, height=25)
-sch.add_action(Land(evelyn, 0, 40, Vector(300, 300)))
-
-sch.add_action(MoveTo(charles, 41, 48, charles.initial_state.pos))
-sch.add_action(MoveTo(dorothy, 41, 48, dorothy.initial_state.pos))
-sch.add_action(MoveTo(evelyn, 41, 48, evelyn.initial_state.pos))
+f4 = Rect('f4', pos=(350, 0), color='#f0A371', width=90, height=25)
+sch.add_action(Swing(f4, 0, 150, Vector(350, 700)))
 
 
-albert = Circle('Albert')
-albert.place(480, HEIGHT // 2)
-albert.color = '#A2E3BB'
-sch.add_action(Land(albert, 0, 24, (480, 0)))
-sch.add_action(Fall(albert, 25, 48, (480, HEIGHT // 2)))
-sch.add_action(Land(albert, 49, 74, (480, 0)))
-sch.add_action(Fall(albert, 75, 99, (480, HEIGHT // 2)))
+lbl_fall = Label('Fall', 'Fall', pos=(450,10), color="#333333")
+sch.add_action(Fall(lbl_fall, 0, 50, (450, 400)))
+sch.add_action(EasingIn(lbl_fall, 186, 196, (450, 10)))
 
+lbl_easing_in = Label('easing_in', 'Easing in', pos=(600,10), color="#333333")
+sch.add_action(EasingIn(lbl_easing_in, 0, 50, (600, 400)))
+sch.add_action(EasingIn(lbl_easing_in, 188, 198, (600, 10)))
+
+lbl_swing = Label('swing', 'Swing', pos=(750, 10), color="#333333")
+sch.add_action(Swing(lbl_swing, 0, 50, (750, 400)))
+sch.add_action(EasingIn(lbl_swing, 190, 200, (750, 10)))
+
+
+pelota = Circle('Pelota', pos=(480, 10), color='gold')
+sch.add_action(Fall(pelota, 0, 25, (480, 670)))
+sch.add_action(Land(pelota, 25, 50, (480, 12)))
+sch.add_action(Fall(pelota, 50, 75, (480, 670)))
+sch.add_action(Land(pelota, 75, 100, (480, 10)))
+sch.add_action(Fall(pelota, 100, 125, (480, 670)))
+sch.add_action(Land(pelota, 125, 150, (480, 10)))
+
+sch.add_action(Fall(pelota, 150, 175, (480, 670)))
+sch.add_action(Land(pelota, 175, 200, (480, 10)))
 
 bob = RoundRect('Bob', color='cadetblue', width=60, height=50)
 bob.place(10, 400)
 sch.add_action(Land(bob, 1, 20, Vector(400, 400)))
 sch.add_action(Fall(bob, 21, 40, Vector(10, 400)))
 
-marylin = Star('Marylin', color='red', alpha=0.33)
-sch.add_action(MoveTo(marylin, 0, MAX_FRAMES, (WIDTH, HEIGHT)))
+star = Star('Marylin', color='red', alpha=0.33)
+sch.add_action(Swing(star, 0, 75, (WIDTH, HEIGHT)))
+sch.add_action(Swing(star, 75, 150, (0, 0)))
 
-actors =[albert, bob, charles, dot, dorothy, evelyn, marylin]
-in_stage = [albert, bob, charles, dot, dorothy, evelyn, marylin]
+actors =[ 
+    pelota, bob, f1, f2, f4,
+    f3, star, lbl_fall, 
+    lbl_easing_in, lbl_swing
+    ]
+in_stage = actors[:]
 
 engine = engines.PyGameEngine()
 clock = pygame.time.Clock()
