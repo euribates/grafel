@@ -1,0 +1,29 @@
+Cast:
+
+    r1 = Rect height 10 width 1260 color #EF338A pos 640x720
+
+    bob = Square side 50 color red pos 30x30
+
+    star = Star radius 225 color orange pos 0x200
+    
+    d1 = Dice num 5 pos 50x500 color gold size 100x100
+    
+    d2 = Dice num 2 pos 1050x500 color gold
+
+    circle = Circle radius 120 alpha 0.5 pos 1280x720
+
+    rr = RoundRect width 200 height 20 color #66AA55
+
+    l = Label text "hola, mundo" pos 100x100 color #CCCCCC 
+
+    t = Triangle points (20x20, 50x50, 12x60) pos 640x480 color purple
+
+Actions:
+
+    1-25 Move bob 640x360
+    5-30 Fall d1 50x1280
+    30-100 Move d1 50x500
+    1-100 Fall star 1280x200
+    100-200 Fall star 0x200
+
+
