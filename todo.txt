@@ -1,7 +1,7 @@
 # ToDo List
 
-* Cambiar el par start_draw/draw por draw/draw_sons
-* Normalizar la forma de creación de los actores.
+* Añadir acciones al lenguaje
+* Action Aparecer y desaparecer (FadeIn y FadeOut)
 * Accion "Sigue A" (Ummmm Ni idea de como hacerlo por ahora)
 * Añadir color de borde (Ahora es es mismo que el de la figura)
 * Parser para añadir un objeto a la escena: Un "Hola, mundo"

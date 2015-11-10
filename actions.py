@@ -28,6 +28,21 @@ class Interval:
             self.upper_bound,
             )
 
+    def __repr__(self):
+        return 'Interval({}, {})'.format(
+            self.lower_bound,
+            self.upper_bound,
+            )
+
+    def __eq__(self, op2):
+        if isinstance(op2, tuple):
+            lower_bound, upper_bound = op2
+        else:
+            lower_bound = op2.lower_bound
+            upper_bound = op2.upper_bound
+        return self.lower_bound == lower_bound and  \
+               self.upper_bound == upper_bound
+
     def __len__(self):
         return self.upper_bound - self.lower_bound + 1
 
@@ -221,4 +236,25 @@ class Swing(MoveAction):
         delta = new_position - self.previo
         self.previo = new_position
         return { 'pos': delta }
+
+class Timer(Action):
+
+    FPS = 25
+
+    def start(self, frame):
+        logger.error('Timer.start on {} called'.format(self.actor))
+        self.actor.text = '00:00.00'
+
+    def __call__(self, frame):
+        logger.error('Timer.call({}) on {} called'.format(
+            frame, 
+            self.actor,
+            ))
+        fps = Timer.FPS
+        self.actor.text = '{mins:02d}:{secs:02d}.{frac:02d}'.format(
+            mins = frame // (60*Timer.FPS),  # 60 s/frame * 25 frame/s
+            secs = frame // Timer.FPS,
+            frac = frame % Timer.FPS,
+            )
+        
 

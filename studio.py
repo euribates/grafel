@@ -18,37 +18,31 @@ from vectors import Vector
 
 import svgwrite
 import pygame
-import logging
+import logs
 
-
-
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
-ch = logging.StreamHandler(stream=sys.stderr)
-ch.setLevel(logging.DEBUG)
-ch.setFormatter(logging.Formatter(
-    '%(asctime)s %(name)s %(levelname)s %(message)s'
-    ))
-logger.addHandler(ch)
-
+logger = logs.create(__name__)
 
 class Stage:
 
     DEFAULT_NUM_FRAMES = 150
     DEFAULT_FPS = 25
-    DEFAULT_SIZE = (1024, 760)
+    DEFAULT_SIZE = (1280, 720)
     DEFAULT_BACKGROUND = Color('black')
     DEFAULT_FOREGROUND = Color('white')
 
     def __init__(self, engine, **kwargs):
         self.engine = engine
-        self.num_frames = kwargs.pop('num_frames', Stage.DEFAULT_NUM_FRAMES)
-        self.fps = kwargs.pop('fps', Stage.DEFAULT_FPS)
+        self.num_frames = (
+            kwargs.pop('num_frames', Stage.DEFAULT_NUM_FRAMES) or
+            Stage.DEFAULT_NUM_FRAMES
+            )
+        self.fps = kwargs.pop('fps', Stage.DEFAULT_FPS) or Stage.DEFAULT_FPS
         self.width, self.height = kwargs.pop('size', Stage.DEFAULT_SIZE)
         self.background = kwargs.pop('background', Stage.DEFAULT_BACKGROUND)
         self.foreground = kwargs.pop('foreground', Stage.DEFAULT_FOREGROUND)
         self.size = Vector(self.width, self.height)
         self.center = self.size / 2
+        logger.error('stage center at {}'.format(self.center))
         self.top_right = Vector(self.width, 0)
         self.top_left = Vector(0, 0)
         self.bottom_right = Vector(self.width, self.height)
@@ -61,11 +55,13 @@ class Stage:
         if on_stage:
             self.on_stage.append(actor)
 
+    def add_actors(self, *args):
+        self.actors.extend(args)
+        self.on_stage.extend(args)
+
     def draw(self, frame):
-        self.engine.clear(frame)
         for actor in self.on_stage:
             actor.start_draw(self.engine)
-        self.engine.end()
 
 
 

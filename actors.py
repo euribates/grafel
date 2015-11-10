@@ -83,6 +83,7 @@ class Actor():
         self.parent = None
         self.initial_state = State(**kwargs)
         self.reset()
+        self.debug = False
 
     def reset(self):
         self.frame = 0
@@ -130,10 +131,11 @@ class Actor():
         self.sons.append(actor)
 
     def __repr__(self):
-        return '{}("{}", {})'.format(
+        return '{}("{}", pos={}, color="{}")'.format(
             self.__class__.__name__,
             self.name,
-            repr(self.state),
+            self.pos,
+            self.color,
             )
 
     def __str__(self):
@@ -188,6 +190,15 @@ class Rect(Actor):
         self.height = height
         self.size = (self.width, self.height)
 
+    def __str__(self):
+        return 'Rect {} at {} [width={} heigth={}]'.format(
+            self.name,
+            self.pos,
+            self.width,
+            self.height,
+            )
+
+
     def draw(self, engine):
         pos = self.pos + self.get_offset()
         x = pos.x - self.width / 2
@@ -230,13 +241,15 @@ class Polygon(Actor):
             )
 
 class Triangle(Polygon):
-    def __init__(self, name, a, b, c, **kwargs):
-        if isinstance(a, tuple):
-            a = Vector(a[0], a[1])
-        if isinstance(b, tuple):
-            b = Vector(b[0], b[1])
-        if isinstance(c, tuple):
-            c = Vector(c[0], c[1])
+    def __init__(self, name, points=None, **kwargs):
+        if not points:
+            a = Vector(0, 0)
+            b = Vector(50, 25)
+            c = Vector(-50, 25)
+        else:
+            a = points[0]
+            b = points[1] 
+            c = points[2]
         super().__init__(name, points=[b-a, c-b], **kwargs)    
 
 class Star(Polygon):
@@ -261,10 +274,10 @@ class RoundRect(Actor):
         self.width = int(width) if width > 20 else 20
         self.height = int(height) if height > 20 else 20
         self.size = Vector(self.width, self.height)
-        if 'border_radius' in kwargs:
-            self.border_radius = kwargs['border_radius'] 
+        if 'radius' in kwargs:
+            self.radius = kwargs['radius'] 
         else:
-            self.border_radius = int(round(min(self.width, self.height) // 12))
+            self.radius = int(round(min(self.width, self.height) // 12))
 
     def draw(self, engine):
         pos = self.pos + self.get_offset()
@@ -272,7 +285,7 @@ class RoundRect(Actor):
         y = pos.y - self.height / 2
         engine.roundrect(
             x, y, self.width, self.height, 
-            self.border_radius,
+            self.radius,
             color=self.color,
             alpha=self.alpha,
             )
@@ -282,6 +295,13 @@ class RoundRect(Actor):
 
 
 class Dice(RoundRect):
+
+    def __str__(self):
+        return 'Dice {} at {} [num:{}]'.format(
+            self.name,
+            self.pos,
+            self.num,
+            )
 
     def __init__(self, name, num=1, side=50, **kwargs):
         super().__init__(name, width=side, height=side, **kwargs)
@@ -337,7 +357,7 @@ class Dice(RoundRect):
 class Text(Actor):
     
     def __init__(self, name, text='', **kwargs):
-        self.text = text or self.name
+        self.text = text or name
         self.font_size = kwargs.pop('fontsize', 32)
         scale = 90/72.  # 90dpi / 72 points in one inch
         self.height = self.font_size * scale
@@ -352,8 +372,9 @@ class Text(Actor):
         pos = self.pos + self.get_offset()
         x = pos.x
         y = pos.y
-        engine.line(x-30, y, x+30, y, color='gold')
-        engine.line(x, y-30, x, y+30, color='gold')
+        if self.debug:
+            engine.line(x-30, y, x+30, y, color='gold')
+            engine.line(x, y-30, x, y+30, color='gold')
         engine.text(x, y, self.text,
             color=self.color,
             alpha=self.alpha,
@@ -363,44 +384,51 @@ class Text(Actor):
 class Label(RoundRect):
     
     def __init__(self, name, text='', **kwargs):
-        self.text = text or self.name
+        width = kwargs.pop('width', None)
         color = kwargs.pop('color', white)
         if isinstance(color, six.string_types):
             color = colors.Color(color)
-        txt = Text(
+        background = kwargs.pop('background', None)
+        if isinstance(background, six.string_types):
+            background = colors.Color(background)
+        if not background:
+            background = color.inverse()
+        self._text = Text(
             '{}.text'.format(name),
             text,
             color=color,
             pos=(0, 0) 
             )
-        if six.PY2:
-            sup = super(Label, self)
-        else:
-            sup = super()
+        
+        sup = super(Label, self) if six.PY2 else super()
         sup.__init__(name, 
-            width=txt.width,
-            height=txt.height,
+            width=width or self._text.width,
+            height=self._text.height,
             color=color.inverse(),
             **kwargs
             )
-        self.add_son(txt)
+        self.add_son(self._text)
+
+    def set_text(self, text):
+        self._text.text = text
+
+    def get_text(self):
+        return self._text.text
+
+    text = property(get_text, set_text)
+
    
 
-def create_actor(name, rol, **kwargs):
-    print('create_actor({}, {}, {})'.format(
-        name, rol, kwargs))
-    state = State()
-    state.pos = kwargs.pop('pos', state.pos)
-    state.color = kwargs.pop('color', state.color)
-    state.scale = kwargs.pop('scale', state.scale)
-    state.alpha = kwargs.pop('alpha', state.alpha)
-    
-    print('state', state)
-    print('rest_of_options', rest_of_options) 
-    if rol == 'Square':
-        return Square(name, state, **rest_of_options)
-    elif rol == 'Star':
-        return Star(name, state, **rest_of_options)
+def create_actor(name, role, **kwargs):
+    import actors
+    buff = ['called create_actor({}, {}'.format(name, role)]
+    for k in kwargs:
+        buff.append(', {}={}'.format(k, repr(kwargs[k])))
+    buff.append(')')
+    logger.info(''.join(buff))
+    _Klass = getattr(actors, role)
+    return _Klass(name, **kwargs)
+
 
 
 

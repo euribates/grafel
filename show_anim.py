@@ -12,18 +12,19 @@ import actors
 from vectors import Vector
 from actors import (
     State, Actor, Square, RoundRect, 
-    Circle, Star, Rect, Label
+    Circle, Star, Rect, Label,
     )
 from actions import (
     Action, MoveTo, Blink, Fall, Land,
-    EasingIn, Swing
+    EasingIn, Swing,
+    Timer,
     )
 import engines
 from control import Scheduler
 
 DEBUG = False
 
-MAX_FRAMES = 200
+MAX_FRAMES = 200 
 DEFAULT_FPS = 25 
 
 WIDTH = 1280
@@ -90,16 +91,25 @@ sch.add_action(Land(bob, 1, 20, Vector(400, 400)))
 sch.add_action(Fall(bob, 21, 40, Vector(10, 400)))
 
 star = Star('Marylin', color='red', alpha=0.33)
-sch.add_action(Swing(star, 0, 75, (WIDTH, HEIGHT)))
-sch.add_action(Swing(star, 75, 150, (0, 0)))
+sch.add_action(Swing(star, 0, 100, (WIDTH, HEIGHT)))
+sch.add_action(Swing(star, 100, 200, (0, 0)))
 
 actors =[ 
     pelota, bob, f1, f2, f4,
     f3, star, lbl_fall, 
     lbl_easing_in, lbl_swing
     ]
-in_stage = actors[:]
 
+lbl_clock = Label('clock', '00:00.00',
+    pos=(1120, 670),
+    color="#CFCFCF",
+    alpha=0.5,
+    )
+sch.add_action(Timer(lbl_clock, 0, 200))
+
+actors.append(lbl_clock)
+
+in_stage = actors[:]
 engine = engines.PyGameEngine()
 clock = pygame.time.Clock()
 frame = 0

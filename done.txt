@@ -1,5 +1,9 @@
 # Done list
 
+* Normalizar la forma de creación de los actores
+* Las etiquetas admiten ahora un parámetro `with`, si no se indica
+  se usa la estimación 
+* Nueva Action Timer (Para etiquetas/texto solo)
 * Nuevo Actor Etiqueta (box + txt) 
 * Nuevo Actor Texto
 * Normalizar posicion de los actores (Centro)
