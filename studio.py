@@ -13,6 +13,7 @@ from six.moves import reduce
 
 import sys
 
+from actors import Level
 from colors import Color
 from vectors import Vector
 
@@ -42,26 +43,32 @@ class Stage:
         self.foreground = kwargs.pop('foreground', Stage.DEFAULT_FOREGROUND)
         self.size = Vector(self.width, self.height)
         self.center = self.size / 2
-        logger.error('stage center at {}'.format(self.center))
         self.top_right = Vector(self.width, 0)
         self.top_left = Vector(0, 0)
         self.bottom_right = Vector(self.width, self.height)
         self.bottom_left = Vector(0, self.height)
         self.actors = []
-        self.on_stage = []
 
     def add_actor(self, actor, on_stage=True):
         self.actors.append(actor)
-        if on_stage:
-            self.on_stage.append(actor)
 
     def add_actors(self, *args):
         self.actors.extend(args)
-        self.on_stage.extend(args)
 
     def draw(self, frame):
-        for actor in self.on_stage:
+        self.engine.clear(frame)
+        actives = [_ for _ in self.actors if _.level > Level.OFF_STAGE] 
+        background = [_ for _ in actives if _.level == Level.ON_BACKGROUND]
+        for actor in background:
             actor.start_draw(self.engine)
+        on_stage = [_ for _ in actives if _.level == Level.ON_STAGE]
+        for actor in on_stage:
+            actor.start_draw(self.engine)
+        foreground = [_ for _ in actives if _.level == Level.ON_FOREGROUND]
+        for actor in foreground:
+            actor.start_draw(self.engine)
+        self.engine.end()
+
 
 
 

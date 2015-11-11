@@ -27,24 +27,51 @@ Cast:
 
 logger = logs.create(__name__)
 
+class TestInterval(unittest.TestCase):
+    def test_number_minus_number(self):
+        from language import Interval
+        l = Interval.parseString('23-45')
+        self.assertEqual(l[0], actions.Interval(23, 45))
+
+    def test_number_plus_number(self):
+        from language import Interval
+        l = Interval.parseString('23+45')
+        self.assertEqual(l[0], actions.Interval(23, 68))
+
+    def test_single_number(self):
+        from language import Interval
+        l = Interval.parseString('23')
+        self.assertEqual(l[0], actions.Interval(23, 24))
+
 class TestActionLine(unittest.TestCase):
+
+
+    def test_action_foreground(self):
+        from language import ActionLine 
+        l = ActionLine.parseString('0-1 bob Foreground')
+        t = l[0]
+        self.assertEqual(t[0], actions.Interval(0, 1))
+        self.assertEqual(t[1], 'bob')
+        self.assertEqual(t[2], 'Foreground')
+#        for i,_ in enumerate(t):
+#            logger.error('{}) {}'.format(i, _))
 
     def test_action_move(self):
         from language import ActionLine 
-        l = ActionLine.parseString('1-23 Move bob 50x50')
+        l = ActionLine.parseString('1-23 bob Move 50x50')
         t = l[0]
         self.assertEqual(t[0], actions.Interval(1, 23))
-        self.assertEqual(t[1], 'Move')
-        self.assertEqual(t[2], 'bob')
+        self.assertEqual(t[1], 'bob')
+        self.assertEqual(t[2], 'Move')
         self.assertEqual(t[3], Vector(50, 50))
 
     def test_action_move_relative_interval(self):
         from language import ActionLine 
-        l = ActionLine.parseString('10+20 Move bob 50x50')
+        l = ActionLine.parseString('10+20 bob Move 50x50')
         t = l[0]
         self.assertEqual(t[0], actions.Interval(10, 30))
-        self.assertEqual(t[1], 'Move')
-        self.assertEqual(t[2], 'bob')
+        self.assertEqual(t[1], 'bob')
+        self.assertEqual(t[2], 'Move')
         self.assertEqual(t[3], Vector(50, 50))
 
 class TestCastLine(unittest.TestCase):

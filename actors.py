@@ -17,7 +17,7 @@ from vectors import Vector, origin, zero
 import colors
 from colors import Color, black, white
 import logs
-
+from enum import IntEnum
 
 logger = logs.create(__name__)
 
@@ -75,7 +75,14 @@ class State:
         if alpha is not None:
             self.alpha = alpha
 
+class Level(IntEnum):
+    OFF_STAGE = 0
+    ON_BACKGROUND = 1
+    ON_STAGE = 2
+    ON_FOREGROUND = 3
+
 class Actor():
+
     
     def __init__(self, name, **kwargs):
         self.name = name 
@@ -84,6 +91,7 @@ class Actor():
         self.initial_state = State(**kwargs)
         self.reset()
         self.debug = False
+        self.level = Level.ON_STAGE if 'pos' in kwargs else Level.OFF_STAGE
 
     def reset(self):
         self.frame = 0
@@ -148,6 +156,7 @@ class Actor():
     def place(self, x, y):
         self.pos = Vector(x, y)
         self.initial_state.pos = Vector(x, y)
+        self.level = Level.ON_STAGE
 
     def start_draw(self, engine):
         self.draw(engine)
@@ -248,8 +257,14 @@ class Triangle(Polygon):
             c = Vector(-50, 25)
         else:
             a = points[0]
+            if isinstance(a, tuple):
+                a = Vector(*a)
             b = points[1] 
+            if isinstance(b, tuple):
+                b = Vector(*b)
             c = points[2]
+            if isinstance(c, tuple):
+                c = Vector(*c)
         super().__init__(name, points=[b-a, c-b], **kwargs)    
 
 class Star(Polygon):
@@ -384,6 +399,7 @@ class Text(Actor):
 class Label(RoundRect):
     
     def __init__(self, name, text='', **kwargs):
+        height = kwargs.pop('height', None)
         width = kwargs.pop('width', None)
         color = kwargs.pop('color', white)
         if isinstance(color, six.string_types):
@@ -403,7 +419,7 @@ class Label(RoundRect):
         sup = super(Label, self) if six.PY2 else super()
         sup.__init__(name, 
             width=width or self._text.width,
-            height=self._text.height,
+            height=height or self._text.height,
             color=color.inverse(),
             **kwargs
             )

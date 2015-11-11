@@ -14,11 +14,21 @@ import random
 
 from vectors import Vector
 import actors
-from actors import State, Actor, Square, Star
+from actors import Level, State, Actor, Square, Star
 from colors import Color
 import logs
 
 logger = logs.create(__name__)
+
+class TestLevel(unittest.TestCase):
+
+    def test_creating_an_actor_without_pos_put_it_off_stage(self):
+        a = Square('a', side=80)
+        self.assertEqual(a.level, Level.OFF_STAGE)
+
+    def test_creating_an_actor_with_pos_put_it_on_stage(self):
+        a = Square('a', side=80, pos=(50, 100))
+        self.assertEqual(a.level, Level.ON_STAGE)
 
 class TestState(unittest.TestCase):
 
@@ -74,7 +84,7 @@ class TestActorCenter(unittest.TestCase):
 
     def get_engine(self):
         from engines import PyGameEngine, SVGEngine
-        return SVGEngine(output_dir='./tmp')
+        #return SVGEngine(output_dir='./tmp')
         return  PyGameEngine()
 
     def test_all(self):
@@ -113,7 +123,7 @@ class TestActorCenter(unittest.TestCase):
         p.spot_center(engine)
 
         # triangle
-        t = actors.Triangle('triangle', (0,-25), (50, 0), (0, 25))
+        t = actors.Triangle('triangle', points=[(0,-25), (50, 0), (0, 25)])
         t.place(350, 50)
         t.draw(engine)
         t.spot_center(engine)
@@ -156,7 +166,7 @@ class TestActorCenter(unittest.TestCase):
 
 
         engine.end()
-        time.sleep(4.5)
+        time.sleep(1)
 
 class TestActor(unittest.TestCase):
 

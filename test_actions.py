@@ -13,13 +13,13 @@ import math
 import logging
 import unittest
 
+import logs
 from vectors import Vector
 from actors import Actor, Square, State
 from actions import Action, MoveTo, Blink, Fall, Interval
 from control import Scheduler
 
-logger = logging.getLogger('test_actions')
-logger.setLevel(logging.WARNING) 
+logger = logs.create(__name__)
 
 class TestIntervalo(unittest.TestCase):
 
@@ -207,6 +207,39 @@ class TestEasing(unittest.TestCase):
             engine.clear(frame)
             for a in (move, fall, land, ease_in, ease_out, swing):
                 a.start_draw(engine)
+            engine.end()
+            sch.next()
+
+class TestLevel(unittest.TestCase):
+
+    def test(self):
+        from studio import Stage
+        from actors import Label, Text, Rect
+        from actions import Enter, Exit, Background, Foreground, Timer
+        from control import Scheduler
+        from engines import PyGameEngine
+
+        logger.error('Empezamos')
+        t = Text('timer', pos=(1000, 700), color='navy')
+        e1 = Label('e1', text='Enter on 75', width=190, color='gold')
+        bg = Rect('bg', width=30, height=600, pos=(620, 320), color='orange')
+        fg = Rect('fg', width=30, height=600, pos=(660, 320), color='navy')
+        e = Label('exit', text="I'll go on 2s", pos=(200, 200))
+
+        logger.error('e1.level: {}'.format(e1.level))
+        sch = Scheduler()
+        sch.add_action(Timer(t, 0, 150))
+        sch.add_action(Enter(e1, 75, 76, (640, 320)))
+        sch.add_action(Background(bg, 100, 101))
+        sch.add_action(Foreground(fg, 125, 126))
+        sch.add_action(Exit(e, 50, 51))
+        
+        engine = PyGameEngine()
+        studio = Stage(engine)
+        studio.add_actors(t, fg, e, e1, bg)
+        for frame in range(150):
+            engine.clear(frame)
+            studio.draw(frame)
             engine.end()
             sch.next()
 

@@ -20,10 +20,10 @@ Cast:
 
 Actions:
 
-    1-25 Move bob 640x360
-    5-30 Fall d1 50x1280
-    30-100 Move d1 50x500
-    1-100 Fall star 1280x200
-    100-200 Fall star 0x200
+    1-25    bob Move 640x360
+    5-30    d1 Fall 50x1280
+    30-100  d1 Move 50x500
+    1-100   star Fall 1280x200
+    100-200 star Fall 0x200
 
 

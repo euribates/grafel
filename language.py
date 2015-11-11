@@ -40,13 +40,19 @@ def dump(s, loc, toks):
     logger.error('dumo toks: {}'.format(toks))
 
 def create_interval(s, loc, toks):
-    left, sign, right = tuple(toks[0])
-    left = int(left)
-    right = int(right)
-    if sign == '-':
-        return actions.Interval(left, right)
-    else:
-        return actions.Interval(left, left+right)
+    # dump(s, loc, toks)
+    t = tuple(toks[0])
+    if len(t) == 3:
+        left, sign, right = t
+        left = int(left)
+        right = int(right)
+        if sign == '-':
+            return actions.Interval(left, right)
+        else:
+            return actions.Interval(left, left+right)
+    elif len(t) == 1:
+        n = int(t[0])
+        return actions.Interval(n, n+1)
 
 
 
@@ -126,11 +132,22 @@ castline = (
     )
 Cast = Keyword('Cast') + colon + OneOrMore(castline)('castlines')
 
-Interval = Group(number + oneOf('- +') + number)
-Verb = oneOf('Move Fall Land')
-Delta = vector
+Interval = Group(number + oneOf('- +') + number) | Group(number)
 
-ActionLine = Group(Interval + Verb + Identifier + Delta)
+Action = (
+      Keyword("Move") + vector
+    | Keyword("Fall") + vector
+    | Keyword("Land") + vector
+    | Keyword("Easein") + vector
+    | Keyword("Easeout") + vector
+    | Keyword("Swing") + vector
+    | Keyword("Enter") + vector
+    | Keyword("Exit")
+    | Keyword("Background")
+    | Keyword("Foreground")
+    )
+
+ActionLine = Group(Interval + Identifier + Action)
 
 Actions = Keyword('Actions') + colon + OneOrMore(ActionLine)('action_lines')
 

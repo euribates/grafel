@@ -121,7 +121,6 @@ class SVGEngine(BaseEngine):
             ))
 
     def polygon(self, x, y, rpoints, color=white, alpha=1.0):
-        super().polygon(x, y, rpoints, color, alpha)
         points = [(x,y)]
         for p in rpoints:
             x += p[0]

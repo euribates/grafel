@@ -9,7 +9,7 @@ import sys
 from copy import copy
 import logs
 from vectors import Vector
-
+from actors import Level
 logger = logs.create(__name__)
 
 
@@ -103,6 +103,9 @@ class Action:
             ))
 
 
+
+
+
 class Blink(Action):
     
     def start(self, frame):
@@ -122,6 +125,24 @@ class MoveAction(Action):
         if isinstance(self.new_position, tuple):
             x, y = self.new_position
             self.new_position = Vector(x, y)
+
+
+class Exit(Action):
+    def start(self, frame):
+        self.actor.level = Level.OFF_STAGE
+
+class Enter(MoveAction):
+    def start(self, frame):
+        self.actor.pos = self.new_position
+        self.actor.level = Level.ON_STAGE
+
+class Background(Action):
+    def start(self, frame):
+        self.actor.level = Level.ON_BACKGROUND
+
+class Foreground(Action):
+    def start(self, frame):
+        self.actor.level = Level.ON_FOREGROUND
 
 
 class MoveTo(MoveAction):
@@ -264,11 +285,11 @@ class Timer(Action):
     FPS = 25
 
     def start(self, frame):
-        logger.error('Timer.start on {} called'.format(self.actor))
+        logger.info('Timer.start on {} called'.format(self.actor))
         self.actor.text = '00:00.00'
 
     def __call__(self, frame):
-        logger.error('Timer.call({}) on {} called'.format(
+        logger.info('Timer.call({}) on {} called'.format(
             frame, 
             self.actor,
             ))
