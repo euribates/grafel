@@ -18,6 +18,7 @@ import colors
 from colors import Color, black, white
 import logs
 from enum import IntEnum
+import fileutils
 
 logger = logs.create(__name__)
 
@@ -172,9 +173,11 @@ class Actor():
 
     def spot_center(self, engine):
         pos = self.get_offset() + self.pos
-        engine.line(pos.x, pos.y-5, pos.x, pos.y+5, color='red')
-        engine.line(pos.x-5, pos.y, pos.x+5, pos.y, color='red')
-        engine.circle(pos.x, pos.y, 3, color='red')
+        engine.line(pos.x, pos.y-15, pos.x, pos.y+15, color='red')
+        engine.line(pos.x-15, pos.y, pos.x+15, pos.y, color='red')
+        engine.polygon(pos.x, pos.y-5, [
+            (5, 5), (-5, 5), (-5, -5)
+            ], alpha=0.5)
 
 class Square(Actor):
 
@@ -382,6 +385,13 @@ class Text(Actor):
         else:
             super().__init__(name, **kwargs)
 
+    def __str__(self):
+        return 'Actor {} as Text [text:"{}"|font_size:{}]'.format(
+            self.name,
+            self.text,
+            self.font_size,
+            )
+
     def draw(self, engine):
         logger.info('Text {} draw method called'.format(self.name))
         pos = self.pos + self.get_offset()
@@ -393,12 +403,24 @@ class Text(Actor):
         engine.text(x, y, self.text,
             color=self.color,
             alpha=self.alpha,
+            font_size=self.font_size,
             )
 
+class Bitmap(Actor):
+
+    def __init__(self, name, filename, **kwargs):
+        sup = super(Label, self) if six.PY2 else super()
+        sup.__init__(name, **kwargs)
+        self.width, self.height = fileutils.get_image_size(filename)
+        self.filename = filename
+
+    def draw(self, engine):
+        engine.bitmap(self.pos.x, self.pos.y, self.filename)
 
 class Label(RoundRect):
     
     def __init__(self, name, text='', **kwargs):
+        self.font_size = kwargs.pop('fontsize', 32)
         height = kwargs.pop('height', None)
         width = kwargs.pop('width', None)
         color = kwargs.pop('color', white)
@@ -413,7 +435,8 @@ class Label(RoundRect):
             '{}.text'.format(name),
             text,
             color=color,
-            pos=(0, 0) 
+            fontsize=self.font_size, 
+            pos=(0, 0),
             )
         
         sup = super(Label, self) if six.PY2 else super()
@@ -441,7 +464,7 @@ def create_actor(name, role, **kwargs):
     for k in kwargs:
         buff.append(', {}={}'.format(k, repr(kwargs[k])))
     buff.append(')')
-    logger.info(''.join(buff))
+    logger.error(''.join(buff))
     _Klass = getattr(actors, role)
     return _Klass(name, **kwargs)
 

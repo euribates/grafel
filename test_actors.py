@@ -95,6 +95,7 @@ class TestActorCenter(unittest.TestCase):
         engine = self.get_engine()
         engine.clear(0)
         engine.grid() 
+
         # Square
         sq = actors.Square('square', pos=(50, 50))
         sq.draw(engine)
@@ -164,6 +165,9 @@ class TestActorCenter(unittest.TestCase):
         lbl.start_draw(engine)
         lbl.spot_center(engine)
 
+        mf = actors.Bitmap('mf', 'mf.png', pos=(300, 400))
+        mf.draw(engine)
+        mf.spot_center(engine)
 
         engine.end()
         time.sleep(1)

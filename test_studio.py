@@ -15,7 +15,7 @@ import vectors
 from vectors import Vector, origin, zero
 from studio import Stage
 from engines import BaseEngine, SVGEngine, PyGameEngine
-from actors import Actor, Square, Star, Dice, Text, Label
+from actors import Actor, Square, Star, Dice, Text, Label, Bitmap
 from actions import MoveTo, Land, Fall, Swing
 from colors import Color
 from control import Scheduler
@@ -61,7 +61,7 @@ class TestPyGameEngine(unittest.TestCase):
 
     def test_create_sequence(self):
         s = Stage(PyGameEngine(), num_frames=100)
-        star = Star('star', color='red', pos=(0, 0))
+        star = Star('star', color='gold', pos=(1280, 720), radius=20)
         s.add_actor(star)
 
         bob = Square('bob', pos=(0, s.height // 2))
@@ -70,8 +70,12 @@ class TestPyGameEngine(unittest.TestCase):
         dice = Dice('D1', pos=(400, 400))
         s.add_actor(dice)
 
+        mf = Bitmap('mf', 'mf.png', pos=(200, 200))
+        s.add_actor(mf)
+
         sch = Scheduler()
-        sch.add_action(MoveTo(star, 0, 100, s.bottom_right))
+        sch.add_action(MoveTo(star, 0, 100, (0,0)))
+        sch.add_action(Swing(mf, 0, 100, (1080,520)))
         sch.add_action(Land(bob, 0, 100, Vector(s.width, s.height//2)))
 
         for frame in range(0, 100):

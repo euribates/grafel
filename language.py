@@ -103,17 +103,19 @@ number = Word(nums)
 vector = number + Literal('x') + number
 
 colorcode = Regex('#[0-9a-f]{6}', re.IGNORECASE) \
-    | oneOf("black white red blue green yellow gold silver purple orange") 
+    | oneOf("black white red blue green yellow gold silver gray purple orange") 
 
 attr = (
     Keyword("size") + vector
     | Keyword("pos") + vector
     | Keyword('num') + oneOf("1 2 3 4 5 6").setParseAction(lambda l: int(l[0]))
     | Keyword('side') + number
+    | Keyword('fontsize') + number 
     | Keyword('radius') + number
     | Keyword('width') + number
     | Keyword('height') + number
     | Keyword('text') + quotedString.setParseAction(remove_quotes)
+    | Keyword('filename') + quotedString.setParseAction(remove_quotes)
     | Keyword('alpha') + alpha
     | Keyword('points') + LPAR
                         + Group(delimitedList(vector))('points')
@@ -123,7 +125,7 @@ attr = (
 
 attrs = ZeroOrMore(attr)
 Identifier = Word(alphas, alphanums)
-role = oneOf('Square Rect RoundRect Star Dice Label Text Circle Triangle')
+role = oneOf('Square Rect RoundRect Star Dice Label Text Circle Triangle Bitmap')
 castline = (
     Identifier('name')
     + Suppress('=')
@@ -138,8 +140,8 @@ Action = (
       Keyword("Move") + vector
     | Keyword("Fall") + vector
     | Keyword("Land") + vector
-    | Keyword("Easein") + vector
-    | Keyword("Easeout") + vector
+    | Keyword("EaseIn") + vector
+    | Keyword("EaseOut") + vector
     | Keyword("Swing") + vector
     | Keyword("Enter") + vector
     | Keyword("Exit")

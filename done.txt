@@ -1,5 +1,6 @@
 # Done list
 
+* Añadir actor Bitmap
 * Niveles en el escenario: Background, main y foreground
 * Añadir profundidad (Background, normal, Foreground, OffStage)
 * Añadir parámetro height a actor Label

@@ -20,13 +20,9 @@ import vectors
 import svgwrite
 import pygame
 import logs
-import functools
+import fileutils
 
 logger = logs.create(__name__)
-
-@functools.lru_cache(maxsize=None)
-def get_image_size(filename):
-    return Image.open(filename).size
 
 class BaseEngine:
 
@@ -120,7 +116,7 @@ class SVGEngine(BaseEngine):
 
 
     def bitmap(self, x, y, filename):
-        (w, h) = get_image_size(filename)
+        (w, h) = fileutils.get_image_size(filename)
         target_name = os.path.join(self.output_dir, filename)
         if not os.path.exists(target_name):
             shutil.copyfile(filename, target_name)
@@ -128,8 +124,9 @@ class SVGEngine(BaseEngine):
             filename,
             insert = (x - w / 2, y - h /2),
             ))
-        self.line(x-10, y, x+10, y)
-        self.line(x, y-10, x, y+10)
+        if self.debug:
+            self.line(x-10, y, x+10, y)
+            self.line(x, y-10, x, y+10)
 
     def circle(self, x, y, r, color=white, alpha=1.0):
         self.dwg.add(self.dwg.circle(
@@ -245,9 +242,9 @@ class PyGameEngine(BaseEngine):
             for v in points:
                 pygame.draw.circle(scr, (255, 0, 0), v, 3, 0)
 
-    def text(self, x, y, text, color=white, alpha=1.0):
+    def text(self, x, y, text, color=white, alpha=1.0, font_size=32):
         #f = pygame.font.SysFont('Helvetica,arial', 32, bold=False, italic=False)
-        f = pygame.font.SysFont('Delicious', 32, bold=False, italic=False)
+        f = pygame.font.SysFont('Delicious', font_size, bold=False, italic=False)
         s = f.render(text, True, color.as_rgb())
         rect = s.get_rect()
         rect.center = (x, y)
@@ -258,8 +255,9 @@ class PyGameEngine(BaseEngine):
         rect = img.get_rect()
         rect.center = (x, y)
         self.screen.blit(img, rect)
-        self.line(x-10, y, x+10, y)
-        self.line(x, y-10, x, y+10)
+        if self.debug:
+            self.line(x-20, y, x+20, y)
+            self.line(x, y-20, x, y+20)
 
     def end(self):
         pygame.display.flip()
