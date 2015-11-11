@@ -192,7 +192,7 @@ class Land(MoveAction):
         return { 'pos': delta }
 
 
-class EasingIn(MoveAction):
+class EaseIn(MoveAction):
     
     def start(self, frame):
         self.initial_position = copy(self.actor.state.pos)
@@ -211,6 +211,28 @@ class EasingIn(MoveAction):
         self.previo = new_position
         return { 'pos': delta }
 
+class EaseOut(MoveAction):
+    
+    def start(self, frame):
+        self.initial_position = copy(self.actor.state.pos)
+        self.change_value = self.new_position - self.initial_position
+        self.previo = copy(self.initial_position)
+
+    def __call__(self, frame):
+        logger.info('EasingIn {} __call__({})'.format(self.actor, frame))
+        relative_frame = frame - self.interval.lower_bound
+        t = relative_frame / self.num_frames
+        t -= 1
+        new_position = Vector(
+            x = self.change_value.x * (t**3 + 1) + self.initial_position.x,
+            y = self.change_value.y * (t**3 + 1) + self.initial_position.y,
+            )
+        delta = new_position - self.previo
+        self.previo = new_position
+        return { 'pos': delta }
+
+
+
 class Swing(MoveAction):
     
     def start(self, frame):
@@ -224,14 +246,14 @@ class Swing(MoveAction):
         t = relative_frame / (self.num_frames / 2)
         if t < 1:
             new_position = Vector(
-                x = self.change_value.x / 2 * t**2 + self.initial_position.x,
-                y = self.change_value.y / 2 * t**2 + self.initial_position.y,
+                x = self.change_value.x / 2 * t**3 + self.initial_position.x,
+                y = self.change_value.y / 2 * t**3 + self.initial_position.y,
                 )
         else:
-            t -= 1
+            t -= 2
             new_position = Vector(
-                x = -self.change_value.x / 2 * (t * (t-2) -1) + self.initial_position.x,
-                y = -self.change_value.y / 2 * (t * (t-2) -1) + self.initial_position.y,
+                x = self.change_value.x / 2 * (t**3 + 2) + self.initial_position.x,
+                y = self.change_value.y / 2 * (t**3 + 2) + self.initial_position.y,
                 )
         delta = new_position - self.previo
         self.previo = new_position

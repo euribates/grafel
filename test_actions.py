@@ -181,6 +181,37 @@ class TestFall(unittest.TestCase):
         self.assertEqual(a(5), {'pos': Vector(36, 0)})
         a.end(5)
 
+class TestEasing(unittest.TestCase):
+
+    def test(self):
+        from actors import Label
+        from actions import MoveTo, Fall, Land, EaseIn, EaseOut, Swing
+        from control import Scheduler
+        from engines import PyGameEngine
+
+        move = Label('Move', width=190, pos=(100,30), color='gold')
+        fall = Label('Fall', width=190, pos=(300,30), color='gold')
+        land = Label('Land', width=190, pos=(500,30), color='gold')
+        ease_in = Label('EaseIn', width=190, pos=(700,30), color='gold')
+        ease_out = Label('EaseOut', width=190, pos=(900,30), color='gold')
+        swing = Label('Swing', width=190, pos=(1100,30), color='gold')
+        sch = Scheduler()
+        sch.add_action(MoveTo(move, 0, 100, (100, 700)))
+        sch.add_action(Fall(fall, 0, 100, (300, 700)))
+        sch.add_action(Land(land, 0, 100, (500, 700)))
+        sch.add_action(EaseIn(ease_in, 0, 100, (700, 700)))
+        sch.add_action(EaseOut(ease_out, 0, 100, (900, 700)))
+        sch.add_action(Swing(swing, 0, 100, (1100, 700)))
+        engine = PyGameEngine()
+        for frame in range(150):
+            engine.clear(frame)
+            for a in (move, fall, land, ease_in, ease_out, swing):
+                a.start_draw(engine)
+            engine.end()
+            sch.next()
+
+        
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -1,5 +1,7 @@
 # Done list
 
+* Nueva Accion EaseIn, EaseOut y Swing (EaseIn + EaseOut)
+* Parser para añadir un objeto a la escena: Un "Hola, mundo"
 * Normalizar la forma de creación de los actores
 * Las etiquetas admiten ahora un parámetro `with`, si no se indica
   se usa la estimación 

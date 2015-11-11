@@ -1,13 +1,13 @@
 # ToDo List
 
+* Añadir profundidad (Backfround, normal, Foregroid, OffStage)
+* añadir actor bitmap
+* Niveles en el escenario: Background, main y foreground
 * Añadir acciones al lenguaje
 * Action Aparecer y desaparecer (FadeIn y FadeOut)
 * Accion "Sigue A" (Ummmm Ni idea de como hacerlo por ahora)
 * Añadir color de borde (Ahora es es mismo que el de la figura)
-* Parser para añadir un objeto a la escena: Un "Hola, mundo"
 * Nuevo Accion Traza (Igual que MoveTo, pero deja una linea por el recorrido)
 * Posibilidad de hacer PAN en la escena
 * Nueva accion cambiar color gradualmente a otro
-* Niveles en el escenario: Background, main y foreground
-* Nueva Accion MoveTo con ease in y ease out. Renombrar el antiguo MoveTo a GoTo
 * Añadir algunos de los nombres de colores de pygame
