@@ -1,5 +1,8 @@
 # Done list
 
+* Niveles en el escenario: Background, main y foreground
+* Añadir profundidad (Background, normal, Foreground, OffStage)
+* Añadir parámetro height a actor Label
 * Nueva Accion EaseIn, EaseOut y Swing (EaseIn + EaseOut)
 * Parser para añadir un objeto a la escena: Un "Hola, mundo"
 * Normalizar la forma de creación de los actores
