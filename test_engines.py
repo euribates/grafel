@@ -246,6 +246,21 @@ class TestWithActors(unittest.TestCase):
         engine.end()
         time.sleep(1)
 
+class TestBitmap(unittest.TestCase):
+    def get_engine(self):
+        from engines import PyGameEngine, SVGEngine
+        #return SVGEngine(output_dir='./tmp')
+        return  PyGameEngine()
+
+
+    def test(self):
+        engine = self.get_engine()
+        engine.clear(0)
+        engine.bitmap(300, 300, 'mf.png')
+        engine.end()
+        time.sleep(1)
+
+
 class TestText(unittest.TestCase):
    
     def get_engine(self):

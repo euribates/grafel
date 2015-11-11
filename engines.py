@@ -10,10 +10,8 @@ import os
 import shutil
 import six
 
-
 from six.moves import reduce
-
-import sys
+from PIL import Image
 
 import colors
 from colors import white
@@ -22,8 +20,13 @@ import vectors
 import svgwrite
 import pygame
 import logs
+import functools
 
 logger = logs.create(__name__)
+
+@functools.lru_cache(maxsize=None)
+def get_image_size(filename):
+    return Image.open(filename).size
 
 class BaseEngine:
 
@@ -115,13 +118,18 @@ class SVGEngine(BaseEngine):
             opacity=alpha,
             ))
 
+
     def bitmap(self, x, y, filename):
+        (w, h) = get_image_size(filename)
         target_name = os.path.join(self.output_dir, filename)
-        if not sys.path.exist(target_name):
+        if not os.path.exists(target_name):
             shutil.copyfile(filename, target_name)
         self.dwg.add(self.dwg.image(
-            (x, y), filename,
+            filename,
+            insert = (x - w / 2, y - h /2),
             ))
+        self.line(x-10, y, x+10, y)
+        self.line(x, y-10, x, y+10)
 
     def circle(self, x, y, r, color=white, alpha=1.0):
         self.dwg.add(self.dwg.circle(
@@ -244,6 +252,14 @@ class PyGameEngine(BaseEngine):
         rect = s.get_rect()
         rect.center = (x, y)
         self.screen.blit(s, rect)
+
+    def bitmap(self, x, y, filename):
+        img = pygame.image.load(filename)
+        rect = img.get_rect()
+        rect.center = (x, y)
+        self.screen.blit(img, rect)
+        self.line(x-10, y, x+10, y)
+        self.line(x, y-10, x, y+10)
 
     def end(self):
         pygame.display.flip()
