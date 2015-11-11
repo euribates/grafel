@@ -7,7 +7,9 @@ from __future__ import division
 from __future__ import unicode_literals
 
 import os
+import shutil
 import six
+
 
 from six.moves import reduce
 
@@ -111,6 +113,14 @@ class SVGEngine(BaseEngine):
         self.dwg.add(self.dwg.rect((x, y), (width, height), rx=r, ry=r,
             fill=as_color_svg(color),
             opacity=alpha,
+            ))
+
+    def bitmap(self, x, y, filename):
+        target_name = os.path.join(self.output_dir, filename)
+        if not sys.path.exist(target_name):
+            shutil.copyfile(filename, target_name)
+        self.dwg.add(self.dwg.image(
+            (x, y), filename,
             ))
 
     def circle(self, x, y, r, color=white, alpha=1.0):

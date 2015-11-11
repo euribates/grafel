@@ -9,12 +9,15 @@ Cast:
     lplus = Text text "+" pos 310x100 color #CCCCCC  width 25 color gold
     l2 = Text text "2" pos 340x100 color #CCCCCC  width 25 color gold
 
-    lbl2 = Label text "<2 INT>" color blue pos 1000x1000
-    
+    lbl2 = Label text "<INT 2>" color blue
+    lblplus = Label text "<PLUS +>" color blue
+    lbly = Label text "<VAR y>" color blue
+    lbleq = Label text "<EQ =>" color blue 
+    lblx = Label text "<VAR x>" color blue 
 
 Actions:
-    0-1 Foreground border
-    0-1 Foreground lbparser
+    0-1      border Foreground
+    0-1      lparser Foreground
 
     60-80    l2    Fall 640x100
     70-90    lplus Fall 640x100
@@ -22,9 +25,23 @@ Actions:
     90+20    leq   Fall 640x100
     100+20   lx    Fall 640x100
 
-    89-90    lbl2  Move 640x100
-    90+20    lbl2  Move 1000x100
-    90+20    lbl2  Fall 640x680
+    90       lbl2  Enter  640x100
+    91+20    lbl2  Move 1000x100
+    91+20    lbl2  Fall 640x680
 
+    100      lblplus   Enter  640x100
+    101+20   lblplus   Move 1000x100
+    101+20   lblplus   Fall 640x630
+    
+    110      lbly   Enter  640x100
+    111+20   lbly   Move 1000x100
+    111+20   lbly   Fall 640x580
 
+    120      lbleq   Enter  640x100
+    121+20   lbleq   Move 1000x100
+    121+20   lbleq   Fall 640x530
+
+    130      lblx   Enter  640x100
+    131+20   lblx   Move 1000x100
+    131+20   lblx   Fall 640x480
 
