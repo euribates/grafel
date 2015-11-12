@@ -35,7 +35,7 @@ class TestState(unittest.TestCase):
     def test_create_state_without_params(self):
         state = State()
         self.assertEqual(state.pos, Vector(0, 0))
-        self.assertEqual(state.color.name, 'white')
+        self.assertEqual(state.color.name, 'silver')
         self.assertEqual(state.scale, Vector(1, 1))
         self.assertEqual(state.alpha, 1.0)
 
@@ -186,10 +186,10 @@ class TestActor(unittest.TestCase):
         self.assertEqual(a.frame, 0)
         self.assertEqual(a.pos.x, 0)
         self.assertEqual(a.pos.y, 0)
-        self.assertEqual(a.color.name, 'white')
-        self.assertEqual(a.color.red, 255)
-        self.assertEqual(a.color.green, 255)
-        self.assertEqual(a.color.blue, 255)
+        self.assertEqual(a.color.name, 'silver')
+        self.assertEqual(a.color.red, 192)
+        self.assertEqual(a.color.green, 192)
+        self.assertEqual(a.color.blue, 192)
 
         self.assertEqual(a.scale.x, 1)
         self.assertEqual(a.scale.y, 1)
