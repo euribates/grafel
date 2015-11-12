@@ -380,10 +380,7 @@ class Text(Actor):
         scale = 90/72.  # 90dpi / 72 points in one inch
         self.height = self.font_size * scale
         self.width = len(text) * self.height / 2.0
-        if six.PY2:
-            super(Label, self).__init__(name, **kwargs)
-        else:
-            super().__init__(name, **kwargs)
+        super().__init__(name, **kwargs)
 
     def __str__(self):
         return 'Actor {} as Text [text:"{}"|font_size:{}]'.format(
@@ -409,8 +406,7 @@ class Text(Actor):
 class Bitmap(Actor):
 
     def __init__(self, name, filename, **kwargs):
-        sup = super(Label, self) if six.PY2 else super()
-        sup.__init__(name, **kwargs)
+        super().__init__(name, **kwargs)
         self.width, self.height = fileutils.get_image_size(filename)
         self.filename = filename
 
@@ -439,8 +435,7 @@ class Label(RoundRect):
             pos=(0, 0),
             )
         
-        sup = super(Label, self) if six.PY2 else super()
-        sup.__init__(name, 
+        super().__init__(name, 
             width=width or self._text.width,
             height=height or self._text.height,
             color=color.inverse(),
