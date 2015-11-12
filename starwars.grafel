@@ -1,0 +1,11 @@
+Cast:
+
+    mfalcon = Bitmap filename "mf.png" pos 200x200
+    xw1 = Bitmap filename "xwing.png" pos 174x366
+    txt = Label text "Star Wars" pos 640x340 fontsize 72 color #222222
+
+Actions:
+
+    1-100 mfalcon EaseOut 1080x520
+    10-100 xw1 Swing 1080x366
+    10-100 xw1 Move  174x20

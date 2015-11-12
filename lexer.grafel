@@ -1,7 +1,7 @@
 Cast:
 
-    titulo = Label text "Analizador léxico" pos 720x60 fontsize 72 alpha 0.7
-    color #DDDDDD
+    titbox = Rect width 800 height 80 pos -800x60 color silver 
+    titulo = Text text "Analizador léxico" pos -700x60 fontsize 72
 
     border = Rect width 200 height 100 pos 640x200 color blue
     lparser = Label text "Parser" pos 640x200 color silver
@@ -21,6 +21,10 @@ Cast:
 Actions:
     0-1      border Foreground
     0-1      lparser Foreground
+    0-1      titbox  Background     
+
+    0-50     titulo Fall 400x60
+    0-50     titbox Fall 300x60
 
     60-80    l2    Move 640x200
     70-90    lplus Move 640x200

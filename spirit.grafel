@@ -1,0 +1,33 @@
+Cast:
+
+    
+    l1 = Rect width 2 height 720 pos 640x310 alpha .33
+
+    bob = Circle radius 28 pos 640x690 alpha 0.6
+
+    charlie  = Circle radius 28 pos 640x690 alpha 0.6 color gold
+
+    target = Circle pos 640x530 color red radius 5
+
+Actions:
+
+
+    10+10   bob  EaseOut  840x660
+    20+20   bob  Swing    440x640
+    40+20   bob  Swing    840x620
+    60+20   bob  Swing    440x600
+    80+20   bob  Swing    840x580
+   100+20   bob  Swing    440x560
+   120+20   bob  Swing    840x540
+   140+10   bob  EaseIn   640x530
+
+
+    10+10   charlie  EaseOut  440x660
+    20+20   charlie  Swing    840x640
+    40+20   charlie  Swing    440x620
+    60+20   charlie  Swing    840x600
+    80+20   charlie  Swing    440x580
+   100+20   charlie  Swing    840x560
+   120+20   charlie  Swing    440x540
+   140+10   charlie  EaseIn   640x530
+

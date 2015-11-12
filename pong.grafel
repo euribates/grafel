@@ -1,0 +1,67 @@
+Cast:
+
+    p1score0a = Rect width 40 height 10 pos 575x35 alpha 0.5
+    p1score0b = Rect width 10 height 80 pos 560x80 alpha 0.5
+    p1score0c = Rect width 40 height 10 pos 575x125 alpha 0.5
+    p1score0d = Rect width 10 height 80 pos 590x80 alpha 0.5
+
+
+    p2score0a = Rect width 40 height 10 pos 705x35 alpha 0.5
+    p2score0b = Rect width 10 height 80 pos 690x80 alpha 0.5
+    p2score0c = Rect width 40 height 10 pos 705x125 alpha 0.5
+    p2score0d = Rect width 10 height 80 pos 720x80 alpha 0.5
+
+    score1a = Rect width 10 height 100 alpha 0.4
+
+    
+    l1 = Rect width 2 height 720 pos 640x310 alpha .33
+
+    bob = Square side 20 pos 640x310
+
+    p1 = Rect width 20 height 120 pos 50x310
+    
+    p2 = Rect width 20 height 120 pos 1230x310
+
+Actions:
+
+//    1-80   bob  Move  640x700  
+
+//    0+10    bob  EaseOut  840x627
+//    10+20   bob  Swing    440x462
+//    30+20   bob  Swing    840x297
+//    50+20   bob  Swing    440x132
+//    70+10   bob  EaseIn   640x50
+
+    1-25     bob   Move 1210x112
+    5-25     p2    Land 1230x130
+
+    25-32    bob   Move 1040x10
+    32-57    bob   Move 70x450
+
+    1-23    p1   Fall 50x440
+    33-41   p1   Swing 50x270
+
+    45-55   p1     Move 50x470 
+
+    57-82   bob    Move 1210x560
+
+    63-75   p2     Swing 1230x560
+
+    
+    82-102  bob    Land 110x420
+    102-107 bob    EaseIn 180x315
+    107-120 bob    EaseOut -70x205
+   
+    105-112 p1     Swing 50x348
+
+    100-104   p1    Move 50x400
+    108-117   p1    Land 50x380
+
+
+    112       p2score0a   Exit
+    112       p2score0b   Exit
+    112       p2score0c   Exit
+    112       p2score0d   Exit
+
+    112       score1a Enter  705x80
+

@@ -1,0 +1,7 @@
+Cast:
+
+    star = Star pos 110x160
+
+Actions:
+
+    25-75 star Swing  1090x600
