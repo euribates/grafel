@@ -39,8 +39,16 @@ class Stage:
             )
         self.fps = kwargs.pop('fps', Stage.DEFAULT_FPS) or Stage.DEFAULT_FPS
         self.width, self.height = kwargs.pop('size', Stage.DEFAULT_SIZE)
-        self.background = kwargs.pop('background', Stage.DEFAULT_BACKGROUND)
-        self.foreground = kwargs.pop('foreground', Stage.DEFAULT_FOREGROUND)
+        if 'background' in kwargs:
+            self.background = Color(kwargs['background'])
+        else:
+            self.background = Stage.DEFAULT_BACKGROUND
+        self.engine.bg_color = self.background
+        if 'foreground' in kwargs:
+            self.foreground = Color(kwargs['foreground'])
+        else:
+            self.foreground = Stage.DEFAULT_FOREGROUND 
+        self.engine.fg_color = self.foreground
         self.size = Vector(self.width, self.height)
         self.center = self.size / 2
         self.top_right = Vector(self.width, 0)

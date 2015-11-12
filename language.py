@@ -21,7 +21,7 @@ from pyparsing import (
     Word, alphas, alphanums, nums, Literal, Group,
     ZeroOrMore, OneOrMore, oneOf, StringEnd,
     Optional, Suppress, Keyword, Regex,
-    quotedString, delimitedList,
+    quotedString, delimitedList, Combine,
     ParseException, dblSlashComment,
     )
 
@@ -38,6 +38,11 @@ def dump(s, loc, toks):
     logger.error('dump s: {}'.format(s))
     logger.error('dump loc: {}'.format(loc))
     logger.error('dumo toks: {}'.format(toks))
+
+def parse_integer(s, loc, toks):
+    #dump(s, loc, toks)
+    l = tuple(toks)
+    return int(l[0])
 
 def create_interval(s, loc, toks):
     # dump(s, loc, toks)
@@ -99,8 +104,9 @@ RPAR = Suppress(Literal(")"))
 alpha = Regex('0?\.\d+')
 colon = Suppress(Literal(':'))
 EOL = Suppress(';')
-number = Word(nums)
-vector = number + Literal('x') + number
+Positive = Word(nums)
+Integer = Combine(Optional('-')+Word(nums))
+vector = Integer + Literal('x') + Integer
 
 colorcode = Regex('#[0-9a-f]{6}', re.IGNORECASE) \
     | oneOf("black white red blue green yellow gold silver gray purple orange") 
@@ -109,11 +115,11 @@ attr = (
     Keyword("size") + vector
     | Keyword("pos") + vector
     | Keyword('num') + oneOf("1 2 3 4 5 6").setParseAction(lambda l: int(l[0]))
-    | Keyword('side') + number
-    | Keyword('fontsize') + number 
-    | Keyword('radius') + number
-    | Keyword('width') + number
-    | Keyword('height') + number
+    | Keyword('side') + Positive
+    | Keyword('fontsize') + Positive 
+    | Keyword('radius') + Positive
+    | Keyword('width') + Positive
+    | Keyword('height') + Positive
     | Keyword('text') + quotedString.setParseAction(remove_quotes)
     | Keyword('filename') + quotedString.setParseAction(remove_quotes)
     | Keyword('alpha') + alpha
@@ -134,7 +140,7 @@ castline = (
     )
 Cast = Keyword('Cast') + colon + OneOrMore(castline)('castlines')
 
-Interval = Group(number + oneOf('- +') + number) | Group(number)
+Interval = Group(Integer + oneOf('- +') + Integer) | Group(Integer)
 
 Action = (
       Keyword("Move") + vector
@@ -162,7 +168,8 @@ Interval.setParseAction(create_interval)
 ActionLine.setParseAction(add_action)
 alpha.setParseAction(lambda l: float(l[0]))
 castline.setParseAction(parse_castline)
-number.setParseAction(lambda l: int(l[0]))
+Positive.setParseAction(lambda l: int(l[0]))
+Integer.setParseAction(parse_integer)
 vector.setParseAction(lambda l: Vector(int(l[0]), int(l[2])))
 colorcode.setParseAction(lambda l: Color(l[0]))
 

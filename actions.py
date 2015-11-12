@@ -10,8 +10,8 @@ from copy import copy
 import logs
 from vectors import Vector
 from actors import Level
-logger = logs.create(__name__)
 
+logger = logs.create(__name__)
 
 
 class Interval:
@@ -64,6 +64,7 @@ class Interval:
         self._next_result += 1
         return result
 
+
 class Action:
     def __init__(self, actor, from_frame, to_frame):
         self.actor = actor
@@ -101,10 +102,6 @@ class Action:
             self.__class__.__name__,
             frame,
             ))
-
-
-
-
 
 class Blink(Action):
     

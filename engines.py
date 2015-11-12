@@ -95,20 +95,23 @@ class SVGEngine(BaseEngine):
                 )
             )
 
-    def line(self, x0, y0, x1, y1, color=white, alpha=1.0):
-         self.dwg.add(self.dwg.line(
+    def line(self, x0, y0, x1, y1, color=None, alpha=1.0):
+        color = color or self.fg_color
+        self.dwg.add(self.dwg.line(
             start=(x0, y0),
             end=(x1, y1),
             stroke=as_color_svg(color),
             ))
 
-    def rect(self, x, y, width, height, color=white, alpha=1.0):
+    def rect(self, x, y, width, height, color=None, alpha=1.0):
+        color = color or self.fg_color
         self.dwg.add(self.dwg.rect((x, y), (width, height),
             fill=as_color_svg(color),
             opacity=alpha,
             ))
 
-    def roundrect(self, x, y, width, height, r, color=white, alpha=1.0):
+    def roundrect(self, x, y, width, height, r, color=None, alpha=1.0):
+        color = color or self.fg_color
         self.dwg.add(self.dwg.rect((x, y), (width, height), rx=r, ry=r,
             fill=as_color_svg(color),
             opacity=alpha,
@@ -128,14 +131,16 @@ class SVGEngine(BaseEngine):
             self.line(x-10, y, x+10, y)
             self.line(x, y-10, x, y+10)
 
-    def circle(self, x, y, r, color=white, alpha=1.0):
+    def circle(self, x, y, r, color=None, alpha=1.0):
+        color = color or self.fg_color
         self.dwg.add(self.dwg.circle(
             (x, y), r,
             fill=as_color_svg(color),
             opacity=alpha,
             ))
 
-    def polygon(self, x, y, rpoints, color=white, alpha=1.0):
+    def polygon(self, x, y, rpoints, color=None, alpha=1.0):
+        color = color or self.fg_color
         points = [(x,y)]
         for p in rpoints:
             x += p[0]
@@ -147,7 +152,8 @@ class SVGEngine(BaseEngine):
             opacity=alpha,
             ))
 
-    def text(self, x, y, text, color=white, alpha=1.0, font_size=32):
+    def text(self, x, y, text, color=None, alpha=1.0, font_size=32):
+        color = color or self.fg_color
         self.dwg.add(self.dwg.text(
             text,
             insert=(x, y),
@@ -173,29 +179,31 @@ class PyGameEngine(BaseEngine):
             pygame.HWSURFACE|pygame.DOUBLEBUF|pygame.SRCALPHA
             )
 
-    def clear(self, frame):
-        super().clear(frame)
-        self.screen.fill(self.bg_color.as_rgb())
-
-    def line(self, x0, y0, x1, y1, color=white, alpha=1.0):
-        super().line(x0, y0, x1, y1, color, alpha)
-        color = self.add_alpha_color(color, alpha)
-        pygame.draw.line(self.screen, color, (x0, y0), (x1, y1), 1) 
-
     def add_alpha_color(self, color, alpha):
         if not isinstance(color, colors.Color):
             color = colors.Color(color)
         color = (color.red, color.green, color.blue, int(round(alpha*255)))
         return color
 
+    def clear(self, frame):
+        super().clear(frame)
+        self.screen.fill(self.bg_color.as_rgb())
 
-    def rect(self, x, y, width, height, color=white, alpha=1.0):
+    def line(self, x0, y0, x1, y1, color=None, alpha=1.0):
+        color = color or self.fg_color
+        super().line(x0, y0, x1, y1, color, alpha)
+        color = self.add_alpha_color(color, alpha)
+        pygame.draw.line(self.screen, color, (x0, y0), (x1, y1), 1) 
+
+    def rect(self, x, y, width, height, color=None, alpha=1.0):
+        color = color or self.fg_color
         color = self.add_alpha_color(color, alpha)
         s = pygame.Surface((width, height), pygame.SRCALPHA)   # per-pixel alpha
         s.fill(color)
         self.screen.blit(s, (x, y))
 
-    def roundrect(self, x, y, width, height, r, color=white, alpha=1.0):
+    def roundrect(self, x, y, width, height, r, color=None, alpha=1.0):
+        color = color or self.fg_color
         color = self.add_alpha_color(color, alpha)
         s = pygame.Surface((width, height), pygame.SRCALPHA)   # per-pixel alpha
         pygame.draw.circle(s, color, (r, r), r)
@@ -207,14 +215,16 @@ class PyGameEngine(BaseEngine):
         pygame.draw.rect(s, color, (0, r, width, height-2*r))
         self.screen.blit(s,(x, y))
 
-    def circle(self, x, y, r, color=white, alpha=1.0):
+    def circle(self, x, y, r, color=None, alpha=1.0):
+        color = color or self.fg_color
         color = self.add_alpha_color(color, alpha)
         side = r << 2
         s = pygame.Surface((side, side), pygame.SRCALPHA)   # per-pixel alpha
         pygame.draw.circle(s, color, (r, r), r, 0)
         self.screen.blit(s, (x-r, y-r))
 
-    def polygon(self, x, y, rpoints, color=white, alpha=1.0):
+    def polygon(self, x, y, rpoints, color=None, alpha=1.0):
+        color = color or self.fg_color
         color = self.add_alpha_color(color, alpha)
         points = [(x,y)]
         for p in rpoints:
@@ -230,7 +240,8 @@ class PyGameEngine(BaseEngine):
         self.screen.blit(s, (0, 0))
 
 
-    def lines(self, points, color):
+    def lines(self, points, color=None):
+        color = color or self.fg_color
         pygame.draw.polygon(self.screen, color.as_rgb(), points, 0)
         pygame.draw.aalines(
             self.screen,
@@ -242,7 +253,8 @@ class PyGameEngine(BaseEngine):
             for v in points:
                 pygame.draw.circle(scr, (255, 0, 0), v, 3, 0)
 
-    def text(self, x, y, text, color=white, alpha=1.0, font_size=32):
+    def text(self, x, y, text, color=None, alpha=1.0, font_size=32):
+        color = color or self.fg_color
         #f = pygame.font.SysFont('Helvetica,arial', 32, bold=False, italic=False)
         f = pygame.font.SysFont('Delicious', font_size, bold=False, italic=False)
         s = f.render(text, True, color.as_rgb())

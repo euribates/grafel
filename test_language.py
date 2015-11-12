@@ -27,6 +27,46 @@ Cast:
 
 logger = logs.create(__name__)
 
+class TestInteger(unittest.TestCase):
+
+    def test_positive_integer(self):
+        from language import Integer
+        l = Integer.parseString('45')
+        self.assertEqual(l[0], 45)
+
+    def test_negative_integer(self):
+        from language import Integer
+        l = Integer.parseString('-32')
+        self.assertEqual(l[0], -32)
+
+    def test_zero(self):
+        from language import Integer
+        l = Integer.parseString('0')
+        self.assertEqual(l[0], 0)
+        l = Integer.parseString('-0')
+        self.assertEqual(l[0], 0)
+
+class TestVector(unittest.TestCase):
+
+    def test_positive_positive_vector(self):
+        from language import vector
+        l = vector.parseString('45x72')
+        self.assertEqual(l[0], Vector(45, 72))
+
+    def test_positive_negative_vector(self):
+        from language import vector
+        l = vector.parseString('45x-72')
+        self.assertEqual(l[0], Vector(45, -72))
+    def test_negative_positive_vector(self):
+        from language import vector
+        l = vector.parseString('-45x72')
+        self.assertEqual(l[0], Vector(-45, 72))
+
+    def test_negative_negative_vector(self):
+        from language import vector
+        l = vector.parseString('-45x-72')
+        self.assertEqual(l[0], Vector(-45, -72))
+
 class TestInterval(unittest.TestCase):
     def test_number_minus_number(self):
         from language import Interval
@@ -45,6 +85,16 @@ class TestInterval(unittest.TestCase):
 
 class TestActionLine(unittest.TestCase):
 
+    def test_action_exit(self):
+        from language import ActionLine 
+        l = ActionLine.parseString('50 bob Exit')
+        t = l[0]
+        self.assertEqual(t[0], actions.Interval(50, 51))
+        self.assertEqual(t[1], 'bob')
+        self.assertEqual(t[2], 'Exit')
+        self.assertEqual(len(t), 3)
+#        for i,_ in enumerate(t):
+#            logger.error('{}) {}'.format(i, _))
 
     def test_action_foreground(self):
         from language import ActionLine 

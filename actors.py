@@ -28,7 +28,7 @@ class State:
         self.pos = kwargs.pop('pos', zero)
         if isinstance(self.pos, tuple):
             self.pos = Vector(self.pos[0], self.pos[1])
-        self.color = kwargs.pop('color', white)
+        self.color = kwargs.pop('color', Color('silver'))
         self.scale = kwargs.pop('scale', Vector(1, 1))
         self.alpha = kwargs.pop('alpha', 1.0)
 
