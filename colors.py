@@ -1,9 +1,8 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
 # colors.py
 
-import six
 import re
 
 _name_map = {
@@ -191,7 +190,7 @@ class Color:
         return "rgb({},{},{})".format(self.r, self.g, self.b)
 
     def __eq__(self, op2):
-        if isinstance(op2, six.string_types):
+        if isinstance(op2, str):
             op2 = Color(op2)
         return (
             self.r == op2.r and 

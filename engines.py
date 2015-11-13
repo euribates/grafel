@@ -1,18 +1,10 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import unicode_literals
 
 import os
 import shutil
-import six
 
-from six.moves import reduce
 from PIL import Image
-
 import colors
 from colors import white
 import vectors

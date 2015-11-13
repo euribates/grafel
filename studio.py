@@ -1,16 +1,7 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import unicode_literals
-
 import os
-import six
-
-from six.moves import reduce
-
 import sys
 
 from actors import Level
@@ -40,6 +31,7 @@ class Stage:
         self.fps = kwargs.pop('fps', Stage.DEFAULT_FPS) or Stage.DEFAULT_FPS
         self.width, self.height = kwargs.pop('size', Stage.DEFAULT_SIZE)
         if 'background' in kwargs:
+            print(kwargs, file=sys.stderr)
             self.background = Color(kwargs['background'])
         else:
             self.background = Stage.DEFAULT_BACKGROUND

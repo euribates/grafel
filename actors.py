@@ -1,18 +1,12 @@
 #!/usr/bni/env python3
 
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import unicode_literals
-
-import six
 import re
 import sys
 import math
 from copy import copy
 import pprint
-import logging
 from collections import defaultdict
+
 from vectors import Vector, origin, zero
 import colors
 from colors import Color, black, white
@@ -113,7 +107,7 @@ class Actor():
     def get_color(self): return self.state.color
 
     def set_color(self, new_color):
-        if isinstance(new_color, six.string_types):
+        if isinstance(new_color, str):
             new_color = Color(new_color)
         self.state.color = new_color
 
@@ -420,10 +414,10 @@ class Label(RoundRect):
         height = kwargs.pop('height', None)
         width = kwargs.pop('width', None)
         color = kwargs.pop('color', white)
-        if isinstance(color, six.string_types):
+        if isinstance(color, str):
             color = colors.Color(color)
         background = kwargs.pop('background', None)
-        if isinstance(background, six.string_types):
+        if isinstance(background, str):
             background = colors.Color(background)
         if not background:
             background = color.inverse()

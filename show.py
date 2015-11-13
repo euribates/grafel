@@ -1,15 +1,11 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import unicode_literals
-
 import sys
+import argparse
+
 import pygame
 import language
-import argparse
 
 import vectors
 import actions
@@ -30,8 +26,14 @@ options_parser.add_argument("--num_frames",
     help="Total de frames a mostrar",
     type=int,
     )
-options_parser.add_argument("--background", help="color de fondo",)
-options_parser.add_argument("--foreground", help="color de fondo",)
+options_parser.add_argument("--background",
+    default='black',
+    help="color de fondo",
+    )
+options_parser.add_argument("--foreground",
+    default='white', 
+    help="color de fondo",
+    )
 options_parser.add_argument("--fps", help="Frames / sec", type=int, default=25)
 
 opts = options_parser.parse_args()
