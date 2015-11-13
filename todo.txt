@@ -1,6 +1,5 @@
 # ToDo List
 
-* Action Aparecer y desaparecer (FadeIn y FadeOut)
 * Nuevo Accion Traza (Igual que MoveTo, pero deja una linea por el recorrido)
 * Nueva accion cambiar color gradualmente a otro
 * Ver creditos de Saul Brass (Anantomy of a murder - 1959)

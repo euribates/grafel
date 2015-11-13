@@ -1,5 +1,6 @@
 # Done list
 
+* Action Aparecer y desaparecer (FadeIn y FadeOut)
 * Cambiar color de fondo
 * Añadir actor Bitmap
 * Niveles en el escenario: Background, main y foreground

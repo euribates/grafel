@@ -228,7 +228,13 @@ class Color:
     def set_blue(self, new_blue): self.b = new_blue
     blue = property(get_blue, set_blue)
 
-
+def random_color():
+    import random
+    return Color(
+        random.randint(0, 255),
+        random.randint(0, 255),
+        random.randint(0, 255),
+        )
 
 black = Color('black')
 white = Color('white')

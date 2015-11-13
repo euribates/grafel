@@ -113,6 +113,33 @@ class Blink(Action):
     def __call__(self, frame):
         return {'color': self.colors[frame]}
 
+class FadeOut(Action):
+    def __init__(self, actor, from_frame, to_frame):
+        super().__init__(actor, from_frame, to_frame)
+        self.initial_alpha = self.actor.alpha
+        self.delta_alpha = self.initial_alpha / self.num_frames
+
+    def __call__(self, frame):
+        relative_frame = frame - self.interval.lower_bound
+        self.actor.alpha = self.initial_alpha - self.delta_alpha * relative_frame
+
+    def end(self, frame):
+        self.actor.alpha = 0.0
+
+class FadeIn(Action):
+    def __init__(self, actor, from_frame, to_frame):
+        super().__init__(actor, from_frame, to_frame)
+        self.initial_alpha = self.actor.alpha
+        self.delta_alpha = (1.0 - self.initial_alpha) / self.num_frames
+
+    def __call__(self, frame):
+        relative_frame = frame - self.interval.lower_bound
+        self.actor.alpha = self.initial_alpha + self.delta_alpha * relative_frame
+
+    def end(self, frame):
+        self.actor.alpha = 1.0
+
+
 class MoveAction(Action):
     def __init__(self, actor, from_frame, to_frame, new_position):
         super().__init__(actor, from_frame, to_frame)
