@@ -14,14 +14,9 @@ from actors import Actor, Square, Star, Dice, Text, Label, Bitmap
 from actions import Move, Land, Fall, Swing
 from colors import Color
 from control import Scheduler
+import logs
 
-class TestBaseEngine(unittest.TestCase):
-
-    def test_calls(self):
-        eng = BaseEngine()
-        eng.clear(0)
-        eng.polygon(0, 0, [(50, 0), (50, 50), (0, 50)], color=Color('white'))
-        eng.end()
+logger = logs.create(__name__)
 
 class TestSVGEngine(unittest.TestCase):
 
@@ -29,24 +24,24 @@ class TestSVGEngine(unittest.TestCase):
         s = Stage(SVGEngine(output_dir='./tmp'))
         star = Star('star', color='red', pos=(0, 0))
         s.add_actor(star)
-        s.add_actor(Square('bob'), on_stage=False)
+        s.add_actor(Square('bob'))
         s.draw(0)
 
     def test_create_sequence(self):
 
-        stage = Stage(SVGEngine(output_dir='./tmp'), num_frames=100)
+        # stage = Stage(SVGEngine(output_dir='./tmp'))
+        stage = Stage()
+        stage.num_frames = 100
         star = Star('star', color='red', pos=(0, 0))
         stage.add_actor(star)
-        sch = Scheduler()
-        sch.add_action(Move(star, 0, 100, stage.bottom_right))
+        stage.add_action(Move(star, 0, 100, stage.refs['bottom_right']))
 
-        bob = Square('bob', pos=stage.center)
-        stage.add_actor(bob, on_stage=True)
-        sch.add_action(Land(bob, 0, 100, (stage.width, stage.height//2)))
+        bob = Square('bob', pos=stage.refs['center'])
+        stage.add_actor(bob)
+        stage.add_action(Land(bob, 0, 100, (stage.width, stage.height//2)))
 
         for frame in range(0, 100):
             stage.draw(frame)
-            sch.next()
 
 
 class TestPyGameEngine(unittest.TestCase):
@@ -55,7 +50,8 @@ class TestPyGameEngine(unittest.TestCase):
         s = Stage(PyGameEngine())
 
     def test_create_sequence(self):
-        s = Stage(PyGameEngine(), num_frames=100)
+        s = Stage(PyGameEngine())
+        s.num_frames = 100
         star = Star('star', color='gold', pos=(1280, 720), radius=20)
         s.add_actor(star)
 
@@ -82,7 +78,8 @@ class TestDices(unittest.TestCase):
     def test_sequence(self):
 
         sch = Scheduler()
-        s = Stage(PyGameEngine(), num_frames=80)
+        s = Stage(PyGameEngine())
+        s.num_frames=80
         #s = Stage(SVGEngine(output_dir='./tmp'), num_frames=150)
         middle = s.height // 2
         dice1 = Dice('D1', num=1)

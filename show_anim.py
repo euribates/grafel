@@ -16,7 +16,7 @@ from actors import (
     )
 from actions import (
     Action, Move, Blink, Fall, Land,
-    EasingIn, Swing,
+    EaseIn, Swing,
     Timer,
     )
 import engines
@@ -49,7 +49,7 @@ DEBUG = args.debug
 sch = Scheduler()
 
 f1 = Rect('f1', pos=(50, 0), color='brown', width=90, height=25)
-sch.add_action(EasingIn(f1, 0, 150, Vector(50, 700)))
+sch.add_action(EaseIn(f1, 0, 150, Vector(50, 700)))
 
 f2 = Rect('f2', pos=(150, 0), color='white', width=90, height=25)
 sch.add_action(Move(f2, 0, 150, Vector(150, 700)))
@@ -63,15 +63,15 @@ sch.add_action(Swing(f4, 0, 150, Vector(350, 700)))
 
 lbl_fall = Label('Fall', 'Fall', pos=(450,10), color="#333333")
 sch.add_action(Fall(lbl_fall, 0, 50, (450, 400)))
-sch.add_action(EasingIn(lbl_fall, 186, 196, (450, 10)))
+sch.add_action(EaseIn(lbl_fall, 186, 196, (450, 10)))
 
 lbl_easing_in = Label('easing_in', 'Easing in', pos=(600,10), color="#333333")
-sch.add_action(EasingIn(lbl_easing_in, 0, 50, (600, 400)))
-sch.add_action(EasingIn(lbl_easing_in, 188, 198, (600, 10)))
+sch.add_action(EaseIn(lbl_easing_in, 0, 50, (600, 400)))
+sch.add_action(EaseIn(lbl_easing_in, 188, 198, (600, 10)))
 
 lbl_swing = Label('swing', 'Swing', pos=(750, 10), color="#333333")
 sch.add_action(Swing(lbl_swing, 0, 50, (750, 400)))
-sch.add_action(EasingIn(lbl_swing, 190, 200, (750, 10)))
+sch.add_action(EaseIn(lbl_swing, 190, 200, (750, 10)))
 
 
 pelota = Circle('Pelota', pos=(480, 10), color='gold')

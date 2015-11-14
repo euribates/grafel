@@ -453,7 +453,7 @@ def create_actor(name, role, **kwargs):
     for k in kwargs:
         buff.append(', {}={}'.format(k, repr(kwargs[k])))
     buff.append(')')
-    logger.error(''.join(buff))
+    logger.info(''.join(buff))
     _Klass = getattr(actors, role)
     return _Klass(name, **kwargs)
 

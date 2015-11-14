@@ -11,6 +11,13 @@ import vectors
 import colors
 import random
 
+class TestBaseEngine(unittest.TestCase):
+
+    def test_calls(self):
+        eng = engines.BaseEngine()
+        eng.clear(0)
+        eng.polygon(0, 0, [(50, 0), (50, 50), (0, 50)], color=colors.white)
+        eng.end()
 
 class TestCreation(unittest.TestCase):
     

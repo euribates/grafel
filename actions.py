@@ -291,7 +291,7 @@ def create_action(action_name, actor, from_frame, to_frame, *args):
     for _ in args:
         buff.append(', {}'.format(_))
     buff.append(')')
-    logger.error(''.join(buff))
+    logger.info(''.join(buff))
 
     key = action_name.lower()
     if key not in _map_actions:

@@ -12,37 +12,16 @@ import actions
 from control import Scheduler
 from studio import Stage
 from engines import SVGEngine
+import config
 import logs
 
 logger = logs.create(__name__)
+opts = config.get_options()
 
-options_parser = argparse.ArgumentParser()
-options_parser.add_argument("script", help="Script de animación en Grafel")
-options_parser.add_argument("--grid",
-    help="Mostrar rejilla",
-    action='store_true',
-    )
-options_parser.add_argument("--num_frames",
-    help="Total de frames a mostrar",
-    type=int,
-    )
-options_parser.add_argument("--background", help="color de fondo",)
-options_parser.add_argument("--foreground", help="color de fondo",)
-options_parser.add_argument("--output_dir",
-    help="Directorio de salida (./tmp por defecto)",
-    default='./tmp'
-    )
-
-opts = options_parser.parse_args()
-
-logger.error('background: {}'.format(opts.background))
-
-actors = []
 if opts.script:
     parser = language.get_parser()
     try:
         tree = parser.parseFile(opts.script)
-
     except language.ParseException as err:
         print('Error de parseo en {}'.format(opts.script))
         print(err)
@@ -52,13 +31,8 @@ if opts.script:
         sys.exit()
 
     actors = [language.get_actor(_) for _ in language.actors_list()]
-    sch = Scheduler()
     engine = SVGEngine(output_dir=opts.output_dir)
-    stage = Stage(engine,
-        background=opts.background,
-        foregroud=opts.foreground,
-        num_frames=opts.num_frames,
-        )
+    stage = Stage(engine, options=opts)
     stage.add_actors(*actors)
     for t in language.get_actions():
         (interval, actor_name, action_name) = t[0:3]
@@ -70,9 +44,8 @@ if opts.script:
             from_frame, to_frame,
             *args
             )
-        sch.add_action(action)
+        stage.add_action(action)
     force_exit = False
     for frame in range(stage.num_frames):
         stage.draw(frame) 
-        sch.next()
 
