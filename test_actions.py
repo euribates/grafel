@@ -65,7 +65,7 @@ class TestActions(unittest.TestCase):
                 self.started_at_frame = frame
                 self.called_on_frames = []
 
-            def __call__(self, frame):
+            def step(self, frame):
                 self.called_on_frames.append(frame)
 
             def end(self, frame):
@@ -197,14 +197,12 @@ class TestEasing(unittest.TestCase):
 class TestLevel(unittest.TestCase):
 
     def test(self):
-        logger.error('Empezamos')
         t = Text('timer', pos=(1000, 700), color='navy')
         e1 = Label('e1', text='Enter on 75', width=190, color='gold')
         bg = Rect('bg', width=30, height=600, pos=(620, 320), color='orange')
         fg = Rect('fg', width=30, height=600, pos=(660, 320), color='navy')
         e = Label('exit', text="I'll go on 2s", pos=(200, 200))
 
-        logger.error('e1.level: {}'.format(e1.level))
         sch = Scheduler()
         sch.add_action(actions.Timer(t, 0, 150))
         sch.add_action(actions.Enter(e1, 75, 76, (640, 320)))

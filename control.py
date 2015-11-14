@@ -25,7 +25,7 @@ class Scheduler():
 
     def next(self):
         for action in self.active_actions[:]:
-            data = action(self.frame)
+            action.step(self.frame)
             if action.is_last(self.frame):
                 action.end(self.frame)
                 self.active_actions.remove(action)
