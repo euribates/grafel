@@ -1,5 +1,6 @@
 # Done list
 
+* El método `__call__` de `Action` pasa a llamarse `step`
 * Añadido contructor de acciones `create_action`. Además, las acciones
   se registran y se pueden acceder por su nombre sin diferenciar
   entre mayusculas y minusculas
