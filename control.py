@@ -18,7 +18,7 @@ class Scheduler():
         self.frame = 0
 
     def add_action(self, action):
-        start_frame = action.interval.lower_bound
+        start_frame = action.lower_bound
         self.actors.add(action.actor)
         key = (action.actor.name, start_frame)
         self.actions.setdefault(key, []).append(action)
@@ -26,9 +26,7 @@ class Scheduler():
     def next(self):
         for action in self.active_actions[:]:
             data = action(self.frame)
-            if data:
-                action.actor.state.delta(**data)
-            if action.interval.is_last(self.frame):
+            if action.is_last(self.frame):
                 action.end(self.frame)
                 self.active_actions.remove(action)
         for actor in self.actors:  # New actions that must start
@@ -37,7 +35,6 @@ class Scheduler():
                 for a in self.actions[key]:
                     a.start(self.frame)
                     self.active_actions.append(a)
-
         self.frame += 1
         return self.frame
 

@@ -1,5 +1,6 @@
 # Done list
 
+* Eliminar clase Interval (Fusionar con Action)
 * Action Aparecer y desaparecer (FadeIn y FadeOut)
 * Cambiar color de fondo
 * Añadir actor Bitmap

@@ -48,12 +48,12 @@ def create_interval(s, loc, toks):
         left = int(left)
         right = int(right)
         if sign == '-':
-            return actions.Interval(left, right)
+            return (left, right)
         else:
-            return actions.Interval(left, left+right)
+            return (left, left+right)
     elif len(t) == 1:
         n = int(t[0])
-        return actions.Interval(n, n+1)
+        return (n, n+1)
 
 
 

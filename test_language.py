@@ -67,17 +67,17 @@ class TestInterval(unittest.TestCase):
     def test_number_minus_number(self):
         from language import Interval
         l = Interval.parseString('23-45')
-        self.assertEqual(l[0], actions.Interval(23, 45))
+        self.assertEqual(l[0], (23, 45))
 
     def test_number_plus_number(self):
         from language import Interval
         l = Interval.parseString('23+45')
-        self.assertEqual(l[0], actions.Interval(23, 68))
+        self.assertEqual(l[0], (23, 68))
 
     def test_single_number(self):
         from language import Interval
         l = Interval.parseString('23')
-        self.assertEqual(l[0], actions.Interval(23, 24))
+        self.assertEqual(l[0], (23, 24))
 
 class TestActionLine(unittest.TestCase):
 
@@ -85,7 +85,7 @@ class TestActionLine(unittest.TestCase):
         from language import ActionLine 
         l = ActionLine.parseString('50 bob Exit')
         t = l[0]
-        self.assertEqual(t[0], actions.Interval(50, 51))
+        self.assertEqual(t[0], (50, 51))
         self.assertEqual(t[1], 'bob')
         self.assertEqual(t[2], 'Exit')
         self.assertEqual(len(t), 3)
@@ -96,7 +96,7 @@ class TestActionLine(unittest.TestCase):
         from language import ActionLine 
         l = ActionLine.parseString('0-1 bob Foreground')
         t = l[0]
-        self.assertEqual(t[0], actions.Interval(0, 1))
+        self.assertEqual(t[0], (0, 1))
         self.assertEqual(t[1], 'bob')
         self.assertEqual(t[2], 'Foreground')
 #        for i,_ in enumerate(t):
@@ -106,7 +106,7 @@ class TestActionLine(unittest.TestCase):
         from language import ActionLine 
         l = ActionLine.parseString('1-23 bob Move 50x50')
         t = l[0]
-        self.assertEqual(t[0], actions.Interval(1, 23))
+        self.assertEqual(t[0], (1, 23))
         self.assertEqual(t[1], 'bob')
         self.assertEqual(t[2], 'Move')
         self.assertEqual(t[3], Vector(50, 50))
@@ -115,7 +115,7 @@ class TestActionLine(unittest.TestCase):
         from language import ActionLine 
         l = ActionLine.parseString('10+20 bob Move 50x50')
         t = l[0]
-        self.assertEqual(t[0], actions.Interval(10, 30))
+        self.assertEqual(t[0], (10, 30))
         self.assertEqual(t[1], 'bob')
         self.assertEqual(t[2], 'Move')
         self.assertEqual(t[3], Vector(50, 50))

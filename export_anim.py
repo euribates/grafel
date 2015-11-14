@@ -10,7 +10,7 @@ import argparse
 import svgwrite
 
 from vectors import Vector
-from actors import State, Actor, Square, RoundSquare, Interval, Circle
+from actors import State, Actor, Square, RoundSquare, Circle
 from actors import Color
 from actions import Action, MoveTo, Blink, Fall, Land
 
