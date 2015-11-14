@@ -15,7 +15,7 @@ from actors import (
     Circle, Star, Rect, Label,
     )
 from actions import (
-    Action, MoveTo, Blink, Fall, Land,
+    Action, Move, Blink, Fall, Land,
     EasingIn, Swing,
     Timer,
     )
@@ -52,7 +52,7 @@ f1 = Rect('f1', pos=(50, 0), color='brown', width=90, height=25)
 sch.add_action(EasingIn(f1, 0, 150, Vector(50, 700)))
 
 f2 = Rect('f2', pos=(150, 0), color='white', width=90, height=25)
-sch.add_action(MoveTo(f2, 0, 150, Vector(150, 700)))
+sch.add_action(Move(f2, 0, 150, Vector(150, 700)))
 
 f3 = Rect('f3', pos=(250, 0), color='#334588', width=90, height=25)
 sch.add_action(Land(f3, 0, 150, Vector(250, 700)))

@@ -7,7 +7,7 @@ import unittest
 import control
 
 from actors import Square
-from actions import Fall, MoveTo
+from actions import Fall, Move
 import logs
 
 logger = logs.create('__name__')
@@ -18,7 +18,7 @@ class TestBob(unittest.TestCase):
     def test(self):
         bob = Square('Bob')
         sch = control.Scheduler()
-        sch.add_action(MoveTo(bob, 0, 2, (100, 0)))
+        sch.add_action(Move(bob, 0, 2, (100, 0)))
         for i in range(15):
             print('{:5} {}'.format(sch.frame, repr(bob)), file=sys.stderr)
             sch.next()
@@ -36,7 +36,7 @@ class TestScheduler(unittest.TestCase):
         self.assertEqual(len(scheduler.actors), 1)
 
         dorothy = Square('Dorothy', pos=(0, 0), color='#32BF98', side=25)
-        scheduler.add_action(MoveTo(dorothy, 0, 5, (100, 100)))
+        scheduler.add_action(Move(dorothy, 0, 5, (100, 100)))
         self.assertEqual(len(scheduler.actors), 2)
         
         # Frame 0

@@ -11,6 +11,15 @@ from actors import Level
 
 logger = logs.create(__name__)
 
+_map_actions = {}
+
+def register_action(klass):
+    global _map_actions
+    key = klass.__name__.lower()
+    if key in _map_actions:
+        raise KeyError('La clase {} ya está registrada'.format(key))
+    _map_actions[key] = klass
+    return klass
 
 class Action:
     def __init__(self, actor, from_frame, to_frame=None):
@@ -62,6 +71,7 @@ class Action:
         return frame - self.lower_bound
 
 
+@register_action
 class Blink(Action):
     
     def start(self, frame):
@@ -75,6 +85,7 @@ class Blink(Action):
         self.actor.color = self.src_color
 
 
+@register_action
 class FadeOut(Action):
 
     def __init__(self, actor, from_frame, to_frame):
@@ -89,6 +100,7 @@ class FadeOut(Action):
         self.actor.alpha = 0.0
 
 
+@register_action
 class FadeIn(Action):
 
     def __init__(self, actor, from_frame, to_frame):
@@ -103,18 +115,21 @@ class FadeIn(Action):
         self.actor.alpha = 1.0
 
 
+@register_action
 class Exit(Action):
 
     def __call__(self, frame):
         self.actor.level = Level.OFF_STAGE
 
 
+@register_action
 class Background(Action):
 
     def start(self, frame):
         self.actor.level = Level.ON_BACKGROUND
 
 
+@register_action
 class Foreground(Action):
 
     def start(self, frame):
@@ -138,6 +153,7 @@ class MoveAction(Action):
     def end(self, frame):
         self.actor.pos = self.new_position
 
+@register_action
 class Enter(MoveAction):
 
     def __call__(self, frame):
@@ -146,7 +162,8 @@ class Enter(MoveAction):
 
     step = __call__
 
-class MoveTo(MoveAction):
+@register_action
+class Move(MoveAction):
 
     def start(self, frame):
         super().start(frame)
@@ -159,6 +176,7 @@ class MoveTo(MoveAction):
 
     step = __call__
 
+@register_action
 class Fall(MoveAction):
     
     def start(self, frame):
@@ -176,6 +194,7 @@ class Fall(MoveAction):
 
     step = __call__
 
+@register_action
 class Land(MoveAction):
     
     def start(self, frame):
@@ -191,6 +210,7 @@ class Land(MoveAction):
             )
 
 
+@register_action
 class EaseIn(MoveAction):
     
     def start(self, frame):
@@ -207,6 +227,7 @@ class EaseIn(MoveAction):
             )
 
 
+@register_action
 class EaseOut(MoveAction):
     
     def __call__(self, frame):
@@ -220,6 +241,7 @@ class EaseOut(MoveAction):
             )
 
 
+@register_action
 class Swing(MoveAction):
     
     def start(self, frame):
@@ -242,6 +264,7 @@ class Swing(MoveAction):
                 y = self.change_value.y / 2 * (t**3 + 2) + self.initial_position.y,
                 )
 
+@register_action
 class Timer(Action):
 
     FPS = 25
@@ -256,4 +279,24 @@ class Timer(Action):
             frac = frame % Timer.FPS,
             )
         
+def create_action(action_name, actor, from_frame, to_frame, *args):
+    global _map_actions
+
+    buff = ['called create_action("{}", {}, {}, {}'.format(
+        action_name,
+        actor,
+        from_frame,
+        to_frame,
+        )]
+    for _ in args:
+        buff.append(', {}'.format(_))
+    buff.append(')')
+    logger.error(''.join(buff))
+
+    key = action_name.lower()
+    if key not in _map_actions:
+        raise ValueError('No existe la acción {}'.format(action_name))
+    ActionKlass = _map_actions[key]
+    action = ActionKlass(actor, from_frame, to_frame, *args)
+    return action
 

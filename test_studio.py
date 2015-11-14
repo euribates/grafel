@@ -11,7 +11,7 @@ from vectors import Vector, origin, zero
 from studio import Stage
 from engines import BaseEngine, SVGEngine, PyGameEngine
 from actors import Actor, Square, Star, Dice, Text, Label, Bitmap
-from actions import MoveTo, Land, Fall, Swing
+from actions import Move, Land, Fall, Swing
 from colors import Color
 from control import Scheduler
 
@@ -38,7 +38,7 @@ class TestSVGEngine(unittest.TestCase):
         star = Star('star', color='red', pos=(0, 0))
         stage.add_actor(star)
         sch = Scheduler()
-        sch.add_action(MoveTo(star, 0, 100, stage.bottom_right))
+        sch.add_action(Move(star, 0, 100, stage.bottom_right))
 
         bob = Square('bob', pos=stage.center)
         stage.add_actor(bob, on_stage=True)
@@ -69,7 +69,7 @@ class TestPyGameEngine(unittest.TestCase):
         s.add_actor(mf)
 
         sch = Scheduler()
-        sch.add_action(MoveTo(star, 0, 100, (0,0)))
+        sch.add_action(Move(star, 0, 100, (0,0)))
         sch.add_action(Swing(mf, 0, 100, (1080,520)))
         sch.add_action(Land(bob, 0, 100, Vector(s.width, s.height//2)))
 
@@ -112,14 +112,14 @@ class TestDices(unittest.TestCase):
         dice5 = Dice('D5', num=5)
         dice5.place(5*s.width//7, middle)
         sch.add_action(
-            MoveTo(dice5, 0, 60, Vector(5*s.width//7, s.height-50))
+            Move(dice5, 0, 60, Vector(5*s.width//7, s.height-50))
             )
         sch.add_action(Swing(dice5, 60, 80, dice5.initial_state.pos))
         s.add_actor(dice5)
 
         dice6 = Dice('D6', num=6)
         dice6.place(6*s.width//7, middle)
-        sch.add_action(MoveTo(dice6, 0, 60, Vector(6*s.width//7, 50)))
+        sch.add_action(Move(dice6, 0, 60, Vector(6*s.width//7, 50)))
         sch.add_action(Swing(dice6, 60, 80, dice6.initial_state.pos))
         s.add_actor(dice6)
 

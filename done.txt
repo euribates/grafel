@@ -1,5 +1,9 @@
 # Done list
 
+* Añadido contructor de acciones `create_action`. Además, las acciones
+  se registran y se pueden acceder por su nombre sin diferenciar
+  entre mayusculas y minusculas
+* Renombrar action MoveTo a Move
 * Eliminar clase Interval (Fusionar con Action)
 * Action Aparecer y desaparecer (FadeIn y FadeOut)
 * Cambiar color de fondo

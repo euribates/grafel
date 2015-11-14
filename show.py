@@ -66,36 +66,14 @@ if opts.script:
     stage.add_actors(*actors)
     for t in language.get_actions():
         (interval, actor_name, action_name) = t[0:3]
-        args = t[3:]
-        if action_name == 'Move':
-            ActionKlass = actions.MoveTo
-        elif action_name == 'Land':
-            ActionKlass = actions.Land
-        elif action_name == 'Fall':
-            ActionKlass = actions.Fall
-        elif action_name == 'Enter':
-            ActionKlass = actions.Enter
-        elif action_name == 'Background':
-            ActionKlass = actions.Background
-        elif action_name == 'Foreground':
-            ActionKlass = actions.Foreground
-        elif action_name == 'Exit':
-            ActionKlass = actions.Exit
-        elif action_name == 'Swing':
-            ActionKlass = actions.Swing
-        elif action_name == 'EaseIn':
-            ActionKlass = actions.EaseIn
-        elif action_name == 'EaseOut':
-            ActionKlass = actions.EaseOut
-
+        from_frame, to_frame = interval
         actor = language.get_actor(actor_name)
-        action = ActionKlass(
-            actor,
-            interval.lower_bound,
-            interval.upper_bound,
+        args = t[3:]
+        action = actions.create_action(
+            action_name, actor,
+            from_frame, to_frame,
             *args
             )
-        logger.error('action: {}'.format(action))
         sch.add_action(action)
     force_exit = False
     for frame in range(stage.num_frames):

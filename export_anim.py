@@ -12,7 +12,7 @@ import svgwrite
 from vectors import Vector
 from actors import State, Actor, Square, RoundSquare, Circle
 from actors import Color
-from actions import Action, MoveTo, Blink, Fall, Land
+from actions import Action, Move, Blink, Fall, Land
 
 
 

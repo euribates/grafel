@@ -84,7 +84,7 @@ class TestActions(unittest.TestCase):
     def test_start(self):
         sch = Scheduler()
         bob = Actor('Bob')
-        sch.add_action(actions.MoveTo(bob, 5, 10, Vector(72, 54)))
+        sch.add_action(actions.Move(bob, 5, 10, Vector(72, 54)))
         sch.add_action(actions.Blink(bob, 8, 12))
 
         self.assertEqual(len(sch.active_actions), 0)  # 0
@@ -104,11 +104,11 @@ class TestActions(unittest.TestCase):
         sch.next(); self.assertEqual(len(sch.active_actions), 0)  # 14
         sch.next(); self.assertEqual(len(sch.active_actions), 0)  # 15
 
-class TestMoveTo(unittest.TestCase):
+class TestMove(unittest.TestCase):
 
     def test_move_not_in_origin(self):
         sujeto = Actor('A', pos=Vector(50, 50))
-        a = actions.MoveTo(sujeto, 0, 5, Vector(50, 0))
+        a = actions.Move(sujeto, 0, 5, Vector(50, 0))
         a.start(0)
         a.step(1); self.assertEqual(sujeto.pos, Vector(50, 40))
         a.step(2); self.assertEqual(sujeto.pos, Vector(50, 30))
@@ -119,7 +119,7 @@ class TestMoveTo(unittest.TestCase):
 
     def test_move_five_steps(self):
         sujeto = Actor('A')
-        a = actions.MoveTo(sujeto, 0, 5, Vector(50, 0))
+        a = actions.Move(sujeto, 0, 5, Vector(50, 0))
         a.start(0)
         a.step(1); self.assertEqual(sujeto.pos, Vector(10, 0))
         a.step(2); self.assertEqual(sujeto.pos, Vector(20, 0))
@@ -130,7 +130,7 @@ class TestMoveTo(unittest.TestCase):
 
     def test_move_ten_steps(self):
         sujeto = Actor('A')
-        a = actions.MoveTo(sujeto, 0, 10, Vector(100, 10))
+        a = actions.Move(sujeto, 0, 10, Vector(100, 10))
         a.start(0)
         a.step(1); self.assertEqual(sujeto.pos, Vector(10, 1))
         a.step(2); self.assertEqual(sujeto.pos, Vector(20, 2))
@@ -181,7 +181,7 @@ class TestEasing(unittest.TestCase):
         ease_out = Label('EaseOut', width=190, pos=(900,30), color='gold')
         swing = Label('Swing', width=190, pos=(1100,30), color='gold')
         sch = Scheduler()
-        sch.add_action(actions.MoveTo(move, 5, 70, (100, 700)))
+        sch.add_action(actions.Move(move, 5, 70, (100, 700)))
         sch.add_action(actions.Fall(fall, 5, 70, (300, 700)))
         sch.add_action(actions.Land(land, 5, 70, (500, 700)))
         sch.add_action(actions.EaseIn(ease_in, 5, 70, (700, 700)))
