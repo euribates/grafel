@@ -13,7 +13,7 @@ import actions
 from vectors import Vector
 from studio import Stage
 from control import Scheduler
-from actors import Actor, Square, State, Label, Text, Rect
+from actors import Actor, Square, Label, Text, Rect
 import colors
 from engines import PyGameEngine
 import random
@@ -31,12 +31,12 @@ class TestActions(unittest.TestCase):
 
     def test_get_relative_frame(self):
         task = actions.Action(Actor('A'), 5, 10)
-        self.assertEqual(task.get_relative_frame(5), 0)
-        self.assertEqual(task.get_relative_frame(6), 1)
-        self.assertEqual(task.get_relative_frame(7), 2)
-        self.assertEqual(task.get_relative_frame(8), 3)
-        self.assertEqual(task.get_relative_frame(9), 4)
-        self.assertEqual(task.get_relative_frame(10), 5)
+        self.assertEqual(task.get_relative_frame(5), 1)
+        self.assertEqual(task.get_relative_frame(6), 2)
+        self.assertEqual(task.get_relative_frame(7), 3)
+        self.assertEqual(task.get_relative_frame(8), 4)
+        self.assertEqual(task.get_relative_frame(9), 5)
+        self.assertEqual(task.get_relative_frame(10), 6)
 
 
     def test_action_inverval(self):
@@ -78,7 +78,7 @@ class TestActions(unittest.TestCase):
             sch.next()
         self.assertEqual(task.started_at_frame, 3)
         self.assertEqual(task.ended_at_frame, 6)
-        self.assertEqual(task.called_on_frames, [4, 5, 6])
+        self.assertEqual(task.called_on_frames, [3, 4, 5])
 
 
     def test_start(self):
@@ -104,44 +104,88 @@ class TestActions(unittest.TestCase):
         sch.next(); self.assertEqual(len(sch.active_actions), 0)  # 14
         sch.next(); self.assertEqual(len(sch.active_actions), 0)  # 15
 
+class TestColorize(unittest.TestCase):
+    
+    def test_colorize(self):
+        sujeto = Actor('A', color='#0080FF')
+        sch = Scheduler()
+        sch.add_action(actions.Colorize(sujeto, 0, 4, '#FF9000'))
+
+        frame = sch.next() # Frame 0 to 1, first step
+        self.assertEqual(frame, 1)
+        self.assertEqual(str(sujeto.color), '#4084bf')
+
+        frame = sch.next() # Frame 1 to 2, second step
+        self.assertEqual(frame, 2)
+        self.assertEqual(str(sujeto.color), '#80887f')
+        
+        frame = sch.next() # Frame 2 to 3, third step
+        self.assertEqual(frame, 3)
+        self.assertEqual(str(sujeto.color), '#bf8c40')
+        
+        frame = sch.next() # Frame 3 to 4, fourth step
+        self.assertEqual(frame, 4)
+        self.assertEqual(str(sujeto.color), '#ff9000')
+       
+    def test_colorize_on_pygame(self):
+        engine = PyGameEngine()
+        stage = Stage(engine)
+        stage.num_frames = 75
+        for row in range(50, 780, 100):
+            for col in range(50, 1280, 100):
+                name = 'bob{}x{}'.format(col, row)
+                actor = Square(name,
+                    color=colors.random_color(),
+                    pos=(col, row),
+                    side=90,
+                    )
+                stage.add_actor(actor)
+                stage.add_action(
+                    actions.Colorize(actor, 5, 70, colors.random_color())
+                    )
+        for frame in range(stage.num_frames):
+            stage.draw(frame)
+
+
+
 class TestMove(unittest.TestCase):
 
     def test_move_not_in_origin(self):
         sujeto = Actor('A', pos=Vector(50, 50))
         a = actions.Move(sujeto, 0, 5, Vector(50, 0))
         a.start(0)
-        a.step(1); self.assertEqual(sujeto.pos, Vector(50, 40))
-        a.step(2); self.assertEqual(sujeto.pos, Vector(50, 30))
-        a.step(3); self.assertEqual(sujeto.pos, Vector(50, 20))
-        a.step(4); self.assertEqual(sujeto.pos, Vector(50, 10))
-        a.step(5); self.assertEqual(sujeto.pos, Vector(50, 0))
+        a.step(0); self.assertEqual(sujeto.pos, Vector(50, 40))
+        a.step(1); self.assertEqual(sujeto.pos, Vector(50, 30))
+        a.step(2); self.assertEqual(sujeto.pos, Vector(50, 20))
+        a.step(3); self.assertEqual(sujeto.pos, Vector(50, 10))
+        a.step(4); self.assertEqual(sujeto.pos, Vector(50, 0))
         a.end(5)
 
     def test_move_five_steps(self):
         sujeto = Actor('A')
         a = actions.Move(sujeto, 0, 5, Vector(50, 0))
         a.start(0)
-        a.step(1); self.assertEqual(sujeto.pos, Vector(10, 0))
-        a.step(2); self.assertEqual(sujeto.pos, Vector(20, 0))
-        a.step(3); self.assertEqual(sujeto.pos, Vector(30, 0))
-        a.step(4); self.assertEqual(sujeto.pos, Vector(40, 0))
-        a.step(5); self.assertEqual(sujeto.pos, Vector(50, 0))
+        a.step(0); self.assertEqual(sujeto.pos, Vector(10, 0))
+        a.step(1); self.assertEqual(sujeto.pos, Vector(20, 0))
+        a.step(2); self.assertEqual(sujeto.pos, Vector(30, 0))
+        a.step(3); self.assertEqual(sujeto.pos, Vector(40, 0))
+        a.step(4); self.assertEqual(sujeto.pos, Vector(50, 0))
         a.end(5)
 
     def test_move_ten_steps(self):
         sujeto = Actor('A')
         a = actions.Move(sujeto, 0, 10, Vector(100, 10))
         a.start(0)
-        a.step(1); self.assertEqual(sujeto.pos, Vector(10, 1))
-        a.step(2); self.assertEqual(sujeto.pos, Vector(20, 2))
-        a.step(3); self.assertEqual(sujeto.pos, Vector(30, 3))
-        a.step(4); self.assertEqual(sujeto.pos, Vector(40, 4))
-        a.step(5); self.assertEqual(sujeto.pos, Vector(50, 5))
-        a.step(6); self.assertEqual(sujeto.pos, Vector(60, 6))
-        a.step(7); self.assertEqual(sujeto.pos, Vector(70, 7))
-        a.step(8); self.assertEqual(sujeto.pos, Vector(80, 8))
-        a.step(9); self.assertEqual(sujeto.pos, Vector(90, 9))
-        a.step(10); self.assertEqual(sujeto.pos, Vector(100, 10))
+        a.step(0); self.assertEqual(sujeto.pos, Vector(10, 1))
+        a.step(1); self.assertEqual(sujeto.pos, Vector(20, 2))
+        a.step(2); self.assertEqual(sujeto.pos, Vector(30, 3))
+        a.step(3); self.assertEqual(sujeto.pos, Vector(40, 4))
+        a.step(4); self.assertEqual(sujeto.pos, Vector(50, 5))
+        a.step(5); self.assertEqual(sujeto.pos, Vector(60, 6))
+        a.step(6); self.assertEqual(sujeto.pos, Vector(70, 7))
+        a.step(7); self.assertEqual(sujeto.pos, Vector(80, 8))
+        a.step(8); self.assertEqual(sujeto.pos, Vector(90, 9))
+        a.step(9); self.assertEqual(sujeto.pos, Vector(100, 10))
         a.end(10)
 
 
@@ -151,22 +195,22 @@ class TestFall(unittest.TestCase):
         sujeto = Actor('A')
         a = actions.Fall(sujeto, 0, 5, Vector(100, 0))
         a.start(0)
-        a.step(1); self.assertEqual(sujeto.pos, Vector(4, 0))
-        a.step(2); self.assertEqual(sujeto.pos, Vector(16, 0))
-        a.step(3); self.assertEqual(sujeto.pos, Vector(36, 0))
-        a.step(4); self.assertEqual(sujeto.pos, Vector(64, 0))
-        a.step(5); self.assertEqual(sujeto.pos, Vector(100, 0))
+        a.step(0); self.assertEqual(sujeto.pos, Vector(4, 0))
+        a.step(1); self.assertEqual(sujeto.pos, Vector(16, 0))
+        a.step(2); self.assertEqual(sujeto.pos, Vector(36, 0))
+        a.step(3); self.assertEqual(sujeto.pos, Vector(64, 0))
+        a.step(4); self.assertEqual(sujeto.pos, Vector(100, 0))
         a.end(5)
 
     def test_fall_not_in_origin(self):
         sujeto = Actor('A', pos=(100,0))
         a = actions.Fall(sujeto, 0, 5, Vector(200, 0))
         a.start(0)
-        a.step(1); self.assertEqual(sujeto.pos, Vector(104, 0))
-        a.step(2); self.assertEqual(sujeto.pos, Vector(116, 0))
-        a.step(3); self.assertEqual(sujeto.pos, Vector(136, 0))
-        a.step(4); self.assertEqual(sujeto.pos, Vector(164, 0))
-        a.step(5); self.assertEqual(sujeto.pos, Vector(200, 0))
+        a.step(0); self.assertEqual(sujeto.pos, Vector(104, 0))
+        a.step(1); self.assertEqual(sujeto.pos, Vector(116, 0))
+        a.step(2); self.assertEqual(sujeto.pos, Vector(136, 0))
+        a.step(3); self.assertEqual(sujeto.pos, Vector(164, 0))
+        a.step(4); self.assertEqual(sujeto.pos, Vector(200, 0))
         a.end(5)
 
 class TestEasing(unittest.TestCase):
@@ -218,13 +262,12 @@ class TestLevel(unittest.TestCase):
 
 class TestFadeOut(unittest.TestCase):
 
-    def test_fide_out(self):
+    def test_fade_out(self):
         bob = Square('bob')
         hide = actions.FadeOut(bob, 0, 10)
         sch = Scheduler()
         sch.add_action(hide)
         self.assertEqual(bob.alpha, 1.0)
-        sch.next()  # Frame 0 -> 1, no action
         sch.next(); self.assertAlmostEqual(bob.alpha, 0.9)
         sch.next(); self.assertAlmostEqual(bob.alpha, 0.8)
         sch.next(); self.assertAlmostEqual(bob.alpha, 0.7)
@@ -234,6 +277,8 @@ class TestFadeOut(unittest.TestCase):
         sch.next(); self.assertAlmostEqual(bob.alpha, 0.3)
         sch.next(); self.assertAlmostEqual(bob.alpha, 0.2)
         sch.next(); self.assertAlmostEqual(bob.alpha, 0.1)
+        sch.next(); self.assertAlmostEqual(bob.alpha, 0.0)
+        self.assertEqual(sch.frame, 10)
         sch.next(); self.assertAlmostEqual(bob.alpha, 0.0)
         self.assertEqual(sch.frame, 11)
 
@@ -268,7 +313,6 @@ class TestFadeIn(unittest.TestCase):
         sch = Scheduler()
         sch.add_action(show)
         self.assertEqual(bob.alpha, 0.0)
-        sch.next()  # Frame 0 -> 1, no action
         sch.next(); self.assertAlmostEqual(bob.alpha, 0.1)
         sch.next(); self.assertAlmostEqual(bob.alpha, 0.2)
         sch.next(); self.assertAlmostEqual(bob.alpha, 0.3)

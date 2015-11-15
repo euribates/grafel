@@ -25,15 +25,17 @@ class Scheduler():
 
     def next(self):
         for action in self.active_actions[:]:
-            action.step(self.frame)
             if action.is_last(self.frame):
                 action.end(self.frame)
                 self.active_actions.remove(action)
+            else:
+                action.step(self.frame)
         for actor in self.actors:  # New actions that must start
             key = (actor.name, self.frame)
             if key in self.actions:
                 for a in self.actions[key]:
                     a.start(self.frame)
+                    a.step(self.frame)
                     self.active_actions.append(a)
         self.frame += 1
         return self.frame

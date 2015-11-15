@@ -244,9 +244,9 @@ class TestWithActors(unittest.TestCase):
         star = actors.Star('Star', pos=(200, 200), alpha=0.33, color='yellow')
         star.start_draw(engine)
         for i in range(40, 101, 10):
-            star.state.delta(pos=vectors.Vector(25, 0),
-                alpha=i/100, 
-                scale=vectors.Vector(1.1, 1.1))
+            star.pos += vectors.Vector(25, 0)
+            star.alpha = i/100 
+            star.scale += vectors.Vector(1.1, 1.1)
             star.start_draw(engine)
 
 

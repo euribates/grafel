@@ -85,25 +85,25 @@ class TestDices(unittest.TestCase):
         dice1 = Dice('D1', num=1)
         dice1.place(1*s.width//7, middle)
         sch.add_action(Land(dice1, 0, 60, Vector(1*s.width//7, s.height-50)))
-        sch.add_action(Swing(dice1, 60, 80, dice1.initial_state.pos))
+        sch.add_action(Swing(dice1, 60, 80, dice1.initial_state['pos']))
         s.add_actor(dice1)
 
         dice2 = Dice('D2', num=2)
         dice2.place(2*s.width//7, middle)
         sch.add_action(Fall(dice2, 0, 60, Vector(2*s.width//7, s.height-50)))
-        sch.add_action(Swing(dice2, 60, 80, dice2.initial_state.pos))
+        sch.add_action(Swing(dice2, 60, 80, dice2.initial_state['pos']))
         s.add_actor(dice2)
 
         dice3 = Dice('D3', num=3)
         dice3.place(3*s.width//7, middle)
         sch.add_action(Fall(dice3, 0, 60, Vector(3*s.width//7, 50)))
-        sch.add_action(Swing(dice3, 60, 80, dice3.initial_state.pos))
+        sch.add_action(Swing(dice3, 60, 80, dice3.initial_state['pos']))
         s.add_actor(dice3)
 
         dice4 = Dice('D4', num=4)
         dice4.place(4*s.width//7, middle)
         sch.add_action(Land(dice4, 0, 60, Vector(4*s.width//7, 50)))
-        sch.add_action(Swing(dice4, 60, 80, dice4.initial_state.pos))
+        sch.add_action(Swing(dice4, 60, 80, dice4.initial_state['pos']))
         s.add_actor(dice4)
         
         dice5 = Dice('D5', num=5)
@@ -111,13 +111,13 @@ class TestDices(unittest.TestCase):
         sch.add_action(
             Move(dice5, 0, 60, Vector(5*s.width//7, s.height-50))
             )
-        sch.add_action(Swing(dice5, 60, 80, dice5.initial_state.pos))
+        sch.add_action(Swing(dice5, 60, 80, dice5.initial_state['pos']))
         s.add_actor(dice5)
 
         dice6 = Dice('D6', num=6)
         dice6.place(6*s.width//7, middle)
         sch.add_action(Move(dice6, 0, 60, Vector(6*s.width//7, 50)))
-        sch.add_action(Swing(dice6, 60, 80, dice6.initial_state.pos))
+        sch.add_action(Swing(dice6, 60, 80, dice6.initial_state['pos']))
         s.add_actor(dice6)
 
         t1 = Label('Texto1', pos=(s.width//2, 50),

@@ -11,7 +11,7 @@ import argparse
 import actors
 from vectors import Vector
 from actors import (
-    State, Actor, Square, RoundRect, 
+    Actor, Square, RoundRect, 
     Circle, Star, Rect, Label,
     )
 from actions import (

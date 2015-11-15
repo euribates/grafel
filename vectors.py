@@ -17,10 +17,7 @@ class Vector(object):
     height = property(lambda self: self.y)
 
     def __str__(self):
-        return 'Vector({:d}, {:d})'.format(
-            int(round(self.x)), 
-            int(round(self.y)),
-            )
+        return 'Vector({:.3f}, {:.3f})'.format(self.x, self.y)
 
     __repr__ = __str__
 
@@ -51,9 +48,13 @@ class Vector(object):
             )
 
     def __add__(self, op2):
+        if isinstance(op2, tuple):
+            op2 = Vector(op2[0], op2[1])
         return Vector(self.x + op2.x, self.y + op2.y)
 
     def __sub__(self, op2):
+        if isinstance(op2, tuple):
+            op2 = Vector(op2[0], op2[1])
         return Vector(self.x - op2.x, self.y - op2.y)
 
 

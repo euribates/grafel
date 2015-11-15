@@ -162,11 +162,12 @@ class Color:
         global _name_map
         argc = len(args)
         if argc == 1:
-            self.name = args[0]
-            if self.name in _name_map:
+            name = args[0].lower()
+            if name in _name_map:
+                self.name = name
                 self.r, self.g, self.b = _name_map[self.name]
             else:
-                m = Color.pat_hex_color.match(self.name)
+                m = Color.pat_hex_color.match(name)
                 if m:
                     self.r = int(m.group(1), 16)
                     self.g = int(m.group(2), 16)

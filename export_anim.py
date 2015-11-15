@@ -10,7 +10,7 @@ import argparse
 import svgwrite
 
 from vectors import Vector
-from actors import State, Actor, Square, RoundSquare, Circle
+from actors import Actor, Square, RoundSquare, Circle
 from actors import Color
 from actions import Action, Move, Blink, Fall, Land
 
@@ -49,17 +49,18 @@ def draw_grid(dwg):
         x_axis += 100
 
 def draw_actor(scr, actor):
-    color = actor.state.color.as_rgb()
-    points = [actor.state.pos + v for v in actor.vertexs]   
+    color = actor.color.as_rgb()
+    points = [actor.pos + v for v in actor.vertexs]   
     pygame.draw.polygon(scr, color, points, 0)
     pygame.draw.aalines(scr, WHITE, True, points)
     if DEBUG:
         for v in points:
             pygame.draw.circle(scr, RED, v, 3, 0)
-        write_at(scr, actor.state.pos, actor.name)
+        write_at(scr, actor.pos, actor.name)
 
 charles = Square('Charles', 
-    State(pos=Vector(100, 0), color='brown4'), 
+    pos=Vector(100, 0), 
+    color='brown4', 
     width=75, height=25
     )
 

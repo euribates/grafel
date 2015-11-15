@@ -1,11 +1,7 @@
 # ToDo List
 
 * Nuevo Accion Traza (Igual que MoveTo, pero deja una linea por el recorrido)
-* Nueva accion cambiar color gradualmente a otro
-* Ver creditos de Saul Brass (Anantomy of a murder - 1959)
-
+* Ver creditos de Saul Brass (Anatomy of a murder - 1959)
 * Posibilidad de hacer PAN en la escena 
-* Añadir acciones al lenguaje
 * Accion "Sigue A" (Ummmm Ni idea de como hacerlo por ahora)
 * Añadir color de borde (Ahora es es mismo que el de la figura)
-* Añadir algunos de los nombres de colores de pygame

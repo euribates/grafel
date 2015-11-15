@@ -16,60 +16,6 @@ import fileutils
 
 logger = logs.create(__name__)
 
-class State:
-
-    def __init__(self, **kwargs):
-        self.pos = kwargs.pop('pos', zero)
-        if isinstance(self.pos, tuple):
-            self.pos = Vector(self.pos[0], self.pos[1])
-        self.color = kwargs.pop('color', Color('silver'))
-        self.scale = kwargs.pop('scale', Vector(1, 1))
-        self.alpha = kwargs.pop('alpha', 1.0)
-
-    def set_color(self, color):
-        if isinstance(color, Color):
-            self._color = color
-        else:
-            self._color = Color(color)
-
-    def get_color(self):
-        return self._color
-
-    color = property(get_color, set_color)
-
-    def __repr__(self):
-        return 'State({}, {}, {}, {})'.format(
-            repr(self.pos),
-            repr(self._color),
-            repr(self.scale),
-            repr(self.alpha),
-            )
-
-    def __str__(self):
-        return 'State[pos:{}|color:{}|scale={}|alpha:{}]'.format(
-            self.pos,
-            self.color,
-            self.scale,
-            self.alpha,
-            )
-
-    def delta(self, **kwargs):
-        logger.info('delta method called')
-        logger.info('delta method kwargs: {}'.format(kwargs.keys()))
-        d_pos = kwargs.pop('pos', None)
-        if d_pos is not None:
-            self.pos += d_pos
-        color = kwargs.pop('color', None)
-        if color is not None:
-            self.color = color
-        scale = kwargs.pop('scale', None)
-        if scale is not None:
-            self.scale.x *= scale.x
-            self.scale.y *= scale.y
-        alpha = kwargs.pop('alpha', None)
-        if alpha is not None:
-            self.alpha = alpha
-
 class Level(IntEnum):
     OFF_STAGE = 0
     ON_BACKGROUND = 1
@@ -78,50 +24,65 @@ class Level(IntEnum):
 
 class Actor():
 
+    def _save_state(self, **kwargs):
+        result = {
+            'pos': self._pos,
+            'color': self._color,
+            'alpha': self.alpha,
+            'scale': self.scale,
+            'level': self.level,
+            'debug': self.debug,
+            }
+        for k in kwargs:
+            result[k] = kwargs[k]
+        return result
+
+    def _load_state(self, state):
+        for k in state:
+            setattr(self, k, state[k])
     
     def __init__(self, name, **kwargs):
         self.name = name 
+        self.level = Level.ON_STAGE if 'pos' in kwargs else Level.OFF_STAGE
+        self._pos = kwargs.pop('pos', zero)
+        if isinstance(self._pos, tuple):
+            self._pos = Vector(self.pos[0], self.pos[1])
+        self._color = kwargs.pop('color', Color('silver'))
+        if isinstance(self._color, str):
+            self._color = Color(self.color)
+        self.scale = kwargs.pop('scale', Vector(1, 1))
+        self.alpha = kwargs.pop('alpha', 1.0)
         self.sons = []
         self.parent = None
-        self.initial_state = State(**kwargs)
-        self.reset()
         self.debug = False
-        self.level = Level.ON_STAGE if 'pos' in kwargs else Level.OFF_STAGE
+        self.initial_state = self._save_state()
+        self.reset()
 
     def reset(self):
         self.frame = 0
-        self.state = copy(self.initial_state)
+        self._load_state(self.initial_state)
         for son in self.sons:
             son.reset()
 
     def get_pos(self):
-        return self.state.pos
+        return self._pos
 
     def set_pos(self, new_pos):
         if isinstance(new_pos, tuple):
             new_pos = Vector(new_pos[0], new_pos[1])
-        self.state.pos = new_pos
+        self._pos = new_pos
 
     pos = property(get_pos, set_pos)
 
-    def get_color(self): return self.state.color
+    def get_color(self):
+        return self._color
 
     def set_color(self, new_color):
         if isinstance(new_color, str):
             new_color = Color(new_color)
-        self.state.color = new_color
+        self._color = new_color
 
     color = property(get_color, set_color)
-
-    def get_scale(self): return self.state.scale
-    def set_scale(self, new_scale): self.state.scale = new_scale
-
-    scale = property(get_scale, set_scale)
-
-    def get_alpha(self): return self.state.alpha
-    def set_alpha(self, new_alpha): self.state.alpha = new_alpha
-
-    alpha = property(get_alpha, set_alpha)
 
     def get_offset(self):
         if self.parent:
@@ -149,9 +110,8 @@ class Actor():
 
 
     def place(self, x, y):
-        self.pos = Vector(x, y)
-        self.initial_state.pos = Vector(x, y)
-        self.level = Level.ON_STAGE
+        self.initial_state['pos'] = self.pos = Vector(x, y) 
+        self.initial_state['level'] = self.level = Level.ON_STAGE
 
     def start_draw(self, engine):
         self.draw(engine)

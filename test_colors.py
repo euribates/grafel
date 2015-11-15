@@ -7,6 +7,25 @@ from colors import Color
 
 class TestColor(unittest.TestCase):
 
+    def test_set_red_value(self):
+        c = Color(12, 33, 211)
+        c.red = 64
+        self.assertEqual(c.red, 64)
+        self.assertEqual(str(c), '#4021d3')
+
+    def test_set_green_value(self):
+        c = Color(12, 33, 211)
+        c.green = 64
+        self.assertEqual(c.green, 64)
+        self.assertEqual(str(c), '#0c40d3')
+
+    def test_set_blue_value(self):
+        c = Color(12, 33, 211)
+        c.blue = 64
+        self.assertEqual(c.blue, 64)
+        self.assertEqual(str(c), '#0c2140')
+
+
     def test_creation_from_tuple(self):
         c = Color(12, 33, 211)
         self.assertEqual(c.red, 12)

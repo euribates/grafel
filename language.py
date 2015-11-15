@@ -146,6 +146,7 @@ Action = (
     | Keyword("EaseOut") + vector
     | Keyword("Swing") + vector
     | Keyword("Enter") + vector
+    | Keyword("Colorize") + colorcode
     | Keyword("Exit")
     | Keyword("Background")
     | Keyword("Foreground")

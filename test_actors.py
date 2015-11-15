@@ -9,7 +9,7 @@ import random
 
 from vectors import Vector
 import actors
-from actors import Level, State, Actor, Square, Star
+from actors import Level, Actor, Square, Star
 from colors import Color
 import logs
 
@@ -24,56 +24,6 @@ class TestLevel(unittest.TestCase):
     def test_creating_an_actor_with_pos_put_it_on_stage(self):
         a = Square('a', side=80, pos=(50, 100))
         self.assertEqual(a.level, Level.ON_STAGE)
-
-class TestState(unittest.TestCase):
-
-    def test_create_state_without_params(self):
-        state = State()
-        self.assertEqual(state.pos, Vector(0, 0))
-        self.assertEqual(state.color.name, 'silver')
-        self.assertEqual(state.scale, Vector(1, 1))
-        self.assertEqual(state.alpha, 1.0)
-
-    def test_create_state_with_params(self):
-        state = State(
-            pos=Vector(3,4),
-            color='red',
-            scale=Vector(50, 100),
-            alpha=0.5
-            )
-        self.assertEqual(state.pos, Vector(3, 4))
-        self.assertEqual(state.color.name, 'red')
-        self.assertEqual(state.scale.x, 50)
-        self.assertEqual(state.scale.y, 100)
-        self.assertEqual(state.alpha, 0.5)
-
-    def test_alter_state_relative_pos(self):
-        state = State()
-        state.delta(pos=Vector(1,2))
-        self.assertEqual(state.pos.x, 1)
-        self.assertEqual(state.pos.y, 2)
-        state.delta(pos=Vector(1,2))
-        self.assertEqual(state.pos.x, 2)
-        self.assertEqual(state.pos.y, 4)
-
-    def test_alter_state_color(self):
-        state = State()
-        state.delta(color='red')
-        self.assertEqual(state.color.name, 'red')
-
-    def test_alter_state_relative_scale(self):
-        state = State()
-        state.delta(scale=Vector(1,2))
-        self.assertEqual(state.scale, Vector(1,2))
-        state.delta(scale=Vector(2,1))
-        self.assertEqual(state.scale, Vector(2,2))
-        state.delta(scale=Vector(3,2))
-        self.assertEqual(state.scale, Vector(6,4))
-
-    def test_alter_state_alpha(self):
-        state = State()
-        state.delta(alpha=0.75)
-        self.assertEqual(state.alpha, 0.75)
 
 class TestActorCenter(unittest.TestCase):
 
@@ -212,12 +162,12 @@ class TestLabel(unittest.TestCase):
 class TestSquare(unittest.TestCase):
 
     def test_creacion_square_bob(self):
-        bob = Square('Bob', pos=(23, 74))
-        self.assertEqual(bob.name, 'Bob')
+        bob = Square('bob', pos=(23, 74))
+        self.assertEqual(bob.name, 'bob')
         self.assertEqual(bob.pos.x, 23)
         self.assertEqual(bob.pos.y, 74)
-        self.assertEqual(bob.initial_state.pos.x, 23)
-        self.assertEqual(bob.initial_state.pos.y, 74)
+        self.assertEqual(bob.initial_state['pos'].x, 23)
+        self.assertEqual(bob.initial_state['pos'].y, 74)
         self.assertEqual(bob.width, 50)
         self.assertEqual(bob.height, 50)
 

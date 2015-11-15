@@ -8,6 +8,7 @@ from copy import copy
 import logs
 from vectors import Vector
 from actors import Level
+import colors
 
 logger = logs.create(__name__)
 
@@ -50,7 +51,7 @@ class Action:
         return item == self.upper_bound
     
     def get_relative_frame(self, frame):
-        return frame - self.lower_bound
+        return frame - self.lower_bound + 1
 
     def start(self, frame):
         logger.debug('Action {} stars at frame {}'.format(
@@ -83,6 +84,43 @@ class Blink(Action):
 
     def end(self, frame):
         self.actor.color = self.src_color
+
+
+@register_action
+class Colorize(Action):
+
+    def __init__(self, actor, from_frame, to_frame, new_color):
+        super().__init__(actor, from_frame, to_frame)
+        if isinstance(new_color, str):
+            new_color = colors.Color(new_color)
+        self.new_color = new_color
+
+    def start(self, frame):
+        logger.info('Action {} start method called on frame {}'.format(
+            self, frame
+            ))
+        self.original_color = copy(self.actor.color)
+        self.delta_r = self.new_color.red - self.original_color.red
+        self.delta_g = self.new_color.g - self.original_color.g
+        self.delta_b = self.new_color.b - self.original_color.b
+
+    def step(self, frame):
+        logger.info('Action {} step method called on frame {}'.format(
+            self, frame
+            ))
+        t = self.get_relative_frame(frame)
+        _inc_r = int(round(self.delta_r * t / self.num_steps))
+        self.actor.color.red = self.original_color.red + _inc_r
+
+        _inc_g = int(round(self.delta_g * t / self.num_steps))
+        self.actor.color.g = self.original_color.g + _inc_g 
+    
+        _inc_b = int(round(self.delta_b * t / self.num_steps))
+        self.actor.color.b = self.original_color.b + _inc_b 
+           
+
+    def end(self, frame):
+        self.actor.color = self.new_color
 
 
 @register_action

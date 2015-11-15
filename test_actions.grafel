@@ -1,0 +1,18 @@
+Cast:
+
+    r1 = Rect height 10 width 1260 color #EF338A pos 640x360
+    r2 = Rect height 700 width 10 color #FFFFFF pos 30x360 alpha .2
+
+Actions:
+
+    1-25   r1   Land 640x700
+    25-75  r1   Swing 640x50
+    75-100 r1   Fall 640x360
+
+    1-5    r1   Colorize #000000
+    5-25   r1   Colorize #DD3a28
+    25-50  r1   Colorize #662331
+    50-75  r1   Colorize #229AA2
+    75-80   r1  Colorize #FFFFFF
+
+    1-100   r2  Move 1250x360
