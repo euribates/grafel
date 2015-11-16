@@ -1,30 +1,31 @@
 Cast:
 
     titbox = Rect width 800 height 80 pos -800x60 color silver 
-    titulo = Text text "Analizador léxico" pos -700x60 fontsize 72
+    titulo = Text text "Analizador léxico" pos -700x60 fontsize 72 color white
 
     border = Rect width 200 height 100 pos 640x200 color blue
     lparser = Label text "Parser" pos 640x200 color silver
 
-    lx = Text text "x" pos 220x200 width 25 fontsize 72
-    leq = Text text "=" pos 250x200 color #CCCCCC  width 25 fontsize 72
-    ly = Text text "y" pos 280x200 color #CCCCCC  width 25 fontsize 72
-    lplus = Text text "+" pos 310x200 color #CCCCCC  width 25 fontsize 72
-    l2 = Text text "2" pos 340x200 color #CCCCCC  width 25 fontsize 72
+    lx = Label text "x" pos 200x200 width 35 fontsize 72 color #222222
+    leq = Label text "=" pos 240x200 color #222222 width 35 fontsize 72
+    ly = Label text "y" pos 280x200 color #222222  width 35 fontsize 72
+    lplus = Label text "+" pos 320x200 color #222222  width 35 fontsize 72
+    l2 = Label text "2" pos 360x200 color #222222  width 35 fontsize 72
 
-    lbl2 = Label text "<INT 2>" color blue
-    lblplus = Label text "<PLUS +>" color blue
-    lbly = Label text "<VAR y>" color blue
-    lbleq = Label text "<EQ =>" color blue 
-    lblx = Label text "<VAR x>" color blue 
+    lbl2 = Label text "<INT 2>" color blue fontsize 44 width 200
+    lblplus = Label text "<PLUS +>" color blue fontsize 44 width 200
+    lbly = Label text "<VAR y>" color blue fontsize 44 width 200
+    lbleq = Label text "<EQ =>" color blue fontsize 44 width 200
+    lblx = Label text "<VAR x>" color blue fontsize 44 width 200
 
 Actions:
     0-1      border Foreground
     0-1      lparser Foreground
     0-1      titbox  Background     
+    0        titulo Foreground
 
-    0-50     titulo Fall 400x60
-    0-50     titbox Fall 300x60
+    0-30     titulo Fall 400x60
+    0-30     titbox Fall 300x60
 
     60-80    l2    Move 640x200
     70-90    lplus Move 640x200
@@ -33,22 +34,18 @@ Actions:
     100+20   lx    Move 640x200
 
     80       lbl2  Enter  640x200
-    81+20    lbl2  Move 1000x200
-    81+20    lbl2  Fall 640x680
+    80+20    lbl2  Fall 1000x680
 
     90      lblplus   Enter  640x200
-    91+20   lblplus   Move 1000x200
-    91+20   lblplus   Fall 640x630
+    90+20   lblplus   Fall 1000x620
     
     100      lbly   Enter  640x200
-    101+20   lbly   Move 1000x200
-    101+20   lbly   Fall 640x580
+    100+20   lbly   Fall 1000x560
 
     110      lbleq   Enter  640x200
-    111+20   lbleq   Move 1000x200
-    111+20   lbleq   Fall 640x530
+    110+20   lbleq   Fall 1000x500
 
     120      lblx   Enter  640x200
-    121+20   lblx   Move 1000x200
-    121+20   lblx   Fall 640x480
+    120+20   lblx   Fall 1000x440
+
 
