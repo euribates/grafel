@@ -1,0 +1,96 @@
+Cast:
+
+    titbox = Rect width 800 height 80 pos -800x60 color silver 
+    titulo = Text text "Árbol AST" pos -700x60 fontsize 72 color white
+
+    lbl2 = Label text "<INT 2>" color blue fontsize 44 width 190
+    lblplus = Label text "<PLUS +>" color blue fontsize 44 width 190
+    lbly = Label text "<VAR y>" color blue fontsize 44 width 190
+    lbleq = Label text "<EQ =>" color blue fontsize 44 width 190
+    lblx = Label text "<VAR x>" color blue fontsize 44 width 190
+
+    boxx = RoundRect alpha 0.0 width 80 height 60 color red pos 295x400 
+    boxeq = RoundRect alpha 0.0 width 50 height 60 color red pos 355x400 
+    boxterm1 = RoundRect alpha 0.0 width 145 height 60 color red pos 340x460
+    boxplus  = RoundRect alpha 0.0 width 150  height 60 color red pos 490x460
+    boxterm2 = RoundRect alpha 0.0 width 145 height 60 color red pos 640x460
+
+    s1 = Star radius 15 color #000000 pos 20x400
+    r1 = Text text "Line --> Id = Expr" pos 280x400 fontsize 70 color #444444
+
+    s2 = Star radius 15 color #000000 pos 20x460
+    r2 = Text text "Expr --> Term (+|-) Term" pos 375x460 fontsize 70 color #444444
+
+    path1 = Path points (490x300, 230x450) color gold
+    path2 = Path points (490x300, 750x450) color gold
+    path3 = Path points (750x450, 550x600) color gold
+    path4 = Path points (750x450, 950x600) color gold
+
+Actions:
+    0        titbox  Background     
+    0        titulo Foreground
+    0        boxplus Background
+    0        r1 Foreground
+    0        r2 Foreground
+
+
+    0-30     titulo Fall 450x60
+    0-30     titbox Fall 300x60
+
+    0        lblx    Enter 1000x440
+    0        lbleq   Enter 1000x500
+    0        lbly    Enter 1000x560
+    0        lblplus Enter 1000x620
+    0        lbl2    Enter 1000x680
+
+    40+20    lblx    Land  150x220 
+    60+20    lbleq   Land  350x220
+    80+20    lbly    Land  550x220
+    100+20   lblplus Land  750x220
+    120+20   lbl2    Land  950x220
+
+    40-45    boxx      FadeIn
+    55-60    boxx      FadeOut
+
+    60-65    boxeq      FadeIn
+    75-80    boxeq      FadeOut
+
+    40+5    r1      Colorize #FFFFFF
+    40+5    s1      Colorize yellow
+    75-80   r1      Colorize #444444
+    75-80   s1      Colorize black
+
+    80+5    r2      Colorize #FFFFFF
+    80+5    s2      Colorize yellow
+    135-140 r2      Colorize #444444
+    135-140 s2      Colorize black
+
+    80-85    boxterm1      FadeIn
+    95-100   boxterm1      FadeOut
+    100-105  boxplus       FadeIn
+    115-120  boxplus       FadeOut
+    120-125  boxterm2      FadeIn
+    135-140  boxterm2      FadeOut
+
+    160-180 r1 Colorize black
+    160-180 r2 Colorize black
+    180 r1 Exit
+    180 r2 Exit
+
+    200-240 lbl2 Land 910x600
+    200-220 lblplus Land 750x450
+    200-240 lbly Land 590x600
+    205-225 lbleq Land 490x300
+    205-225 lblx Land 230x450
+
+    240      path1 Background
+    240+14   path1 FadeIn
+    
+    240      path2 Background
+    240+14   path2 FadeIn
+
+    240      path3 Background
+    240+14   path3 FadeIn
+
+    240      path4 Background
+    240+14   path4 FadeIn

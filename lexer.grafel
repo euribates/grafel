@@ -27,11 +27,11 @@ Actions:
     0-30     titulo Fall 400x60
     0-30     titbox Fall 300x60
 
-    60-80    l2    Move 640x200
-    70-90    lplus Move 640x200
-    80-100   ly    Move 640x200
-    90+20    leq   Move 640x200
-    100+20   lx    Move 640x200
+    60-80     l2    Move 640x200
+    70-90     lplus Move 642x200
+    80-100    ly    Move 640x200
+    90-110    leq   Move 640x200
+   100-120    lx    Move 640x200
 
     80       lbl2  Enter  640x200
     80+20    lbl2  Fall 1000x680

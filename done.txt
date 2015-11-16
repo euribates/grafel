@@ -1,5 +1,7 @@
 # Done list
 
+* Añadido actor Path (traza líneas absolutas)
+* FadeIn y FadeOut incluidas en el lenguaje
 * La secuencia de llamada en las acciones ahora es correcta, se ejecuta
   una llamada a `step` en cada paso de un frame a otro. `start` se llama
   en el primer frame de la secuencia, `end` en el último. Por ejemplo

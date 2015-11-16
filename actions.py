@@ -136,7 +136,7 @@ class FadeOut(Action):
 
     def end(self, frame):
         self.actor.alpha = 0.0
-
+        self.actor.level ==  Level.OFF_STAGE
 
 @register_action
 class FadeIn(Action):
@@ -145,6 +145,10 @@ class FadeIn(Action):
         super().__init__(actor, from_frame, to_frame)
         self.initial_alpha = self.actor.alpha
         self.delta_alpha = (1.0 - self.initial_alpha) / self.num_steps
+
+    def star(self, frame):
+        if self.actor.level ==  Level.OFF_STAGE:
+            self.actor.level = Level.ON_STAGE
 
     def step(self, frame):
         self.actor.alpha += self.delta_alpha

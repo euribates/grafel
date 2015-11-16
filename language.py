@@ -127,7 +127,9 @@ attr = (
 
 attrs = ZeroOrMore(attr)
 Identifier = Word(alphas, alphanums)
-role = oneOf('Square Rect RoundRect Star Dice Label Text Circle Triangle Bitmap')
+role = oneOf(
+    'Square Rect RoundRect Star Dice Label Text Circle Triangle Bitmap Path'
+    )
 castline = (
     Identifier('name')
     + Suppress('=')
@@ -147,6 +149,8 @@ Action = (
     | Keyword("Swing") + vector
     | Keyword("Enter") + vector
     | Keyword("Colorize") + colorcode
+    | Keyword("FadeIn")
+    | Keyword("FadeOut")
     | Keyword("Exit")
     | Keyword("Background")
     | Keyword("Foreground")

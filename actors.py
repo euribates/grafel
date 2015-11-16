@@ -187,6 +187,25 @@ class Circle(Actor):
             alpha=self.alpha,
             )
 
+class Path(Actor):
+    
+    def __init__(self, name, points=None, **kwargs):
+        super().__init__(name, **kwargs) 
+        self.points = points[:]
+        total = zero
+        for p in points:
+            total += p
+        self.centroid = total / len(points)
+ 
+    def draw(self, engine):
+        p1 = self.points[0]
+        for p2 in self.points[1:]:
+            engine.line(
+                p1.x, p1.y, p2.x, p2.y,
+                color=self.color,
+                alpha=self.alpha
+                )
+            p1 = p2
 
 class Polygon(Actor):
 
@@ -223,6 +242,7 @@ class Triangle(Polygon):
             if isinstance(c, tuple):
                 c = Vector(*c)
         super().__init__(name, points=[b-a, c-b], **kwargs)    
+
 
 class Star(Polygon):
 
@@ -413,7 +433,7 @@ def create_actor(name, role, **kwargs):
     for k in kwargs:
         buff.append(', {}={}'.format(k, repr(kwargs[k])))
     buff.append(')')
-    logger.info(''.join(buff))
+    logger.error(''.join(buff))
     _Klass = getattr(actors, role)
     return _Klass(name, **kwargs)
 
