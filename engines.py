@@ -4,7 +4,6 @@
 import os
 import shutil
 
-from PIL import Image
 import colors
 from colors import white
 import vectors
@@ -71,6 +70,8 @@ class SVGEngine(BaseEngine):
 
     def __init__(self, width=1280, height=720, fps=25, output_dir='/tmp'):
         super().__init__(width, height, fps)
+        if not os.path.isdir(output_dir):
+            os.makedirs(output_dir)
         self.output_dir = output_dir
 
 
