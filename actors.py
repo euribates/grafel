@@ -16,11 +16,13 @@ import fileutils
 
 logger = logs.create(__name__)
 
+
 class Level(IntEnum):
     OFF_STAGE = 0
     ON_BACKGROUND = 1
     ON_STAGE = 2
     ON_FOREGROUND = 3
+
 
 class Actor():
 
@@ -40,9 +42,9 @@ class Actor():
     def _load_state(self, state):
         for k in state:
             setattr(self, k, state[k])
-    
+
     def __init__(self, name, **kwargs):
-        self.name = name 
+        self.name = name
         self.level = Level.ON_STAGE if 'pos' in kwargs else Level.OFF_STAGE
         self._pos = kwargs.pop('pos', zero)
         if isinstance(self._pos, tuple):
@@ -86,9 +88,9 @@ class Actor():
 
     def get_offset(self):
         if self.parent:
-            return self.parent.get_offset() + self.parent.pos 
+            return self.parent.get_offset() + self.parent.pos
         else:
-            return zero 
+            return zero
 
     def add_son(self, actor):
         actor.parent = self
@@ -108,9 +110,8 @@ class Actor():
             nom=self.name
             )
 
-
     def place(self, x, y):
-        self.initial_state['pos'] = self.pos = Vector(x, y) 
+        self.initial_state['pos'] = self.pos = Vector(x, y)
         self.initial_state['level'] = self.level = Level.ON_STAGE
 
     def start_draw(self, engine):
@@ -133,6 +134,7 @@ class Actor():
             (5, 5), (-5, 5), (-5, -5)
             ], alpha=0.5)
 
+
 class Square(Actor):
 
     def __init__(self, name, side=50, **kwargs):
@@ -143,10 +145,12 @@ class Square(Actor):
         pos = self.pos + self.get_offset()
         x = pos.x - self.width / 2
         y = pos.y - self.height / 2
-        engine.rect(x, y, self.width, self.height,
+        engine.rect(
+            x, y, self.width, self.height,
             color=self.color,
             alpha=self.alpha,
             )
+
 
 class Box(Actor):
 
@@ -168,10 +172,12 @@ class Box(Actor):
         pos = self.pos + self.get_offset()
         x = pos.x - self.width / 2
         y = pos.y - self.height / 2
-        engine.box(x, y, self.width, self.height,
+        engine.box(
+            x, y, self.width, self.height,
             color=self.color,
             alpha=self.alpha,
             )
+
 
 class Rect(Actor):
 
@@ -189,15 +195,16 @@ class Rect(Actor):
             self.height,
             )
 
-
     def draw(self, engine):
         pos = self.pos + self.get_offset()
         x = pos.x - self.width / 2
         y = pos.y - self.height / 2
-        engine.rect(x, y, self.width, self.height,
+        engine.rect(
+            x, y, self.width, self.height,
             color=self.color,
             alpha=self.alpha,
             )
+
 
 class Circle(Actor):
 
@@ -207,21 +214,23 @@ class Circle(Actor):
 
     def draw(self, engine):
         pos = self.pos + self.get_offset()
-        engine.circle(pos.x, pos.y, self.radius,
+        engine.circle(
+            pos.x, pos.y, self.radius,
             color=self.color,
             alpha=self.alpha,
             )
 
+
 class Path(Actor):
-    
+
     def __init__(self, name, points=None, **kwargs):
-        super().__init__(name, **kwargs) 
+        super().__init__(name, **kwargs)
         self.points = points[:]
         total = zero
         for p in points:
             total += p
         self.centroid = total / len(points)
- 
+
     def draw(self, engine):
         p1 = self.points[0]
         for p2 in self.points[1:]:
@@ -232,23 +241,26 @@ class Path(Actor):
                 )
             p1 = p2
 
+
 class Polygon(Actor):
 
     def __init__(self, name, points=None, **kwargs):
-        super().__init__(name, **kwargs) 
+        super().__init__(name, **kwargs)
         acc = total = zero
-        for _ in points:
-            acc += _
+        for p in points:
+            acc += p
             total += acc
-        self.centroid = total / ( len(points) + 1 )
+        self.centroid = total / (len(points) + 1)
         self.points = points or []
- 
+
     def draw(self, engine):
         pos = self.pos + self.get_offset() - self.centroid
-        engine.polygon(pos.x, pos.y, self.points,
+        engine.polygon(
+            pos.x, pos.y, self.points,
             color=self.color,
             alpha=self.alpha,
             )
+
 
 class Triangle(Polygon):
     def __init__(self, name, points=None, **kwargs):
@@ -260,13 +272,13 @@ class Triangle(Polygon):
             a = points[0]
             if isinstance(a, tuple):
                 a = Vector(*a)
-            b = points[1] 
+            b = points[1]
             if isinstance(b, tuple):
                 b = Vector(*b)
             c = points[2]
             if isinstance(c, tuple):
                 c = Vector(*c)
-        super().__init__(name, points=[b-a, c-b], **kwargs)    
+        super().__init__(name, points=[b-a, c-b], **kwargs)
 
 
 class Star(Polygon):
@@ -280,9 +292,10 @@ class Star(Polygon):
             new_x = math.sin(a) * r
             new_y = -math.cos(a) * r
             points.append(Vector(new_x - x, new_y - y))
-            x = new_x 
+            x = new_x
             y = new_y
         super().__init__(name, points=points, **kwargs)
+
 
 class RoundRect(Actor):
 
@@ -292,7 +305,7 @@ class RoundRect(Actor):
         self.height = int(height) if height > 20 else 20
         self.size = Vector(self.width, self.height)
         if 'radius' in kwargs:
-            self.radius = kwargs['radius'] 
+            self.radius = kwargs['radius']
         else:
             self.radius = int(round(min(self.width, self.height) // 12))
 
@@ -301,14 +314,11 @@ class RoundRect(Actor):
         x = pos.x - self.width / 2
         y = pos.y - self.height / 2
         engine.roundrect(
-            x, y, self.width, self.height, 
+            x, y, self.width, self.height,
             self.radius,
             color=self.color,
             alpha=self.alpha,
             )
-
-
-
 
 
 class Dice(RoundRect):
@@ -325,7 +335,7 @@ class Dice(RoundRect):
         self.num = num
         self.side = side
         self.dot_color = self.color.inverse()
-        x = self.width // 4 
+        x = self.width // 4
         y = self.height // 4
         default_dot_radius = self.width // 10
         if num == 1:
@@ -349,7 +359,7 @@ class Dice(RoundRect):
             self.add_dot(Vector(x, y))
             self.add_dot(Vector(0, 0))
         elif num == 6:
-            y = self.side // 4 
+            y = self.side // 4
             self.add_dot(Vector(-x, -y))
             self.add_dot(Vector(-x, 0))
             self.add_dot(Vector(-x, y))
@@ -364,15 +374,17 @@ class Dice(RoundRect):
             setattr(self, '_dot_counter', 1)
         radius = r if r else self.side // 10
         name = '{}.dot{}'.format(self.name, self._dot_counter)
-        new_dot = Circle(name, radius=radius,
+        new_dot = Circle(
+            name, radius=radius,
             pos=pos,
             color=self.dot_color,
             alpha=self.alpha,
             )
         self.add_son(new_dot)
 
+
 class Text(Actor):
-    
+
     def __init__(self, name, text='', **kwargs):
         self.text = text or name
         self.font_size = kwargs.pop('fontsize', 32)
@@ -396,11 +408,13 @@ class Text(Actor):
         if self.debug:
             engine.line(x-30, y, x+30, y, color='gold')
             engine.line(x, y-30, x, y+30, color='gold')
-        engine.text(x, y, self.text,
+        engine.text(
+            x, y, self.text,
             color=self.color,
             alpha=self.alpha,
-            font_size=self.font_size,
+            font_size=self.font_size
             )
+
 
 class Bitmap(Actor):
 
@@ -412,8 +426,9 @@ class Bitmap(Actor):
     def draw(self, engine):
         engine.bitmap(self.pos.x, self.pos.y, self.filename)
 
+
 class Label(RoundRect):
-    
+
     def __init__(self, name, text='', **kwargs):
         self.font_size = kwargs.pop('fontsize', 32)
         height = kwargs.pop('height', None)
@@ -430,11 +445,11 @@ class Label(RoundRect):
             '{}.text'.format(name),
             text,
             color=color,
-            fontsize=self.font_size, 
+            fontsize=self.font_size,
             pos=(0, 0),
             )
-        
-        super().__init__(name, 
+        super().__init__(
+            name,
             width=width or self._text.width,
             height=height or self._text.height,
             color=color.inverse(),
@@ -450,7 +465,6 @@ class Label(RoundRect):
 
     text = property(get_text, set_text)
 
-   
 
 def create_actor(name, role, **kwargs):
     import actors
@@ -458,10 +472,6 @@ def create_actor(name, role, **kwargs):
     for k in kwargs:
         buff.append(', {}={}'.format(k, repr(kwargs[k])))
     buff.append(')')
-    logger.error(''.join(buff))
+    logger.info(''.join(buff))
     _Klass = getattr(actors, role)
     return _Klass(name, **kwargs)
-
-
-
-
