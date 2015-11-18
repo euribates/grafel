@@ -75,6 +75,12 @@ def draw_rects(engine):
     engine.roundrect(510, 10, 40, 40, 5, color='red', alpha=0.25)
     engine.roundrect(560, 10, 40, 40, 5, color='yellow')
 
+    engine.box(660, 10, 40, 40)
+    engine.box(710, 10, 40, 40, color='navy')
+    engine.box(760, 10, 40, 40, color='red')
+    engine.box(810, 10, 40, 40, color='red', alpha=0.5)
+    engine.box(860, 10, 40, 40, color='red', alpha=0.5)
+    engine.box(910, 10, 40, 40, color='yellow')
 
 def draw_circles(engine):
     engine.circle(30, 80, 20)
@@ -191,7 +197,7 @@ class TestPyGameEngine(unittest.TestCase):
         engine.grid()
         draw_all(engine)
         engine.end()
-        time.sleep(1)
+        time.sleep(4)
 
 class TestSVGEngine(unittest.TestCase):
 

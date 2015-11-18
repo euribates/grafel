@@ -128,7 +128,8 @@ attr = (
 attrs = ZeroOrMore(attr)
 Identifier = Word(alphas, alphanums)
 role = oneOf(
-    'Square Rect RoundRect Star Dice Label Text Circle Triangle Bitmap Path'
+    'Square Rect RoundRect Star Dice Label Text Circle'
+    ' Box Triangle Bitmap Path'
     )
 castline = (
     Identifier('name')

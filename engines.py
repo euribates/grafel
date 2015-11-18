@@ -43,6 +43,11 @@ class BaseEngine:
         for y in range(step, self.height, step):
             self.line(0, y, self.width, y, alpha=0.25)
 
+    def box(self, x, y, width, height, color=white, alpha=1.0):
+        logger.info('Draw box ({}, {}, {}, {}) [color:{}|alpha:{}]'.format(
+            x, y, width, height, color, alpha,
+            ))
+
     def rect(self, x, y, width, height, color=white, alpha=1.0):
         logger.info('Draw rect ({}, {}, {}, {}) [color:{}|alpha:{}]'.format(
             x, y, width, height, color, alpha,
@@ -100,6 +105,15 @@ class SVGEngine(BaseEngine):
         color = color or self.fg_color
         self.dwg.add(self.dwg.rect((x, y), (width, height),
             fill=as_color_svg(color),
+            opacity=alpha,
+            ))
+
+    def box(self, x, y, width, height, color=None, alpha=1.0):
+        color = color or self.fg_color
+        self.dwg.add(self.dwg.rect((x, y), (width, height),
+            fill_opacity=0,
+            stroke=color,
+            stroke_width=3,
             opacity=alpha,
             ))
 
@@ -194,6 +208,14 @@ class PyGameEngine(BaseEngine):
         s = pygame.Surface((width, height), pygame.SRCALPHA)   # per-pixel alpha
         s.fill(color)
         self.screen.blit(s, (x, y))
+
+    def box(self, x, y, width, height, color=None, alpha=1.0):
+        color = color or self.fg_color
+        color = self.add_alpha_color(color, alpha)
+        s = pygame.Surface((width+1, height+1), pygame.SRCALPHA)   # per-pixel alpha
+        pygame.draw.rect(s, color, (1, 1, width-1, height-1), 3)
+        self.screen.blit(s, (x, y))
+
 
     def roundrect(self, x, y, width, height, r, color=None, alpha=1.0):
         color = color or self.fg_color

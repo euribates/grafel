@@ -6,17 +6,17 @@ Cast:
     border = Rect width 200 height 100 pos 640x200 color blue
     lparser = Label text "Parser" pos 640x200 color silver
 
-    lx = Label text "x" pos 200x200 width 35 fontsize 72 color #222222
-    leq = Label text "=" pos 240x200 color #222222 width 35 fontsize 72
-    ly = Label text "y" pos 280x200 color #222222  width 35 fontsize 72
-    lplus = Label text "+" pos 320x200 color #222222  width 35 fontsize 72
-    l2 = Label text "2" pos 360x200 color #222222  width 35 fontsize 72
+    lx = Label text " x " pos 200x200 width 35 fontsize 72 color #222222
+    leq = Label text " = " pos 240x200 color #222222 width 35 fontsize 72
+    ly = Label text " y " pos 280x200 color #222222  width 35 fontsize 72
+    lplus = Label text " + " pos 320x200 color #222222  width 35 fontsize 72
+    l2 = Label text " 2 " pos 360x200 color #222222  width 35 fontsize 72
 
-    lbl2 = Label text "<INT 2>" color blue fontsize 44 width 200
-    lblplus = Label text "<PLUS +>" color blue fontsize 44 width 200
-    lbly = Label text "<VAR y>" color blue fontsize 44 width 200
-    lbleq = Label text "<EQ =>" color blue fontsize 44 width 200
-    lblx = Label text "<VAR x>" color blue fontsize 44 width 200
+    lbl2 = Label text "<INT '2'>" color blue fontsize 44 width 200
+    lblplus = Label text "<OP '+'>" color blue fontsize 44 width 200
+    lbly = Label text "<VAR 'y'>" color blue fontsize 44 width 200
+    lbleq = Label text "<EQ '='>" color blue fontsize 44 width 200
+    lblx = Label text "<VAR 'x'>" color blue fontsize 44 width 200
 
 Actions:
     0-1      border Foreground
@@ -34,18 +34,23 @@ Actions:
    100-120    lx    Move 640x200
 
     80       lbl2  Enter  640x200
-    80+20    lbl2  Fall 1000x680
+    80+10    lbl2  Land   900x200
+    90+20    lbl2  Fall  1000x680
 
     90      lblplus   Enter  640x200
-    90+20   lblplus   Fall 1000x620
+    90+10   lblplus   Land   900x200
+    100+20  lblplus   Fall  1000x620
     
     100      lbly   Enter  640x200
-    100+20   lbly   Fall 1000x560
+    100+10   lbly   Land  900x200
+    110+20   lbly   Fall 1000x560
 
     110      lbleq   Enter  640x200
-    110+20   lbleq   Fall 1000x500
+    110+10   lbleq   Land  900x200
+    120+20   lbleq   Fall 1000x500
 
     120      lblx   Enter  640x200
-    120+20   lblx   Fall 1000x440
+    120+10   lblx   Land  900x200
+    130+20   lblx   Fall 1000x440
 
 

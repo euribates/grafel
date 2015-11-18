@@ -1,6 +1,5 @@
 # ToDo List
 
-* Actor Box
 * Nuevo Accion Traza (Igual que MoveTo, pero deja una linea por el recorrido)
 * Ver creditos de Saul Brass (Anatomy of a murder - 1959)
 * Posibilidad de hacer PAN en la escena 

@@ -10,7 +10,9 @@ import random
 from vectors import Vector
 import actors
 from actors import Level, Actor, Square, Star
-from colors import Color
+import colors
+import actions
+from studio import Stage
 import logs
 
 logger = logs.create(__name__)
@@ -24,6 +26,24 @@ class TestLevel(unittest.TestCase):
     def test_creating_an_actor_with_pos_put_it_on_stage(self):
         a = Square('a', side=80, pos=(50, 100))
         self.assertEqual(a.level, Level.ON_STAGE)
+
+class TestBox(unittest.TestCase):
+    def test_box(self):
+        stage = Stage()
+        for col in range(50, 1280, 100):
+            for row in range(50, 720, 100):
+                b = actors.Box('b{}x{}'.format(col, row),
+                    pos=Vector(col, row),
+                    width=90,
+                    height=90,
+                    color=colors.random_color()
+                    )
+                stage.add_actor(b)
+                stage.add_action(actions.Fall(b, 10, 35, Vector(640, 320)))
+                stage.add_action(actions.Land(b, 35, 60, b.initial_state['pos']))
+
+        for i in range(75):
+            stage.draw(i)
 
 class TestActorCenter(unittest.TestCase):
 

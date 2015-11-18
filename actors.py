@@ -148,6 +148,31 @@ class Square(Actor):
             alpha=self.alpha,
             )
 
+class Box(Actor):
+
+    def __init__(self, name, width=50, height=50, **kwargs):
+        super().__init__(name, **kwargs)
+        self.width = width
+        self.height = height
+        self.size = (self.width, self.height)
+
+    def __str__(self):
+        return 'Box {} at {} [width={} heigth={}]'.format(
+            self.name,
+            self.pos,
+            self.width,
+            self.height,
+            )
+
+    def draw(self, engine):
+        pos = self.pos + self.get_offset()
+        x = pos.x - self.width / 2
+        y = pos.y - self.height / 2
+        engine.box(x, y, self.width, self.height,
+            color=self.color,
+            alpha=self.alpha,
+            )
+
 class Rect(Actor):
 
     def __init__(self, name, width=50, height=50, **kwargs):

@@ -12,7 +12,7 @@ options_parser.add_argument("--grid",
     action='store_true',
     )
 
-options_parser.add_argument("--num_frames",
+options_parser.add_argument("--num-frames",
     help="Total de frames a mostrar",
     default=defaults.NUM_FRAMES,
     type=int,

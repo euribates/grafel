@@ -1,6 +1,6 @@
 Cast:
 
-    star = Star pos 110x160
+    star = Box pos 110x160
 
 Actions:
 

@@ -1,5 +1,6 @@
 # Done list
 
+* Actor Box
 * Añadido actor Path (traza líneas absolutas)
 * FadeIn y FadeOut incluidas en el lenguaje
 * La secuencia de llamada en las acciones ahora es correcta, se ejecuta
