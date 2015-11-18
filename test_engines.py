@@ -127,49 +127,49 @@ def draw_actors(engine):
             ).start_draw(engine)
 
     # RoundRect
-    actors.RoundRect('rr1', pos=(10, 230)).start_draw(engine)
-    actors.RoundRect('rr2', pos=(70, 230),
+    actors.RoundRect('rr1', pos=(35, 230)).start_draw(engine)
+    actors.RoundRect('rr2', pos=(95, 230),
         color='navy',
         ).start_draw(engine)
-    actors.RoundRect('rr3', pos=(130, 230),
+    actors.RoundRect('rr3', pos=(155, 230),
         color='red',
         ).start_draw(engine)
-    actors.RoundRect('rr4', pos=(190, 230),
+    actors.RoundRect('rr4', pos=(215, 230),
         color='red',
         alpha=0.5,
         ).start_draw(engine)
-    actors.RoundRect('rr5', pos=(250, 230),
+    actors.RoundRect('rr5', pos=(275, 230),
         color='red',
         alpha=0.25,
         ).start_draw(engine)
-    actors.RoundRect('rr6', pos=(310, 230),
+    actors.RoundRect('rr6', pos=(335, 230),
         color='yellow',
         ).start_draw(engine)
 
 
     # Dices
-    actors.Dice('d1', num=1, pos=(10, 290)).start_draw(engine)
+    actors.Dice('d1', num=1, pos=(35, 290)).start_draw(engine)
     actors.Dice('d2', num=2,
         color='navy',
-        pos=(70, 290),
+        pos=(95, 290),
         ).start_draw(engine)
     actors.Dice('d3', num=3,
         color='red',
-        pos=(130, 290)
+        pos=(155, 290)
         ).start_draw(engine)
     actors.Dice('d4', num=4,
         color='red',
         alpha=0.5,
-        pos=(190, 290)
+        pos=(215, 290)
         ).start_draw(engine)
     actors.Dice('d5', num=5,
         color='red',
         alpha=0.25,
-        pos=(250, 290)
+        pos=(275, 290)
         ).start_draw(engine)
     actors.Dice('d6', num=6,
         color='yellow',
-        pos=(310, 290)
+        pos=(335, 290)
         ).start_draw(engine)
 
 def draw_texts(engine):
@@ -181,6 +181,23 @@ def draw_texts(engine):
     l3.start_draw(engine)
     l4 = actors.Label('l4', 'MiljgÁ', color='silver', pos=(290, 370))
     l4.start_draw(engine)
+
+    actors.Label(
+        'l5', 'L5', color='#333333',
+        pos=(50, 470), fontsize=72
+        ).start_draw(engine)
+    actors.Label(
+        'l6', 'L6', color='yellow',
+        pos=(150, 470), fontsize=72
+        ).start_draw(engine)
+    actors.Label(
+        'l7', 'L7', color='red',
+        pos=(250, 470), fontsize=72
+        ).start_draw(engine)
+    actors.Label(
+        'l8', 'MiljgÁ', color='silver',
+        pos=(450, 470), fontsize=72
+        ).start_draw(engine)
 
 def draw_all(engine):
     draw_rects(engine)
