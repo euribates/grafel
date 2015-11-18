@@ -14,6 +14,7 @@ logger = logs.create(__name__)
 
 _map_actions = {}
 
+
 def register_action(klass):
     global _map_actions
     key = klass.__name__.lower()
@@ -21,6 +22,7 @@ def register_action(klass):
         raise KeyError('La clase {} ya está registrada'.format(key))
     _map_actions[key] = klass
     return klass
+
 
 class Action:
     def __init__(self, actor, from_frame, to_frame=None):
@@ -49,7 +51,7 @@ class Action:
                 'El valor cae fuera del intervalo {}'.format(self)
                 )
         return item == self.upper_bound
-    
+
     def get_relative_frame(self, frame):
         return frame - self.lower_bound + 1
 
@@ -64,7 +66,7 @@ class Action:
             self.__class__.__name__,
             frame,
             ))
-        
+
     def step(self, frame):
         logger.debug('Action {} called for frame {}'.format(
             self.__class__.__name__,
@@ -74,12 +76,12 @@ class Action:
 
 @register_action
 class Blink(Action):
-    
+
     def start(self, frame):
         self.src_color = self.actor.color
         self.inv_color = self.actor.color.inverse()
 
-    def step(self, frame): 
+    def step(self, frame):
         self.actor.color = self.src_color if frame % 2 else self.inv_color
 
     def end(self, frame):
@@ -111,13 +113,10 @@ class Colorize(Action):
         t = self.get_relative_frame(frame)
         _inc_r = int(round(self.delta_r * t / self.num_steps))
         self.actor.color.red = self.original_color.red + _inc_r
-
         _inc_g = int(round(self.delta_g * t / self.num_steps))
-        self.actor.color.g = self.original_color.g + _inc_g 
-    
+        self.actor.color.g = self.original_color.g + _inc_g
         _inc_b = int(round(self.delta_b * t / self.num_steps))
-        self.actor.color.b = self.original_color.b + _inc_b 
-           
+        self.actor.color.b = self.original_color.b + _inc_b
 
     def end(self, frame):
         self.actor.color = self.new_color
@@ -136,7 +135,8 @@ class FadeOut(Action):
 
     def end(self, frame):
         self.actor.alpha = 0.0
-        self.actor.level ==  Level.OFF_STAGE
+        self.actor.level = Level.OFF_STAGE
+
 
 @register_action
 class FadeIn(Action):
@@ -147,7 +147,7 @@ class FadeIn(Action):
         self.delta_alpha = (1.0 - self.initial_alpha) / self.num_steps
 
     def star(self, frame):
-        if self.actor.level ==  Level.OFF_STAGE:
+        if self.actor.level == Level.OFF_STAGE:
             self.actor.level = Level.ON_STAGE
 
     def step(self, frame):
@@ -195,6 +195,7 @@ class MoveAction(Action):
     def end(self, frame):
         self.actor.pos = self.new_position
 
+
 @register_action
 class Enter(MoveAction):
 
@@ -212,80 +213,83 @@ class Move(MoveAction):
 
     def step(self, frame):
         super().step(frame)
-        t = self.get_relative_frame(frame) 
+        t = self.get_relative_frame(frame)
         self.actor.pos = self.initial_position + self.delta * t
 
 
 @register_action
 class Fall(MoveAction):
-    
+
     def step(self, frame):
         logger.info('Fall {} step({})'.format(self.actor, frame))
         relative_frame = self.get_relative_frame(frame)
         t = relative_frame / self.num_steps
         self.actor.pos = Vector(
-            x = self.change_value.x * t**2 + self.initial_position.x,
-            y = self.change_value.y * t**2 + self.initial_position.y,
+            x=self.change_value.x * t**2 + self.initial_position.x,
+            y=self.change_value.y * t**2 + self.initial_position.y,
             )
 
 
 @register_action
 class Land(MoveAction):
-    
+
     def step(self, frame):
         relative_frame = self.get_relative_frame(frame)
         t = relative_frame / self.num_steps
         self.actor.pos = Vector(
-            x = -self.change_value.x * t * (t-2) + self.initial_position.x,
-            y = -self.change_value.y * t * (t-2) + self.initial_position.y,
+            x=-self.change_value.x * t * (t-2) + self.initial_position.x,
+            y=-self.change_value.y * t * (t-2) + self.initial_position.y,
             )
 
 
 @register_action
 class EaseIn(MoveAction):
-    
+
     def step(self, frame):
         logger.info('EasingIn {} step({})'.format(self.actor, frame))
         relative_frame = self.get_relative_frame(frame)
         t = relative_frame / self.num_steps
         self.actor.pos = Vector(
-            x = self.change_value.x * t**3 + self.initial_position.x,
-            y = self.change_value.y * t**3 + self.initial_position.y,
+            x=self.change_value.x * t**3 + self.initial_position.x,
+            y=self.change_value.y * t**3 + self.initial_position.y,
             )
 
 
 @register_action
 class EaseOut(MoveAction):
-    
+
     def step(self, frame):
         logger.info('EasingIn {} step({})'.format(self.actor, frame))
         relative_frame = self.get_relative_frame(frame)
         t = relative_frame / self.num_steps
         t -= 1
+        ipx, ipy = self.initial_position
         self.actor.pos = Vector(
-            x = self.change_value.x * (t**3 + 1) + self.initial_position.x,
-            y = self.change_value.y * (t**3 + 1) + self.initial_position.y,
+            x=self.change_value.x * (t**3 + 1) + ipx,
+            y=self.change_value.y * (t**3 + 1) + ipy,
             )
 
 
 @register_action
 class Swing(MoveAction):
-    
+
     def step(self, frame):
         logger.info('EasingIn {} step({})'.format(self.actor, frame))
         relative_frame = self.get_relative_frame(frame)
         t = relative_frame / (self.num_steps / 2)
+        ipx, ipy = self.initial_position
         if t < 1:
             self.actor.pos = Vector(
-                x = self.change_value.x / 2 * t**3 + self.initial_position.x,
-                y = self.change_value.y / 2 * t**3 + self.initial_position.y,
+                x=self.change_value.x / 2 * t**3 + ipx,
+                y=self.change_value.y / 2 * t**3 + ipy,
                 )
         else:
             t -= 2
             self.actor.pos = Vector(
-                x = self.change_value.x / 2 * (t**3 + 2) + self.initial_position.x,
-                y = self.change_value.y / 2 * (t**3 + 2) + self.initial_position.y,
+                x=self.change_value.x / 2 * (t**3 + 2) + ipx,
+                y=self.change_value.y / 2 * (t**3 + 2) + ipy,
                 )
+
 
 @register_action
 class Timer(Action):
@@ -297,11 +301,12 @@ class Timer(Action):
 
     def step(self, frame):
         self.actor.text = '{mins:02d}:{secs:02d}.{frac:02d}'.format(
-            mins = frame // (60*Timer.FPS),  # 60 s/frame * 25 frame/s
-            secs = frame // Timer.FPS,
-            frac = frame % Timer.FPS,
+            mins=frame // (60*Timer.FPS),  # 60 s/frame * 25 frame/s
+            secs=frame // Timer.FPS,
+            frac=frame % Timer.FPS,
             )
-        
+
+
 def create_action(action_name, actor, from_frame, to_frame, *args):
     global _map_actions
 
@@ -322,4 +327,3 @@ def create_action(action_name, actor, from_frame, to_frame, *args):
     ActionKlass = _map_actions[key]
     action = ActionKlass(actor, from_frame, to_frame, *args)
     return action
-

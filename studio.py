@@ -21,10 +21,11 @@ logger = logs.create(__name__)
 #~     _instances = {}
 #~     def __call__(cls, *args, **kwargs):
 #~         if cls not in cls._instances:
-#~             cls._instances[cls] = super(Singleton, cls).__call__(*args, **kwargs)
+#~             cls._instances[cls] = super().__call__(*args, **kwargs)
 #~         return cls._instances[cls]
-#~ 
+#~
 #~ class Stage(metaclass=Singleton):
+
 
 class Stage():
     def __init__(self, engine=None, scheduler=None, options=None):
@@ -40,11 +41,11 @@ class Stage():
             self.background = Color(options.background)
             self.foreground = Color(options.foreground)
         else:
-            self.width      = defaults.WIDTH
-            self.height     = defaults.HEIGHT
-            self.size       = Vector(self.width, self.height)
+            self.width = defaults.WIDTH
+            self.height = defaults.HEIGHT
+            self.size = Vector(self.width, self.height)
             self.num_frames = defaults.NUM_FRAMES
-            self.fps        = defaults.FPS
+            self.fps = defaults.FPS
             self.background = Color(defaults.BACKGROUND)
             self.foreground = Color(defaults.FOREGROUND)
 
@@ -70,7 +71,7 @@ class Stage():
 
     def draw(self, frame):
         self.engine.clear(frame)
-        actives = [_ for _ in self.actors if _.level > Level.OFF_STAGE] 
+        actives = [_ for _ in self.actors if _.level > Level.OFF_STAGE]
         background = [_ for _ in actives if _.level == Level.ON_BACKGROUND]
         for actor in background:
             actor.start_draw(self.engine)
@@ -82,8 +83,3 @@ class Stage():
             actor.start_draw(self.engine)
         self.engine.end()
         self.scheduler.next()
-
-
-
-
-
