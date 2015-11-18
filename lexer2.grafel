@@ -3,26 +3,25 @@ Cast:
     titbox = Rect width 800 height 80 pos -800x60 color silver 
     titulo = Text text "Analizador léxico" pos -700x60 fontsize 72 color white
 
-    border = Rect width 200 height 100 pos 840x200 color blue
-    lparser = Label text "Parser" pos 840x200 color silver
+    lexer = Bitmap filename "lexer-machine.png" pos 840x200
 
-    c0 = Label text "a" pos 40x200 width 35 fontsize 72 color #222222
-    c1 = Label text "=" pos 80x200 color #222222 width 35 fontsize 72
-    c2 = Label text "3" pos 120x200 color #222222 width 35 fontsize 72
-    c3 = Label text "." pos 160x200 color #222222 width 35 fontsize 72
-    c4 = Label text "1" pos 200x200 color #222222 width 35 fontsize 72
-    c5 = Label text "4" pos 240x200 color #222222 width 35 fontsize 72
-    c6 = Label text "1" pos 280x200 color #222222 width 35 fontsize 72
-    c7 = Label text "6" pos 320x200 color #222222 width 35 fontsize 72
-    c8 = Label text "*" pos 360x200 color #222222 width 35 fontsize 72
-    c9 = Label text "r" pos 400x200 color #222222 width 35 fontsize 72
-    c10 = Label text "a" pos 440x200 color #222222 width 35 fontsize 72
-    c11 = Label text "d" pos 480x200 color #222222 width 35 fontsize 72
-    c12 = Label text "i" pos 520x200 color #222222 width 35 fontsize 72
-    c13 = Label text "o" pos 560x200 color #222222 width 35 fontsize 72
-    c14 = Label text "*" pos 600x200 color #222222 width 35 fontsize 72
-    c15 = Label text "*" pos 640x200 color #222222 width 35 fontsize 72
-    c16 = Label text "2" pos 680x200 color #222222 width 35 fontsize 72
+    c0 = Label text "a" pos 40x200 width 35 fontsize 72 color #eeeeee
+    c1 = Label text "=" pos 80x200 color #eeeeee width 35 fontsize 72
+    c2 = Label text "3" pos 120x200 color #eeeeee width 35 fontsize 72
+    c3 = Label text "." pos 160x200 color #eeeeee width 35 fontsize 72
+    c4 = Label text "1" pos 200x200 color #eeeeee width 35 fontsize 72
+    c5 = Label text "4" pos 240x200 color #eeeeee width 35 fontsize 72
+    c6 = Label text "1" pos 280x200 color #eeeeee width 35 fontsize 72
+    c7 = Label text "6" pos 320x200 color #eeeeee width 35 fontsize 72
+    c8 = Label text "*" pos 360x200 color #eeeeee width 35 fontsize 72
+    c9 = Label text "r" pos 400x200 color #eeeeee width 35 fontsize 72
+    c10 = Label text "a" pos 440x200 color #eeeeee width 35 fontsize 72
+    c11 = Label text "d" pos 480x200 color #eeeeee width 35 fontsize 72
+    c12 = Label text "i" pos 520x200 color #eeeeee width 35 fontsize 72
+    c13 = Label text "o" pos 560x200 color #eeeeee width 35 fontsize 72
+    c14 = Label text "*" pos 600x200 color #eeeeee width 35 fontsize 72
+    c15 = Label text "*" pos 640x200 color #eeeeee width 35 fontsize 72
+    c16 = Label text "2" pos 680x200 color #eeeeee width 35 fontsize 72
 
     lbl2 = Label text "<INT 2>" color blue fontsize 44 width 260
     opsq = Label text "<OP **>" color blue fontsize 44 width 260
@@ -33,8 +32,9 @@ Cast:
     vara = Label text "<VAR a>" color blue fontsize 44 width 260
 
 Actions:
-    0-1      border Foreground
-    0-1      lparser Foreground
+    0         lexer   Enter 840x200
+    0         lexer   Foreground
+
     0-1      titbox  Background     
     0        titulo Foreground
 
@@ -42,34 +42,34 @@ Actions:
     0-30     titbox Fall 300x60
 
     60+20     c16   Move 840x200
-    70+20     c15   Move 840x200
-    80+20     c14   Move 840x200
-    90+20     c13   Move 840x200
-    100+20    c12   Move 840x200
-    110+20    c11   Move 840x200
-    120+20    c10   Move 840x200
-    130+20    c9    Move 840x200
-    140+20    c8    Move 840x200
-    150+20    c7    Move 840x200
-    160+20    c6    Move 840x200
-    170+20    c5    Move 840x200
-    180+20    c4    Move 840x200
-    190+20   c3    Move 840x200
-    200+20   c2    Move 840x200
-    210+20   c1    Move 840x200
-    220+20   c0    Move 840x200
+    60+30     c15   Move 840x200
+    60+40     c14   Move 840x200
+    60+50     c13   Move 840x200
+    60+60     c12   Move 840x200
+    60+70     c11   Move 840x200
+    60+80     c10   Move 840x200
+    60+90     c9    Move 840x200
+    60+100    c8    Move 840x200
+    60+110    c7    Move 840x200
+    60+120    c6    Move 840x200
+    60+130    c5    Move 840x200
+    60+140    c4    Move 840x200
+    60+150    c3    Move 840x200
+    60+160    c2    Move 840x200
+    60+170    c1    Move 840x200
+    60+180    c0    Move 840x200
 
     80       lbl2  Enter 840x200
     80+5     lbl2  Move 1100x200
     85+25    lbl2  Land 1100x680
 
-    90       opsq  Enter 840x200
-    90+5     opsq  Move 1100x200
-    95+25    opsq  Land 1100x620
+    100       opsq  Enter 840x200
+    100+5     opsq  Move 1100x200
+    105+25    opsq  Land 1100x620
 
-    160      varr  Enter 840x200
-    160+5    varr  Move  1100x200
-    165+25   varr  Land  1100x560
+    140      varr  Enter 840x200
+    140+5    varr  Move  1100x200
+    145+25   varr  Land  1100x560
 
     170      opd   Enter 840x200
     170+5    opd   Move 1100x200
@@ -79,10 +79,10 @@ Actions:
     220+5    pi    Move 1100x200
     225+25   pi    Land 1100x440
 
-    240      eq    Enter 840x200
-    240+5    eq    Move  1100x200
-    245+25   eq    Land  1100x380
+    230      eq    Enter 840x200
+    230+5    eq    Move  1100x200
+    235+25   eq    Land  1100x380
     
-    250      vara    Enter 840x200
-    250+5    vara    Move 1100x200
-    255+25   vara    Land  1100x320
+    240      vara    Enter 840x200
+    240+5    vara    Move 1100x200
+    245+25   vara    Land  1100x320

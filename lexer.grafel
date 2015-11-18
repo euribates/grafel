@@ -6,11 +6,11 @@ Cast:
     border = Rect width 200 height 100 pos 640x200 color blue
     lparser = Label text "Parser" pos 640x200 color silver
 
-    lx = Label text " x " pos 200x200 width 35 fontsize 72 color #222222
-    leq = Label text " = " pos 240x200 color #222222 width 35 fontsize 72
-    ly = Label text " y " pos 280x200 color #222222  width 35 fontsize 72
-    lplus = Label text " + " pos 320x200 color #222222  width 35 fontsize 72
-    l2 = Label text " 2 " pos 360x200 color #222222  width 35 fontsize 72
+    lx = Label text "x" pos 200x200 width 35 fontsize 72 color #222222
+    leq = Label text "=" pos 240x200 color #222222 width 35 fontsize 72
+    ly = Label text "y" pos 280x200 color #222222  width 35 fontsize 72
+    lplus = Label text "+" pos 320x200 color #222222  width 35 fontsize 72
+    l2 = Label text "2" pos 360x200 color #222222  width 35 fontsize 72
 
     lbl2 = Label text "<INT '2'>" color blue fontsize 44 width 200
     lblplus = Label text "<OP '+'>" color blue fontsize 44 width 200

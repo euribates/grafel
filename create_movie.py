@@ -7,20 +7,18 @@ import subprocess
 import glob
 
 for filename in sorted(glob.glob('./tmp/frame_*.svg')):
-    print(filename, end=" ")
     target_filename = filename[:-4] + '.png'
     if os.path.exists(target_filename):
-        print('[Skipped]')
+        print('[Skipped]', end='')
         continue
+    else:
+        print('.', end="")
+        sys.stdout.flush()
     subprocess.call([
-        "inkscape", 
-        "-z",
-        "-e", target_filename,
-        "-w", "1280",
-        "-h", "720",
-        filename
+        "rsvg", 
+        filename,
+        target_filename,
         ])
-    print("[ok]")
 print('Preparando vídeo', end=' ')
 subprocess.call([
     'avconv',
@@ -28,5 +26,6 @@ subprocess.call([
     '-c:v',
     'libx264',
     '-pix_fmt', 'yuv420p',
-    '/home/jileon/tmp/out.mp4',
+    './out.mp4',
     ])
+print('\nvlc out.mp4')

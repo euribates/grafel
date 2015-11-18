@@ -131,7 +131,7 @@ class SVGEngine(BaseEngine):
         if not os.path.exists(target_name):
             shutil.copyfile(filename, target_name)
         self.dwg.add(self.dwg.image(
-            filename,
+            fileutils.get_image_data(filename),
             insert = (x - w / 2, y - h /2),
             ))
         if self.debug:
@@ -165,8 +165,8 @@ class SVGEngine(BaseEngine):
             text,
             insert=(x, y),
             text_anchor='middle',
-            #dominant_baseline="middle",
-            dy=['10px'],
+            dy=['0.33em'],
+            dominant_baseline="middle",
             font_family='Delicious',
             font_size=font_size,
             fill=as_color_svg(color),

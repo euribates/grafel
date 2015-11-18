@@ -405,7 +405,6 @@ class Text(Actor):
         pos = self.pos + self.get_offset()
         x = pos.x
         y = pos.y
-        self.debug = True
         if self.debug:
             engine.line(x-30, y, x+30, y, color='gold')
             engine.line(x, y-30, x, y+30, color='gold')
