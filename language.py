@@ -126,7 +126,7 @@ attr = (
     )
 
 attrs = ZeroOrMore(attr)
-Identifier = Word(alphas, alphanums)
+Identifier = Word(alphas, alphanums+'_')
 role = oneOf(
     'Square Rect RoundRect Star Dice Label Text Circle'
     ' Box Triangle Bitmap Path'
