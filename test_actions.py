@@ -261,6 +261,7 @@ class TestLevel(unittest.TestCase):
             sch.next()
 
 class TestFadeOut(unittest.TestCase):
+    
 
     def test_fade_out(self):
         bob = Square('bob')
@@ -304,6 +305,13 @@ class TestFadeOut(unittest.TestCase):
             studio.draw(frame)
             sch.next()
 
+    def test_fade_out_with_label(self):
+        bob = Text('bob', text='Bob', pos=(640, 320))
+        studio = Stage()
+        studio.add_actor(bob)
+        studio.add_action(actions.FadeOut(bob, 10, 40))
+        for frame in range(75):
+            studio.draw(frame)
 
 class TestFadeIn(unittest.TestCase):
 

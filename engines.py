@@ -190,7 +190,8 @@ class PyGameEngine(BaseEngine):
     def add_alpha_color(self, color, alpha):
         if not isinstance(color, colors.Color):
             color = colors.Color(color)
-        color = (color.red, color.green, color.blue, int(round(alpha*255)))
+        alpha = min(255, int(round(alpha*255)))
+        color = (color.red, color.green, color.blue, alpha)
         return color
 
     def clear(self, frame):
@@ -222,6 +223,7 @@ class PyGameEngine(BaseEngine):
         color = color or self.fg_color
         color = self.add_alpha_color(color, alpha)
         s = pygame.Surface((width, height), pygame.SRCALPHA)   # per-pixel alpha
+        logger.error('color: {}'.format(color))
         pygame.draw.circle(s, color, (r, r), r)
         pygame.draw.circle(s, color, (width-r,r), r)
         pygame.draw.circle(s, color, (r, height-r),r)
@@ -271,9 +273,9 @@ class PyGameEngine(BaseEngine):
 
     def text(self, x, y, text, color=None, alpha=1.0, font_size=32):
         color = color or self.fg_color
-        #f = pygame.font.SysFont('Helvetica,arial', 32, bold=False, italic=False)
+        color = self.add_alpha_color(color, alpha)
         f = pygame.font.SysFont('Delicious', font_size, bold=False, italic=False)
-        s = f.render(text, True, color.as_rgb())
+        s = f.render(text, True, color)
         rect = s.get_rect()
         rect.center = (x, y)
         self.screen.blit(s, rect)
