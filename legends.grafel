@@ -1,0 +1,15 @@
+Cast:
+
+  legend1 = Text text "Stack vacío" fontsize 62
+  plus    = Text text "+" fontsize 62
+  legend2 = Text text "No quedan tokens" fontsize 62
+  equal   = Text text "=" fontsize 62
+  parser_ok = Text text "Parser OK" fontsize 80 color green
+
+Actions:
+
+    50     legend1  Enter 640x150
+    70     plus     Enter 640x250
+    90     legend2  Enter 640x350
+    110     equal    Enter 640x450
+    130    parser_ok Enter 640x550

@@ -96,8 +96,8 @@ Actions:
     500     c_end    Exit
     525     c_prog   Exit
 
-    550     legend1  Enter 840x200
-    570     plus     Enter 840x275
-    590     legend2  Enter 840x350
-    610     equal    Enter 840x425
-    630    parser_ok Enter 820x500
+    550     legend1   Enter 840x200
+    570     plus      Enter 840x275
+    590     legend2   Enter 840x350
+    610     equal     Enter 840x425
+    630     parser_ok Enter 840x500
