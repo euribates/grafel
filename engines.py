@@ -179,7 +179,8 @@ class SVGEngine(BaseEngine):
 class PyGameEngine(BaseEngine):
 
     def __init__(self, width=1280, height=720, fps=25):
-        super().__init__(width, height, fps)
+        super().__init__(width=width, height=height, fps=fps)
+        logger.error('sizr: {}'.format(self.size))
         pygame.init()
         self.clock = pygame.time.Clock()
         self.screen = pygame.display.set_mode(
@@ -194,9 +195,11 @@ class PyGameEngine(BaseEngine):
         color = (color.red, color.green, color.blue, alpha)
         return color
 
-    def clear(self, frame):
+    def clear(self, frame, grid=False):
         super().clear(frame)
         self.screen.fill(self.bg_color.as_rgb())
+        if grid:
+            self.grid()
 
     def line(self, x0, y0, x1, y1, color=None, alpha=1.0):
         color = color or self.fg_color
@@ -223,7 +226,6 @@ class PyGameEngine(BaseEngine):
         color = color or self.fg_color
         color = self.add_alpha_color(color, alpha)
         s = pygame.Surface((width, height), pygame.SRCALPHA)   # per-pixel alpha
-        logger.error('color: {}'.format(color))
         pygame.draw.circle(s, color, (r, r), r)
         pygame.draw.circle(s, color, (width-r,r), r)
         pygame.draw.circle(s, color, (r, height-r),r)

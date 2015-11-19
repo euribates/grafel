@@ -7,3 +7,5 @@ WIDTH = 1280
 HEIGHT = 720
 BACKGROUND = 'black'
 FOREGROUND = 'white'
+
+GRID = False

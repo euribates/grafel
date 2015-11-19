@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 import sys
@@ -32,7 +32,7 @@ if opts.script:
         sys.exit()
 
     actors = [language.get_actor(_) for _ in language.actors_list()]
-    stage = Stage(engine=PyGameEngine(), options=opts)
+    stage = Stage(options=opts)
     stage.add_actors(*actors)
     for t in language.get_actions():
         (interval, actor_name, action_name) = t[0:3]

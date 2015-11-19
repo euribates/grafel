@@ -29,9 +29,6 @@ logger = logs.create(__name__)
 
 class Stage():
     def __init__(self, engine=None, scheduler=None, options=None):
-        self.engine = engine if engine else PyGameEngine()
-        self.scheduler = scheduler if scheduler else Scheduler()
-        self.actors = []
         if options:
             self.size = Vector(*[int(_) for _ in options.size.split('x')])
             self.width = self.size[0]
@@ -40,6 +37,7 @@ class Stage():
             self.fps = options.fps
             self.background = Color(options.background)
             self.foreground = Color(options.foreground)
+            self.grid = options.grid
         else:
             self.width = defaults.WIDTH
             self.height = defaults.HEIGHT
@@ -48,9 +46,16 @@ class Stage():
             self.fps = defaults.FPS
             self.background = Color(defaults.BACKGROUND)
             self.foreground = Color(defaults.FOREGROUND)
-
+            self.grid = defaults.GRID
+        self.engine = engine if engine else PyGameEngine(
+             width=self.width,
+             height=self.height,
+             fps=self.fps
+             )
         self.engine.fg_color = self.foreground
         self.engine.bgcolor = self.background
+        self.scheduler = scheduler if scheduler else Scheduler()
+        self.actors = []
 
         self.refs = {
             'center': self.size / 2,
@@ -70,7 +75,7 @@ class Stage():
         self.scheduler.add_action(action)
 
     def draw(self, frame):
-        self.engine.clear(frame)
+        self.engine.clear(frame, grid=self.grid)
         actives = [_ for _ in self.actors if _.level > Level.OFF_STAGE]
         background = [_ for _ in actives if _.level == Level.ON_BACKGROUND]
         for actor in background:
