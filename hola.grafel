@@ -1,7 +1,8 @@
 Cast:
 
-    star = Box pos 110x160
+    a = Box pos 110x160
 
 Actions:
 
-    25-75 star Swing  1090x600
+    25-75 a EaseIn  1090x600
+
