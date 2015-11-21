@@ -1,0 +1,104 @@
+Cast: 
+ 
+  // Titulo 
+  titbox = Rect width 740 height 50 pos -740x60 color silver 
+  titulo = Text text "Parser LL(1)" pos -700x60 fontsize 47 color white 
+ 
+ 
+  // Tokens 
+  end = Label text "<END>" color blue fontsize 32 width 260 pos 640x233 
+  num26 = Label text "<NUM 26>" color blue fontsize 32 width 260 pos 640x283 
+  alice = Label text "<ID Alice>" color blue fontsize 32 width 260 pos 640x333 
+  num12 = Label text "<NUM 12>" color blue fontsize 32 width 260 pos 640x383 
+  bob = Label text "<ID Bob>" color blue fontsize 32 width 260 pos 640x433 
+  begin = Label text "<BEGIN>" color blue fontsize 32 width 260 pos 640x483 
+ 
+  // stack 
+  l1 = Path points (80x200, 80x530, 85x535, 255x535, 260x530, 260x200) color silver pos 62x83 
+  lblstack = Text text "Call Stack" pos 170x167 color silver 
+ 
+  // Calls 
+  c_prog = Label text "program  " color #333377 width 150 
+  c_begin = Label text "begin  " color #333377 width 150 
+  c_line = Label text "line  " color #333377 width 150 
+  c_id = Label text "id  " color #333377 width 150 
+  c_num = Label text "num  " color #333377 width 150 
+  c_end = Label text "end  " color #333377 width 150 
+ 
+  // legends 
+ 
+  legend1 = Label text "Empty Stack" fontsize 62 
+  plus    = Label text "+" fontsize 62 
+  legend2 = Label text "No tokens" fontsize 62 
+  equal   = Text text "=" fontsize 62 
+  parser_ok = Text text "Parser OK" fontsize 80 color green 
+ 
+ 
+Actions: 
+ 
+    0        titbox  Background 
+    0        titulo Foreground 
+ 
+    10+25     titulo Land 481x50 
+    10+25     titbox Land 256x50 
+ 
+    75    c_prog   Enter 170x500   // call program at 3s 
+    150   c_begin  Enter 170x455   // call begin at 6s 
+ 
+    152+10  begin   Exit 
+    154+10  bob     Fall 640x483 
+    156+10  num12   Fall 640x433 
+    158+10  alice   Fall 640x383 
+    160+10  num26   Fall 640x333 
+    162+10  end     Fall 640x283 
+ 
+    175    c_begin  Exit 
+ 
+    200    c_line   Enter 170x455  // call line at 6s 
+ 
+    250    c_id     Enter 170x410  // call id at 8s 
+ 
+    252+10  bob     Exit 
+    254+10  num12   Fall 640x483 
+    256+10  alice   Fall 640x433 
+    258+10  num26   Fall 640x383 
+    260+10  end     Fall 640x333 
+ 
+    275     c_id    Exit 
+ 
+    300     c_num   Enter 170x410  // call num at 10s 
+ 
+    302+10  num12   Exit 
+    304+10  alice   Fall 640x483 
+    306+10  num26   Fall 640x433 
+    308+10  end     Fall 640x383 
+ 
+    325     c_num   Exit 
+ 
+    350     c_id    Enter 170x410 // call id at 12s 
+ 
+    352+10  alice   Exit 
+    354+10  num26   Fall 640x483 
+    356+10  end     Fall 640x433 
+ 
+    375     c_id    Exit 
+ 
+    400     c_num   Enter 170x410 // call num at 14s 
+ 
+    402+10  num26   Exit 
+    406+10  end     Fall 640x483 
+ 
+    425     c_num    Exit 
+ 
+    450     c_line   Exit 
+ 
+    475     c_end    Enter 170x455 
+    480     end      Exit 
+    500     c_end    Exit 
+    525     c_prog   Exit 
+ 
+    550     legend1   Enter 525x167 
+    570     plus      Enter 525x229 
+    590     legend2   Enter 525x292 
+    610     equal     Enter 525x354 
+    630     parser_ok Enter 525x417 
