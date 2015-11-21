@@ -1,55 +1,55 @@
-Cast:
-
-    p1score0a = Rect width 40 height 10 pos 575x35 alpha 0.5
-    p1score0b = Rect width 10 height 90 pos 560x80 alpha 0.5
-    p1score0c = Rect width 40 height 10 pos 575x125 alpha 0.5
-    p1score0d = Rect width 10 height 90 pos 590x80 alpha 0.5
-
-    p2score0a = Rect width 40 height 10 pos 705x35 alpha 0.5
-    p2score0b = Rect width 10 height 90 pos 690x80 alpha 0.5
-    p2score0c = Rect width 40 height 10 pos 705x125 alpha 0.5
-    p2score0d = Rect width 10 height 90 pos 720x80 alpha 0.5
-
-    score1a = Rect width 10 height 100 alpha 0.4
-
-    l1 = Rect width 2 height 720 pos 640x310 alpha .33
-
-    bob = Square side 20 pos 640x310
-
-    p1 = Rect width 20 height 120 pos 50x310
-    
-    p2 = Rect width 20 height 120 pos 1230x310
-
-Actions:
-
-    1-25     bob   Move 1210x112
-    5-25     p2    Land 1230x130
-
-    25-32    bob   Move 1040x10
-    32-57    bob   Move 70x450
-
-    1-23    p1   Fall 50x440
-    33-41   p1   Swing 50x270
-
-    45-55   p1     Move 50x470 
-
-    57-82   bob    Move 1210x560
-
-    63-75   p2     Swing 1230x560
-    
-    82-102  bob    Land 110x420
-    102-107 bob    EaseIn 180x315
-    107-120 bob    EaseOut -70x205
-   
-    105-112 p1     Swing 50x348
-
-    100-104   p1    Move 50x400
-    108-117   p1    Land 50x380
-
-    112       p2score0a   Exit
-    112       p2score0b   Exit
-    112       p2score0c   Exit
-    112       p2score0d   Exit
-
-    112       score1a Enter  705x80
-
+Cast: 
+ 
+    p1score0a = Rect width 40 height 10 pos 355x30 alpha 0.5 
+    p1score0b = Rect width 10 height 64 pos 340x67 alpha 0.5 
+    p1score0c = Rect width 40 height 10 pos 355x104 alpha 0.5
+    p1score0d = Rect width 10 height 64 pos 370x67 alpha 0.5 
+ 
+    p2score0a = Rect width 40 height 10 pos 455x30 alpha 0.5 
+    p2score0b = Rect width 10 height 64 pos 440x67 alpha 0.5 
+    p2score0c = Rect width 40 height 10 pos 455x104 alpha 0.5 
+    p2score0d = Rect width 10 height 64 pos 470x67 alpha 0.5 
+ 
+    score1a = Rect width 10 height 80 alpha 0.4 
+ 
+    l1 = Rect width 2 height 720 pos 400x258 alpha .33 
+ 
+    bob = Square side 20 pos 400x258 
+ 
+    p1 = Rect width 20 height 120 pos 31x258 
+ 
+    p2 = Rect width 20 height 120 pos 769x258 
+ 
+Actions: 
+ 
+    1-25     bob   Move 756x93 
+    5-25     p2    Land 769x108 
+ 
+    25-32    bob   Move 650x8 
+    32-57    bob   Move 44x375 
+ 
+    1-23    p1   Fall 31x367 
+    33-41   p1   Swing 31x225 
+ 
+    45-55   p1     Move 31x392 
+ 
+    57-82   bob    Move 756x467 
+ 
+    63-75   p2     Swing 769x467 
+ 
+    82-102  bob    Land 69x350 
+    102-107 bob    EaseIn 112x262 
+    107-120 bob    EaseOut -70x205 
+ 
+    105-112 p1     Swing 31x290 
+ 
+    100-104   p1    Move 31x333 
+    108-117   p1    Land 31x317 
+ 
+    112       p2score0a   Exit 
+    112       p2score0b   Exit 
+    112       p2score0c   Exit 
+    112       p2score0d   Exit 
+ 
+    112       score1a Enter  441x67 
+ 
