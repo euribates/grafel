@@ -3,7 +3,10 @@ Cast:
     titbox = Rect width 800 height 80 pos -800x60 color silver 
     titulo = Text text "Analizador léxico" pos -700x60 fontsize 72 color white
 
-    lexer = Bitmap filename "lexer-machine.png" pos 840x200
+    // Lexer Machine
+
+    lexer = Rect width 290 height 160 pos 840x200 color #a0a0a0 
+    lexerb = Box width 290 height 160 pos 840x200 color gold
 
     c0 = Label text "a" pos 40x200 width 35 fontsize 72 color #eeeeee
     c1 = Label text "=" pos 80x200 color #eeeeee width 35 fontsize 72
@@ -23,13 +26,13 @@ Cast:
     c15 = Label text "*" pos 640x200 color #eeeeee width 35 fontsize 72
     c16 = Label text "2" pos 680x200 color #eeeeee width 35 fontsize 72
 
-    lbl2 = Label text "<INT 2>" color blue fontsize 44 width 260
-    opsq = Label text "<OP **>" color blue fontsize 44 width 260
-    varr = Label text "<VAR radio>" color blue fontsize 44 width 260
-    opd  = Label text "<OP *>" color blue fontsize 44 width 260
-    pi   = Label text "<FLOAT 3.1416>" color blue fontsize 44 width 260
-    eq   = Label text "<EQ =>" color blue fontsize 44 width 260
-    vara = Label text "<VAR a>" color blue fontsize 44 width 260
+    lbl2 = Label text "<INT 2>" color blue fontsize 44 width 290
+    opsq = Label text "<OP **>" color blue fontsize 44 width 290
+    varr = Label text "<VAR radio>" color blue fontsize 44 width 290
+    opd  = Label text "<OP *>" color blue fontsize 44 width 290
+    pi   = Label text "<FLOAT 3.1416>" color blue fontsize 44 width 290
+    eq   = Label text "<EQ =>" color blue fontsize 44 width 290
+    vara = Label text "<VAR a>" color blue fontsize 44 width 290
 
 Actions:
     0         lexer   Enter 840x200

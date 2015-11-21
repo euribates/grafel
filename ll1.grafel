@@ -4,6 +4,7 @@ Cast:
   titbox = Rect width 980 height 80 pos -740x60 color silver 
   titulo = Text text "Parser descendente recursivo" pos -700x60 fontsize 72 color white
 
+
   // Tokens
   end = Label text "<END>" color blue fontsize 44 width 260 pos 1100x280
   num26 = Label text "<NUM 26>" color blue fontsize 44 width 260 pos 1100x340

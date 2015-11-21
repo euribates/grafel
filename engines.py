@@ -27,7 +27,7 @@ class BaseEngine:
         self.frame = 0
         self.debug = False
 
-    def clear(self, frame):
+    def clear(self, frame, grid=False):
         logger.info('Clear screen; prepare for start drawing frame {}.'.format(frame))
         self.frame = frame
 
@@ -80,7 +80,7 @@ class SVGEngine(BaseEngine):
         self.output_dir = output_dir
 
 
-    def clear(self, frame):
+    def clear(self, frame, grid=False):
         super().clear(frame)
         filename = 'frame_{:05d}.svg'.format(frame)
         full_fn = os.path.join(self.output_dir, filename)
@@ -92,6 +92,8 @@ class SVGEngine(BaseEngine):
                 fill=self.bg_color.as_svg(),
                 )
             )
+        if grid:
+            self.grid()
 
     def line(self, x0, y0, x1, y1, color=None, alpha=1.0):
         color = color or self.fg_color
@@ -180,12 +182,11 @@ class PyGameEngine(BaseEngine):
 
     def __init__(self, width=1280, height=720, fps=25):
         super().__init__(width=width, height=height, fps=fps)
-        logger.error('sizr: {}'.format(self.size))
         pygame.init()
         self.clock = pygame.time.Clock()
         self.screen = pygame.display.set_mode(
             self.size,
-            pygame.HWSURFACE|pygame.DOUBLEBUF|pygame.SRCALPHA
+            pygame.HWSURFACE|pygame.DOUBLEBUF|pygame.SRCALPHA|pygame.NOFRAME
             )
 
     def add_alpha_color(self, color, alpha):

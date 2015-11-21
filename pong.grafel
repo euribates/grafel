@@ -1,14 +1,14 @@
 Cast:
 
     p1score0a = Rect width 40 height 10 pos 575x35 alpha 0.5
-    p1score0b = Rect width 10 height 80 pos 560x80 alpha 0.5
+    p1score0b = Rect width 10 height 90 pos 560x80 alpha 0.5
     p1score0c = Rect width 40 height 10 pos 575x125 alpha 0.5
-    p1score0d = Rect width 10 height 80 pos 590x80 alpha 0.5
+    p1score0d = Rect width 10 height 90 pos 590x80 alpha 0.5
 
     p2score0a = Rect width 40 height 10 pos 705x35 alpha 0.5
-    p2score0b = Rect width 10 height 80 pos 690x80 alpha 0.5
+    p2score0b = Rect width 10 height 90 pos 690x80 alpha 0.5
     p2score0c = Rect width 40 height 10 pos 705x125 alpha 0.5
-    p2score0d = Rect width 10 height 80 pos 720x80 alpha 0.5
+    p2score0d = Rect width 10 height 90 pos 720x80 alpha 0.5
 
     score1a = Rect width 10 height 100 alpha 0.4
 
