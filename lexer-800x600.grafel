@@ -3,25 +3,25 @@ Cast:
     titbox = Rect width 600 height 50 pos -500x50 color silver 
     titulo = Text text "Analizador léxico" pos -438x50 fontsize 44 color white
 
-    lexer = Bitmap filename "lexer-machine.png" pos 640x200
+    lexer = Bitmap filename "lexer-machine.png" pos 130x200
 
-    c0 = Label text "a" pos 20x200 width 35 fontsize 44 color #eeeeee
-    c1 = Label text "=" pos 50x200 color #eeeeee width 35 fontsize 44
-    c2 = Label text "3" pos 80x200 color #eeeeee width 35 fontsize 44
-    c3 = Label text "." pos 110x200 color #eeeeee width 35 fontsize 44
-    c4 = Label text "1" pos 140x200 color #eeeeee width 35 fontsize 44
-    c5 = Label text "4" pos 170x200 color #eeeeee width 35 fontsize 44
-    c6 = Label text "1" pos 200x200 color #eeeeee width 35 fontsize 44
-    c7 = Label text "6" pos 230x200 color #eeeeee width 35 fontsize 44
-    c8 = Label text "*" pos 260x200 color #eeeeee width 35 fontsize 44
-    c9 = Label text "r" pos 290x200 color #eeeeee width 35 fontsize 44
-    c10 = Label text "a" pos 320x200 color #eeeeee width 35 fontsize 44
-    c11 = Label text "d" pos 350x200 color #eeeeee width 35 fontsize 44
-    c12 = Label text "i" pos 380x200 color #eeeeee width 35 fontsize 44
-    c13 = Label text "o" pos 410x200 color #eeeeee width 35 fontsize 44
-    c14 = Label text "*" pos 440x200 color #eeeeee width 35 fontsize 44
-    c15 = Label text "*" pos 470x200 color #eeeeee width 35 fontsize 44
-    c16 = Label text "2" pos 500x200 color #eeeeee width 35 fontsize 44
+    c0 = Label text "a" pos 270x200 width 35 fontsize 44 color #eeeeee
+    c1 = Label text "=" pos 300x200 color #eeeeee width 35 fontsize 44
+    c2 = Label text "3" pos 330x200 color #eeeeee width 35 fontsize 44
+    c3 = Label text "." pos 360x200 color #eeeeee width 35 fontsize 44
+    c4 = Label text "1" pos 390x200 color #eeeeee width 35 fontsize 44
+    c5 = Label text "4" pos 420x200 color #eeeeee width 35 fontsize 44
+    c6 = Label text "1" pos 450x200 color #eeeeee width 35 fontsize 44
+    c7 = Label text "6" pos 480x200 color #eeeeee width 35 fontsize 44
+    c8 = Label text "*" pos 510x200 color #eeeeee width 35 fontsize 44
+    c9 = Label text "r" pos 540x200 color #eeeeee width 35 fontsize 44
+    c10 = Label text "a" pos 570x200 color #eeeeee width 35 fontsize 44
+    c11 = Label text "d" pos 600x200 color #eeeeee width 35 fontsize 44
+    c12 = Label text "i" pos 630x200 color #eeeeee width 35 fontsize 44
+    c13 = Label text "o" pos 660x200 color #eeeeee width 35 fontsize 44
+    c14 = Label text "*" pos 690x200 color #eeeeee width 35 fontsize 44
+    c15 = Label text "*" pos 720x200 color #eeeeee width 35 fontsize 44
+    c16 = Label text "2" pos 750x200 color #eeeeee width 35 fontsize 44
 
     lbl2 = Label text "<INT 2>"        color blue fontsize 35 width 200
     opsq = Label text "<OP **>"        color blue fontsize 35 width 200
@@ -41,52 +41,54 @@ Actions:
     0-30     titbox Fall 300x50
 
     
-    50+240   lexer Move 30x200
+    50+280   lexer Move 660x200
 
-    80       lbl2  Enter 645x200
-    80+5     lbl2  Move 690x200
-    85+25    lbl2  Land 690x550
+    80       vara  Enter 155x200
+    80+5     vara  Move 110x200
+    85+25    vara  Land 110x550
 
-    100       opsq  Enter 625x200
-    100+7     opsq  Move  690x200
-    107+25    opsq  Land  690x500
+    100       eq  Enter 175x200
+    100+7     eq  Move  110x200
+    107+25    eq  Land  110x500
 
-    160      varr  Enter  485x200
-    160+9    varr  Move   690x200
-    169+25   varr  Land   690x450
+    200      pi  Enter  315x200
+    200+10   pi  Move   110x200
+    210+25   pi  Land   110x450
 
-    180      opd   Enter 415x200
-    180+11    opd   Move  690x200
-    191+25   opd   Land  690x400
-
-    250      pi    Enter 185x200
-    250+13    pi    Move  690x200
-    263+25   pi    Land  690x350
-
-    275      eq    Enter 75x200
-    275+20    eq    Move  690x200
-    300+25   eq    Land  690x300
+    220      opd   Enter 485x200
+    220+13   opd   Move  110x200
+    233+25   opd   Land  110x400
     
-    300      vara    Enter 25x200
-    300+30    vara    Move  690x200
-    330+25   vara    Land  690x250
+    300      varr  Enter 415x200
+    300+15   varr  Move  110x200
+    315+25   varr  Land  110x350
 
-    140      c16 Exit
-    150      c15 Exit
-    160      c14 Exit
-    170      c13 Exit
-    180      c12 Exit
-    190      c11 Exit
-    200      c10 Exit
-    210      c9 Exit
-    220      c8 Exit
-    230      c7 Exit
-    240      c6 Exit
-    250      c5 Exit
-    250      c4 Exit
-    250      c3 Exit
-    250      c2 Exit
-    250      c1 Exit
-    250      c0 Exit
+    320      opsq    Enter 475x200
+    320+18   opsq    Move  110x200
+    338+25   opsq    Land  110x300
+    
+    340      lbl2    Enter 500x200
+    340+20   lbl2    Move  110x200
+    360+25   lbl2    Land  110x250
 
-    330-350  lexer  Fall 440x200
+    140      c0  Exit
+    150      c1  Exit
+    160      c2  Exit
+    170      c3  Exit
+    180      c4  Exit
+    190      c5  Exit
+    200      c6  Exit
+    210      c7  Exit
+    220      c8  Exit
+    230      c9  Exit
+    250      c10 Exit
+    260      c11 Exit
+    280      c12 Exit
+    300      c13 Exit
+    320      c14 Exit
+    340      c15 Exit
+    360      c16 Exit
+
+    370-380  lexer  Fall 330x200
+    380+5    lexer  Land 350x200
+    385+5    lexer  Fall 330x200
