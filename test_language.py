@@ -83,41 +83,41 @@ class TestActionLine(unittest.TestCase):
 
     def test_action_exit(self):
         from language import ActionLine 
-        l = ActionLine.parseString('50 bob Exit')
+        l = ActionLine.parseString('50 Exit bob')
         t = l[0]
         self.assertEqual(t[0], (50, 51))
-        self.assertEqual(t[1], 'bob')
-        self.assertEqual(t[2], 'Exit')
+        self.assertEqual(t[1], 'Exit')
+        self.assertEqual(t[2], 'bob')
         self.assertEqual(len(t), 3)
 #        for i,_ in enumerate(t):
 #            logger.error('{}) {}'.format(i, _))
 
     def test_action_foreground(self):
         from language import ActionLine 
-        l = ActionLine.parseString('0-1 bob Foreground')
+        l = ActionLine.parseString('0-1 Foreground bob')
         t = l[0]
         self.assertEqual(t[0], (0, 1))
-        self.assertEqual(t[1], 'bob')
-        self.assertEqual(t[2], 'Foreground')
+        self.assertEqual(t[1], 'Foreground')
+        self.assertEqual(t[2], 'bob')
 #        for i,_ in enumerate(t):
 #            logger.error('{}) {}'.format(i, _))
 
     def test_action_move(self):
         from language import ActionLine 
-        l = ActionLine.parseString('1-23 bob Move 50x50')
+        l = ActionLine.parseString('1-23 Move bob 50x50')
         t = l[0]
         self.assertEqual(t[0], (1, 23))
-        self.assertEqual(t[1], 'bob')
-        self.assertEqual(t[2], 'Move')
+        self.assertEqual(t[1], 'Move')
+        self.assertEqual(t[2], 'bob')
         self.assertEqual(t[3], Vector(50, 50))
 
     def test_action_move_relative_interval(self):
         from language import ActionLine 
-        l = ActionLine.parseString('10+20 bob Move 50x50')
+        l = ActionLine.parseString('10+20 Move bob 50x50')
         t = l[0]
         self.assertEqual(t[0], (10, 30))
-        self.assertEqual(t[1], 'bob')
-        self.assertEqual(t[2], 'Move')
+        self.assertEqual(t[1], 'Move')
+        self.assertEqual(t[2], 'bob')
         self.assertEqual(t[3], Vector(50, 50))
 
 class TestCastLine(unittest.TestCase):

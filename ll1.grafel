@@ -36,69 +36,69 @@ Cast:
 
 Actions:
 
-    0        titbox  Background     
-    0        titulo Foreground
-
-    10+25     titulo Land 450x60
-    10+25     titbox Land 410x60
-
-    75    c_prog   Enter 250x600   // call program at 3s
-    150   c_begin  Enter 250x550   // call begin at 6s
-
-    152+10  begin   Exit
-    154+10  bob     Fall 1100x580
-    156+10  num12   Fall 1100x520
-    158+10  alice   Fall 1100x460
-    160+10  num26   Fall 1100x400
-    162+10  end     Fall 1100x340
-
-    175    c_begin  Exit
-
-    200    c_line   Enter 250x550  // call line at 6s
-    
-    250    c_id     Enter 250x500  // call id at 8s
-
-    252+10  bob     Exit
-    254+10  num12   Fall 1100x580
-    256+10  alice   Fall 1100x520
-    258+10  num26   Fall 1100x460
-    260+10  end     Fall 1100x400
-
-    275     c_id    Exit
-
-    300     c_num   Enter 250x500  // call id at 10s 
-    
-    302+10  num12   Exit
-    304+10  alice   Fall 1100x580
-    306+10  num26   Fall 1100x520
-    308+10  end     Fall 1100x460
-    
-    325     c_num   Exit
-
-    350     c_id    Enter 250x500 // call id at 12s
-
-    352+10  alice   Exit
-    354+10  num26   Fall 1100x580
-    356+10  end     Fall 1100x520
-
-    375     c_id    Exit
-
-    400     c_num   Enter 250x500 // call id at 14s
-
-    402+10  num26   Exit
-    406+10  end     Fall 1100x580
-
-    425     c_num    Exit
-
-    450     c_line   Exit
-
-    475     c_end    Enter 250x550
-    480     end      Exit
-    500     c_end    Exit
-    525     c_prog   Exit
-
-    550     legend1   Enter 840x200
-    570     plus      Enter 840x275
-    590     legend2   Enter 840x350
-    610     equal     Enter 840x425
-    630     parser_ok Enter 840x500
+    0        Background titbox        
+    0        Foreground titulo    
+                        
+    10+25    Land       titulo      450x60
+    10+25    Land       titbox      410x60
+                        
+    75       Enter      c_prog     250x600   // call program at 3s
+    150      Enter      c_begin    250x550   // call begin at 6s
+                        
+    152+10   Exit       begin     
+    154+10   Fall       bob        1100x580
+    156+10   Fall       num12      1100x520
+    158+10   Fall       alice      1100x460
+    160+10   Fall       num26      1100x400
+    162+10   Fall       end        1100x340
+                        
+    175      Exit       c_begin   
+                        
+    200      Enter      c_line      250x550  // call line at 6s
+                        
+    250      Enter      c_id        250x500  // call id at 8s
+                        
+    252+10   Exit       bob       
+    254+10   Fall       num12      1100x580
+    256+10   Fall       alice      1100x520
+    258+10   Fall       num26      1100x460
+    260+10   Fall       end        1100x400
+                        
+    275      Exit       c_id      
+                        
+    300      Enter      c_num       250x500  // call id at 10s 
+                        
+    302+10   Exit       num12     
+    304+10   Fall       alice      1100x580
+    306+10   Fall       num26      1100x520
+    308+10   Fall       end        1100x460
+                        
+    325      Exit       c_num     
+                        
+    350      Enter      c_id        250x500 // call id at 12s
+                        
+    352+10   Exit       alice     
+    354+10   Fall       num26      1100x580
+    356+10   Fall       end        1100x520
+                        
+    375      Exit       c_id      
+                        
+    400      Enter      c_num       250x500 // call id at 14s
+                        
+    402+10   Exit       num26     
+    406+10   Fall       end        1100x580
+                        
+    425      Exit       c_num     
+                        
+    450      Exit       c_line    
+                        
+    475      Enter      c_end       250x550
+    480      Exit       end       
+    500      Exit       c_end     
+    525      Exit       c_prog    
+                        
+    550      Enter      legend1     840x200
+    570      Enter      plus        840x275
+    590      Enter      legend2     840x350
+    610      Enter      equal       840x425
+    630      Enter      parser_ok   840x500

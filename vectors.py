@@ -7,11 +7,32 @@ import random
 import math
 from math import sin, cos, atan2, sqrt, pi
 
+
+MSG_VECTOR_ARGS_WRONG = (
+    'El argumento: {} para el constructor de la clase'
+    ' Vector no es válido. Esperaba una tupla u otro'
+    ' Vector, o dos números'
+    )
+
+
 class Vector(object):
 
-    def __init__(self, x, y):
-        self.x = float(x)
-        self.y = float(y)
+    def __init__(self, *args):
+        argc = len(args)
+        if argc == 0:
+            self.x = self.y = 0
+        elif argc == 1:
+            arg = args[0]
+            if isinstance(arg, tuple):
+                self.x, self.y = arg
+            elif isinstance(arg, self.__class__):
+                self.x, self.y = arg.x, arg.y
+            else:
+                raise ValueError(MSG_VECTOR_ARGS_WRONG.format(arg))
+        elif argc == 2:
+            self.x, self.y = float(args[0]), float(args[1])
+        else:
+            raise ValueError(MSG_VECTOR_ARGS_WRONG.format(args))
 
     width = property(lambda self: self.x)
     height = property(lambda self: self.y)

@@ -12,22 +12,22 @@ Cast:
 Actions:
 
 
-    10+10   bob  EaseOut  840x660
-    20+20   bob  Swing    440x640
-    40+20   bob  Swing    840x620
-    60+20   bob  Swing    440x600
-    80+20   bob  Swing    840x580
-   100+20   bob  Swing    440x560
-   120+20   bob  Swing    840x540
-   140+10   bob  EaseIn   640x530
+    10+10   EaseOut  bob  840x660
+    20+20   Swing    bob  440x640
+    40+20   Swing    bob  840x620
+    60+20   Swing    bob  440x600
+    80+20   Swing    bob  840x580
+   100+20   Swing    bob  440x560
+   120+20   Swing    bob  840x540
+   140+10   EaseIn   bob  640x530
 
 
-    10+10   charlie  EaseOut  440x660
-    20+20   charlie  Swing    840x640
-    40+20   charlie  Swing    440x620
-    60+20   charlie  Swing    840x600
-    80+20   charlie  Swing    440x580
-   100+20   charlie  Swing    840x560
-   120+20   charlie  Swing    440x540
-   140+10   charlie  EaseIn   640x530
+    10+10   EaseOut  charlie  440x660
+    20+20   Swing    charlie  840x640
+    40+20   Swing    charlie  440x620
+    60+20   Swing    charlie  840x600
+    80+20   Swing    charlie  440x580
+   100+20   Swing    charlie  840x560
+   120+20   Swing    charlie  440x540
+   140+10   EaseIn   charlie  640x530
 

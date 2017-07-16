@@ -22,34 +22,34 @@ Cast:
  
 Actions: 
  
-    1-25     bob   Move 756x93 
-    5-25     p2    Land 769x108 
- 
-    25-32    bob   Move 650x8 
-    32-57    bob   Move 44x375 
- 
-    1-23    p1   Fall 31x367 
-    33-41   p1   Swing 31x225 
- 
-    45-55   p1     Move 31x392 
- 
-    57-82   bob    Move 756x467 
- 
-    63-75   p2     Swing 769x467 
- 
-    82-102  bob    Land 69x350 
-    102-107 bob    EaseIn 112x262 
-    107-120 bob    EaseOut -70x205 
- 
-    105-112 p1     Swing 31x290 
- 
-    100-104   p1    Move 31x333 
-    108-117   p1    Land 31x317 
- 
-    112       p2score0a   Exit 
-    112       p2score0b   Exit 
-    112       p2score0c   Exit 
-    112       p2score0d   Exit 
- 
-    112       score1a Enter  441x67 
+    1-25      Move      bob      756x93 
+    5-25      Land      p2       769x108 
+                                 
+    25-32     Move      bob      650x8 
+    32-57     Move      bob      44x375 
+                                 
+    1-23      Fall      p1       31x367 
+    33-41     Swing     p1       31x225 
+                                 
+    45-55     Move      p1       31x392 
+                                 
+    57-82     Move      bob      756x467 
+                                 
+    63-75     Swing     p2       769x467 
+                                 
+    82-102    Land      bob      69x350 
+    102-107   EaseIn    bob      112x262 
+    107-120   EaseOut   bob      -70x205 
+                                 
+    105-112   Swing     p1       31x290 
+                                 
+    100-104   Move      p1       31x333 
+    108-117   Land      p1       31x317 
+                                 
+    112       Exit      p2score0a
+    112       Exit      p2score0b
+    112       Exit      p2score0c
+    112       Exit      p2score0d
+                      
+    112       Enter     score1a  441x67 
  

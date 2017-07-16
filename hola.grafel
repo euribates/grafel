@@ -1,9 +1,9 @@
 Cast:
 
-    a = Box pos 110x160 color red
+    box = Box pos 110x160 color red
 
 Actions:
 
-    25-75 a EaseIn  700x500
+    25-75 EaseIn box 700x500
 
 

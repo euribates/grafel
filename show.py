@@ -35,7 +35,7 @@ if opts.script:
     stage = Stage(options=opts)
     stage.add_actors(*actors)
     for t in language.get_actions():
-        (interval, actor_name, action_name) = t[0:3]
+        (interval, action_name, actor_name) = t[0:3]
         from_frame, to_frame = interval
         actor = language.get_actor(actor_name)
         args = t[3:]

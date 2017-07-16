@@ -35,57 +35,58 @@ Cast:
     vara = Label text "<VAR a>" color blue fontsize 44 width 290
 
 Actions:
-    0         lexer   Enter 840x200
-    0         lexer   Foreground
 
-    0-1      titbox  Background     
-    0        titulo Foreground
-
-    0-30     titulo Fall 400x60
-    0-30     titbox Fall 300x60
-
-    60+20     c16   Move 840x200
-    60+30     c15   Move 840x200
-    60+40     c14   Move 840x200
-    60+50     c13   Move 840x200
-    60+60     c12   Move 840x200
-    60+70     c11   Move 840x200
-    60+80     c10   Move 840x200
-    60+90     c9    Move 840x200
-    60+100    c8    Move 840x200
-    60+110    c7    Move 840x200
-    60+120    c6    Move 840x200
-    60+130    c5    Move 840x200
-    60+140    c4    Move 840x200
-    60+150    c3    Move 840x200
-    60+160    c2    Move 840x200
-    60+170    c1    Move 840x200
-    60+180    c0    Move 840x200
-
-    80       lbl2  Enter 840x200
-    80+5     lbl2  Move 1100x200
-    85+25    lbl2  Land 1100x680
-
-    100       opsq  Enter 840x200
-    100+5     opsq  Move 1100x200
-    105+25    opsq  Land 1100x620
-
-    140      varr  Enter 840x200
-    140+5    varr  Move  1100x200
-    145+25   varr  Land  1100x560
-
-    170      opd   Enter 840x200
-    170+5    opd   Move 1100x200
-    175+25   opd   Land 1100x500
-
-    220      pi    Enter 840x200
-    220+5    pi    Move 1100x200
-    225+25   pi    Land 1100x440
-
-    230      eq    Enter 840x200
-    230+5    eq    Move  1100x200
-    235+25   eq    Land  1100x380
-    
-    240      vara    Enter 840x200
-    240+5    vara    Move 1100x200
-    245+25   vara    Land  1100x320
+    0          Enter      lexer      840x200
+    0          Foreground lexer    
+                          
+    0-1        Background titbox       
+    0          Foreground titulo   
+                          
+    0-30       Fall       titulo      400x60
+    0-30       Fall       titbox      300x60
+                          
+    60+20      Move       c16        840x200
+    60+30      Move       c15        840x200
+    60+40      Move       c14        840x200
+    60+50      Move       c13        840x200
+    60+60      Move       c12        840x200
+    60+70      Move       c11        840x200
+    60+80      Move       c10        840x200
+    60+90      Move       c9         840x200
+    60+100     Move       c8         840x200
+    60+110     Move       c7         840x200
+    60+120     Move       c6         840x200
+    60+130     Move       c5         840x200
+    60+140     Move       c4         840x200
+    60+150     Move       c3         840x200
+    60+160     Move       c2         840x200
+    60+170     Move       c1         840x200
+    60+180     Move       c0         840x200
+                          
+    80         Enter      lbl2       840x200
+    80+5       Move       lbl2      1100x200
+    85+25      Land       lbl2      1100x680
+                          
+    100        Enter      opsq       840x200
+    100+5      Move       opsq      1100x200
+    105+25     Land       opsq      1100x620
+                          
+    140        Enter      varr       840x200
+    140+5      Move       varr      1100x200
+    145+25     Land       varr      1100x560
+                          
+    170        Enter      opd        840x200
+    170+5      Move       opd       1100x200
+    175+25     Land       opd       1100x500
+                          
+    220        Enter      pi         840x200
+    220+5      Move       pi        1100x200
+    225+25     Land       pi        1100x440
+                          
+    230        Enter      eq         840x200
+    230+5      Move       eq        1100x200
+    235+25     Land       eq        1100x380
+                          
+    240        Enter      vara       840x200
+    240+5      Move       vara      1100x200
+    245+25     Land       vara      1100x320

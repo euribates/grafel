@@ -27,70 +27,70 @@ Cast:
     path4 = Path points (750x450, 950x600) color gold
 
 Actions:
-    0        titbox  Background     
-    0        titulo Foreground
-    0        boxplus Background
-    0        r1 Foreground
-    0        r2 Foreground
+    0        Background     titbox  
+    0        Foreground     titulo 
+    0        Background     boxplus 
+    0        Foreground     r1 
+    0        Foreground     r2 
 
 
-    0-30     titulo Fall 450x60
-    0-30     titbox Fall 300x60
+    0-30     Fall titulo 450x60
+    0-30     Fall titbox 300x60
 
-    0        lblx    Enter 1000x440
-    0        lbleq   Enter 1000x500
-    0        lbly    Enter 1000x560
-    0        lblplus Enter 1000x620
-    0        lbl2    Enter 1000x680
+    0        Enter lblx    1000x440
+    0        Enter lbleq   1000x500
+    0        Enter lbly    1000x560
+    0        Enter lblplus 1000x620
+    0        Enter lbl2    1000x680
 
-    40+20    lblx    Land  150x220 
-    60+20    lbleq   Land  350x220
-    80+20    lbly    Land  550x220
-    100+20   lblplus Land  750x220
-    120+20   lbl2    Land  950x220
+    40+20    Land  lblx    150x220 
+    60+20    Land  lbleq   350x220
+    80+20    Land  lbly    550x220
+    100+20   Land  lblplus 750x220
+    120+20   Land  lbl2    950x220
 
-    40-45    boxx      FadeIn
-    55-60    boxx      FadeOut
+    40-45    FadeIn   boxx      
+    55-60    FadeOut  boxx      
 
-    60-65    boxeq      FadeIn
-    75-80    boxeq      FadeOut
+    60-65    FadeIn   boxeq      
+    75-80    FadeOut  boxeq      
 
-    40+5    r1      Colorize #FFFFFF
-    40+5    s1      Colorize yellow
-    75-80   r1      Colorize #444444
-    75-80   s1      Colorize black
+    40+5    Colorize r1      #FFFFFF
+    40+5    Colorize s1      yellow
+    75-80   Colorize r1      #444444
+    75-80   Colorize s1      black
 
-    80+5    r2      Colorize #FFFFFF
-    80+5    s2      Colorize yellow
-    135-140 r2      Colorize #444444
-    135-140 s2      Colorize black
+    80+5    Colorize r2      #FFFFFF
+    80+5    Colorize s2      yellow
+    135-140 Colorize r2      #444444
+    135-140 Colorize s2      black
 
-    80-85    boxterm1      FadeIn
-    95-100   boxterm1      FadeOut
-    100-105  boxplus       FadeIn
-    115-120  boxplus       FadeOut
-    120-125  boxterm2      FadeIn
-    135-140  boxterm2      FadeOut
+    80-85    FadeIn boxterm1      
+    95-100   FadeOut boxterm1      
+    100-105  FadeIn boxplus       
+    115-120  FadeOut boxplus       
+    120-125  FadeIn boxterm2      
+    135-140  FadeOut boxterm2      
 
-    160-180 r1 Colorize black
-    160-180 r2 Colorize black
-    180 r1 Exit
-    180 r2 Exit
+    160-180 Colorize r1 black
+    160-180 Colorize r2 black
+    180 Exit r1 
+    180 Exit r2 
 
-    200-240 lbl2 Land 910x600
-    200-220 lblplus Land 750x450
-    200-240 lbly Land 590x600
-    205-225 lbleq Land 490x300
-    205-225 lblx Land 230x450
+    200-240 Land lbl2    910x600
+    200-220 Land lblplus 750x450
+    200-240 Land lbly    590x600
+    205-225 Land lbleq   490x300
+    205-225 Land lblx    230x450
 
-    240      path1 Background
-    240+14   path1 FadeIn
+    240      Background path1 
+    240+14   FadeIn path1 
     
-    240      path2 Background
-    240+14   path2 FadeIn
+    240      Background path2 
+    240+14   FadeIn path2 
 
-    240      path3 Background
-    240+14   path3 FadeIn
+    240      Background path3 
+    240+14   FadeIn path3 
 
-    240      path4 Background
-    240+14   path4 FadeIn
+    240      Background path4 
+    240+14   FadeIn path4 

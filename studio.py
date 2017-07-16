@@ -17,17 +17,9 @@ import defaults
 
 logger = logs.create(__name__)
 
-#~ class Singleton(type):
-#~     _instances = {}
-#~     def __call__(cls, *args, **kwargs):
-#~         if cls not in cls._instances:
-#~             cls._instances[cls] = super().__call__(*args, **kwargs)
-#~         return cls._instances[cls]
-#~
-#~ class Stage(metaclass=Singleton):
-
 
 class Stage():
+
     def __init__(self, engine=None, scheduler=None, options=None):
         if options:
             self.size = Vector(*[int(_) for _ in options.size.split('x')])
@@ -56,7 +48,6 @@ class Stage():
         self.engine.bgcolor = self.background
         self.scheduler = scheduler if scheduler else Scheduler()
         self.actors = []
-
         self.refs = {
             'center': self.size / 2,
             'top_right': Vector(self.width, 0),

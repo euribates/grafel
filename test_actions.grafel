@@ -5,14 +5,14 @@ Cast:
 
 Actions:
 
-    1-25   r1   Land 640x700
-    25-75  r1   Swing 640x50
-    75-100 r1   Fall 640x360
-
-    1-5    r1   Colorize #000000
-    5-25   r1   Colorize #DD3a28
-    25-50  r1   Colorize #662331
-    50-75  r1   Colorize #229AA2
-    75-80   r1  Colorize #FFFFFF
-
-    1-100   r2  Move 1250x360
+    1-25   Land   r1   640x700
+    25-75  Swing  r1    640x50
+    75-100 Fall   r1   640x360
+                     
+    1-5    Colorize  r1   #000000
+    5-25   Colorize  r1   #DD3a28
+    25-50  Colorize  r1   #662331
+    50-75  Colorize  r1   #229AA2
+    75-80  Colorize  r1   #FFFFFF
+                     
+    1-100  Move   r2  1250x360

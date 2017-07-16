@@ -104,7 +104,7 @@ Positive = Word(nums)
 Integer = Combine(Optional('-')+Word(nums))
 vector = Integer + Literal('x') + Integer
 
-colorcode = Regex('#[0-9a-f]{6}', re.IGNORECASE) \
+ColorCode = Regex('#[0-9a-f]{6}', re.IGNORECASE) \
     | oneOf("black white red blue green yellow gold silver gray purple orange") 
 
 attr = (
@@ -122,7 +122,7 @@ attr = (
     | Keyword('points') + LPAR
                         + Group(delimitedList(vector))('points')
                         + RPAR
-    | Keyword("color") + colorcode
+    | Keyword("color") + ColorCode
     )
 
 attrs = ZeroOrMore(attr)
@@ -142,22 +142,23 @@ Cast = Keyword('Cast') + colon + OneOrMore(castline)('castlines')
 Interval = Group(Integer + oneOf('- +') + Integer) | Group(Integer)
 
 Action = (
-      Keyword("Move") + vector
-    | Keyword("Fall") + vector
-    | Keyword("Land") + vector
-    | Keyword("EaseIn") + vector
-    | Keyword("EaseOut") + vector
-    | Keyword("Swing") + vector
-    | Keyword("Enter") + vector
-    | Keyword("Colorize") + colorcode
-    | Keyword("FadeIn")
-    | Keyword("FadeOut")
-    | Keyword("Exit")
-    | Keyword("Background")
-    | Keyword("Foreground")
+      Keyword("Move") + Identifier + vector
+    | Keyword("Fall") + Identifier + vector
+    | Keyword("Land") + Identifier + vector
+    | Keyword("EaseIn") + Identifier + vector
+    | Keyword("EaseOut") + Identifier + vector
+    | Keyword("Swing") + Identifier + vector
+    | Keyword("Enter") + Identifier + vector
+    | Keyword("Arrow") + Identifier + vector 
+    | Keyword("Colorize") + Identifier + ColorCode
+    | Keyword("FadeIn") + Identifier
+    | Keyword("FadeOut") + Identifier
+    | Keyword("Exit") + Identifier
+    | Keyword("Background") + Identifier
+    | Keyword("Foreground") + Identifier
     )
 
-ActionLine = Group(Interval + Identifier + Action)
+ActionLine = Group(Interval + Action)
 
 Actions = Keyword('Actions') + colon + OneOrMore(ActionLine)('action_lines')
 
@@ -173,7 +174,7 @@ castline.setParseAction(parse_castline)
 Positive.setParseAction(lambda l: int(l[0]))
 Integer.setParseAction(parse_integer)
 vector.setParseAction(lambda l: Vector(int(l[0]), int(l[2])))
-colorcode.setParseAction(lambda l: Color(l[0]))
+ColorCode.setParseAction(lambda l: Color(l[0]))
 
 
 def get_parser():

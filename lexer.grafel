@@ -19,38 +19,38 @@ Cast:
     lblx = Label text "<VAR 'x'>" color blue fontsize 44 width 200
 
 Actions:
-    0-1      border Foreground
-    0-1      lparser Foreground
-    0-1      titbox  Background     
-    0        titulo Foreground
-
-    0-30     titulo Fall 400x60
-    0-30     titbox Fall 300x60
-
-    60-80     l2    Move 640x200
-    70-90     lplus Move 642x200
-    80-100    ly    Move 640x200
-    90-110    leq   Move 640x200
-   100-120    lx    Move 640x200
-
-    80       lbl2  Enter  640x200
-    80+10    lbl2  Land   900x200
-    90+20    lbl2  Fall  1000x680
-
-    90      lblplus   Enter  640x200
-    90+10   lblplus   Land   900x200
-    100+20  lblplus   Fall  1000x620
-    
-    100      lbly   Enter  640x200
-    100+10   lbly   Land  900x200
-    110+20   lbly   Fall 1000x560
-
-    110      lbleq   Enter  640x200
-    110+10   lbleq   Land  900x200
-    120+20   lbleq   Fall 1000x500
-
-    120      lblx   Enter  640x200
-    120+10   lblx   Land  900x200
-    130+20   lblx   Fall 1000x440
+    0-1       Foreground  border   
+    0-1       Foreground  lparser  
+    0-1       Background  titbox       
+    0         Foreground  titulo   
+                         
+    0-30      Fall        titulo     400x60
+    0-30      Fall        titbox     300x60
+                         
+    60-80     Move        l2         640x200
+    70-90     Move        lplus      642x200
+    80-100    Move        ly         640x200
+    90-110    Move        leq        640x200
+   100-120    Move        lx         640x200
+                         
+    80        Enter       lbl2       640x200
+    80+10     Land        lbl2       900x200
+    90+20     Fall        lbl2      1000x680
+                         
+    90        Enter       lblplus    640x200
+    90+10     Land        lblplus    900x200
+    100+20    Fall        lblplus   1000x620
+                         
+    100       Enter       lbly       640x200
+    100+10    Land        lbly       900x200
+    110+20    Fall        lbly      1000x560
+                         
+    110       Enter       lbleq      640x200
+    110+10    Land        lbleq      900x200
+    120+20    Fall        lbleq     1000x500
+                         
+    120       Enter       lblx       640x200
+    120+10    Land        lblx       900x200
+    130+20    Fall        lblx      1000x440
 
 

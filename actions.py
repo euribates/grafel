@@ -182,10 +182,7 @@ class MoveAction(Action):
 
     def __init__(self, actor, from_frame, to_frame, new_position):
         super().__init__(actor, from_frame, to_frame)
-        self.new_position = new_position
-        if isinstance(self.new_position, tuple):
-            x, y = self.new_position
-            self.new_position = Vector(x, y)
+        self.new_position = Vector(new_position)
 
     def start(self, frame):
         super().start(frame)
@@ -225,8 +222,8 @@ class Fall(MoveAction):
         relative_frame = self.get_relative_frame(frame)
         t = relative_frame / self.num_steps
         self.actor.pos = Vector(
-            x=self.change_value.x * t**2 + self.initial_position.x,
-            y=self.change_value.y * t**2 + self.initial_position.y,
+            self.change_value.x * t**2 + self.initial_position.x,
+            self.change_value.y * t**2 + self.initial_position.y,
             )
 
 
@@ -237,8 +234,8 @@ class Land(MoveAction):
         relative_frame = self.get_relative_frame(frame)
         t = relative_frame / self.num_steps
         self.actor.pos = Vector(
-            x=-self.change_value.x * t * (t-2) + self.initial_position.x,
-            y=-self.change_value.y * t * (t-2) + self.initial_position.y,
+            -self.change_value.x * t * (t-2) + self.initial_position.x,
+            -self.change_value.y * t * (t-2) + self.initial_position.y,
             )
 
 
@@ -250,8 +247,8 @@ class EaseIn(MoveAction):
         relative_frame = self.get_relative_frame(frame)
         t = relative_frame / self.num_steps
         self.actor.pos = Vector(
-            x=self.change_value.x * t**3 + self.initial_position.x,
-            y=self.change_value.y * t**3 + self.initial_position.y,
+            self.change_value.x * t**3 + self.initial_position.x,
+            self.change_value.y * t**3 + self.initial_position.y,
             )
 
 
@@ -265,8 +262,8 @@ class EaseOut(MoveAction):
         t -= 1
         ipx, ipy = self.initial_position
         self.actor.pos = Vector(
-            x=self.change_value.x * (t**3 + 1) + ipx,
-            y=self.change_value.y * (t**3 + 1) + ipy,
+            self.change_value.x * (t**3 + 1) + ipx,
+            self.change_value.y * (t**3 + 1) + ipy,
             )
 
 
@@ -280,14 +277,14 @@ class Swing(MoveAction):
         ipx, ipy = self.initial_position
         if t < 1:
             self.actor.pos = Vector(
-                x=self.change_value.x / 2 * t**3 + ipx,
-                y=self.change_value.y / 2 * t**3 + ipy,
+                self.change_value.x / 2 * t**3 + ipx,
+                self.change_value.y / 2 * t**3 + ipy,
                 )
         else:
             t -= 2
             self.actor.pos = Vector(
-                x=self.change_value.x / 2 * (t**3 + 2) + ipx,
-                y=self.change_value.y / 2 * (t**3 + 2) + ipy,
+                self.change_value.x / 2 * (t**3 + 2) + ipx,
+                self.change_value.y / 2 * (t**3 + 2) + ipy,
                 )
 
 
@@ -327,3 +324,21 @@ def create_action(action_name, actor, from_frame, to_frame, *args):
     ActionKlass = _map_actions[key]
     action = ActionKlass(actor, from_frame, to_frame, *args)
     return action
+
+
+@register_action
+class Arrow(Action):
+
+    def __init__(self, actor, from_frame, to_frame, target_position):
+        super().__init__(actor, from_frame, to_frame)
+        self.target_position = Vector(target_position)
+
+    def start(self, frame):
+        super().start(frame)
+        self.initial_position = copy(self.actor.pos)
+        self.change_value = self.target_position - self.initial_position
+        self.delta = self.change_value / self.num_steps
+
+    def step(self, frame):
+        self.actor.pos = self.new_position
+        self.actor.level = Level.ON_STAGE

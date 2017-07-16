@@ -6,6 +6,7 @@ Cast:
 
 Actions:
 
-    1-100 mfalcon EaseOut 1080x520
-    10-100 xw1 Swing 1080x366
-    10-100 xw1 Move  174x20
+    1-100 EaseOut mfalcon 1080x520
+
+    10-100 Swing xw1 1080x366
+    10-100 Move xw1  174x20

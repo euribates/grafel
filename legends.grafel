@@ -8,8 +8,8 @@ Cast:
 
 Actions:
 
-    50     legend1  Enter 640x150
-    70     plus     Enter 640x250
-    90     legend2  Enter 640x350
-    110     equal    Enter 640x450
-    130    parser_ok Enter 640x550
+    50    Enter   legend1   640x150
+    70    Enter   plus      640x250
+    90    Enter   legend2   640x350
+    110   Enter   equal    640x450
+    130   Enter   parser_ok 640x550
