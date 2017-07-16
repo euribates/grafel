@@ -32,63 +32,63 @@ Cast:
     vara = Label text "<VAR a>"        color blue fontsize 35 width 200
 
 Actions:
-    0         lexer   Foreground
-
-    0-1      titbox  Background     
-    0        titulo Foreground
-
-    0-30     titulo Fall 400x50
-    0-30     titbox Fall 300x50
-
-    
-    50+280   lexer Move 660x200
-
-    80       vara  Enter 155x200
-    80+5     vara  Move 110x200
-    85+25    vara  Land 110x550
-
-    100       eq  Enter 175x200
-    100+7     eq  Move  110x200
-    107+25    eq  Land  110x500
-
-    200      pi  Enter  315x200
-    200+10   pi  Move   110x200
-    210+25   pi  Land   110x450
-
-    220      opd   Enter 485x200
-    220+13   opd   Move  110x200
-    233+25   opd   Land  110x400
-    
-    300      varr  Enter 415x200
-    300+15   varr  Move  110x200
-    315+25   varr  Land  110x350
-
-    320      opsq    Enter 475x200
-    320+18   opsq    Move  110x200
-    338+25   opsq    Land  110x300
-    
-    340      lbl2    Enter 500x200
-    340+20   lbl2    Move  110x200
-    360+25   lbl2    Land  110x250
-
-    140      c0  Exit
-    150      c1  Exit
-    160      c2  Exit
-    170      c3  Exit
-    180      c4  Exit
-    190      c5  Exit
-    200      c6  Exit
-    210      c7  Exit
-    220      c8  Exit
-    230      c9  Exit
-    250      c10 Exit
-    260      c11 Exit
-    280      c12 Exit
-    300      c13 Exit
-    320      c14 Exit
-    340      c15 Exit
-    360      c16 Exit
-
-    370-380  lexer  Fall 330x200
-    380+5    lexer  Land 350x200
-    385+5    lexer  Fall 330x200
+    0          Foreground lexer   
+                          
+    0-1        Background titbox      
+    0          Foreground titulo  
+                          
+    0-30       Fall       titulo      400x50
+    0-30       Fall       titbox      300x50
+                          
+                          
+    50+280     Move       lexer      660x200
+                          
+    80         Enter      vara       155x200
+    80+5       Move       vara       110x200
+    85+25      Land       vara       110x550
+                          
+    100        Enter      eq         175x200
+    100+7      Move       eq         110x200
+    107+25     Land       eq         110x500
+                          
+    200        Enter      pi         315x200
+    200+10     Move       pi         110x200
+    210+25     Land       pi         110x450
+                          
+    220        Enter      opd        485x200
+    220+13     Move       opd        110x200
+    233+25     Land       opd        110x400
+                          
+    300        Enter      varr       415x200
+    300+15     Move       varr       110x200
+    315+25     Land       varr       110x350
+                          
+    320        Enter      opsq       475x200
+    320+18     Move       opsq       110x200
+    338+25     Land       opsq       110x300
+                          
+    340        Enter      lbl2       500x200
+    340+20     Move       lbl2       110x200
+    360+25     Land       lbl2       110x250
+                          
+    140        Exit       c0      
+    150        Exit       c1      
+    160        Exit       c2      
+    170        Exit       c3      
+    180        Exit       c4      
+    190        Exit       c5      
+    200        Exit       c6      
+    210        Exit       c7      
+    220        Exit       c8      
+    230        Exit       c9      
+    250        Exit       c10     
+    260        Exit       c11     
+    280        Exit       c12     
+    300        Exit       c13     
+    320        Exit       c14     
+    340        Exit       c15     
+    360        Exit       c16     
+                          
+    370-380    Fall       lexer      330x200
+    380+5      Land       lexer      350x200
+    385+5      Fall       lexer      330x200
