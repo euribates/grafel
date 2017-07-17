@@ -1,0 +1,13 @@
+Cast:
+    
+    a = Triangle points ( 0x-100, 87x50, -87x50 ) color red
+    b = Box width 2 height 2
+
+Actions:
+
+  0      Enter      a         450x150
+  0      Enter      b         450x150
+
+  10-100  Colorize  a         #72Cab4
+
+  10-100  Rotate    a             180

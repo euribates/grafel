@@ -1,0 +1,12 @@
+Cast:
+    
+    lbl = Label text "Inicio cola"
+    root = Box width 5 height 5 pos 50x50
+
+Actions:
+
+    0    Enter lbl       150x100
+    0    Enter root        50x50
+
+    1-24   Arrow root       500x600
+
