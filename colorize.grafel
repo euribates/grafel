@@ -1,0 +1,9 @@
+Cast:
+
+    box = Square pos 110x160 color red
+
+Actions:
+
+    25-75 Colorize box #3488DA
+
+
