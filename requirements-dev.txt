@@ -1,1 +1,2 @@
 pytest-sugar
+flake8
