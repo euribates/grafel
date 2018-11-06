@@ -2,104 +2,110 @@
 # -*- coding: utf-8 -*-
 
 import random
-import unittest
+import pytest
 from colors import Color
 
-class TestColor(unittest.TestCase):
 
-    def test_set_red_value(self):
-        c = Color(12, 33, 211)
-        c.red = 64
-        self.assertEqual(c.red, 64)
-        self.assertEqual(str(c), '#4021d3')
-
-    def test_set_green_value(self):
-        c = Color(12, 33, 211)
-        c.green = 64
-        self.assertEqual(c.green, 64)
-        self.assertEqual(str(c), '#0c40d3')
-
-    def test_set_blue_value(self):
-        c = Color(12, 33, 211)
-        c.blue = 64
-        self.assertEqual(c.blue, 64)
-        self.assertEqual(str(c), '#0c2140')
+def test_create_color():
+    Color(12, 33, 211)
 
 
-    def test_creation_from_tuple(self):
-        c = Color(12, 33, 211)
-        self.assertEqual(c.red, 12)
-        self.assertEqual(c.r, 12)
-        self.assertEqual(c.green, 33)
-        self.assertEqual(c.g, 33)
-        self.assertEqual(c.blue, 211)
-        self.assertEqual(c.b, 211)
-    
-    def test_as_rgb(self):
-        c = Color(12, 33, 211)
-        self.assertEqual(c.as_rgb(), (12, 33, 211))
-
-    def test_as_hex(self):
-        c = Color(12, 33, 211)
-        self.assertEqual(c.as_hex(), '#0c21d3')
-
-    def test_as_rgb(self):
-        c = Color(12, 33, 211)
-        self.assertEqual(c.as_svg(), 'rgb(12,33,211)')
-
-    def test_equal(self):
-        r1 = Color('azure')
-        r2 = Color(240, 255, 255)
-        self.assertEqual(r1, r2)
-
-    def test_pure_colors(self):
-        white = Color('white')
-        assert white.r == 255 and white.g == 255 and white.b == 255
-        red = Color('red')
-        assert red.r == 255 and red.g == 0 and red.b == 0
-        red = Color('blue')
-        assert red.r == 0 and red.g == 0 and red.b == 255
-        red = Color('green')
-        assert red.r == 0 and red.g == 128 and red.b == 0
-        black = Color('black')
-        assert black.r == 0 and black.g == 0 and black.b == 0
-        yellow = Color('yellow')
-        assert yellow.r == 255 and yellow.g == 255 and yellow.b == 0
+@pytest.fixture
+def color():
+    return Color(12, 33, 211)
 
 
-    def test_names(self):
+def test_set_red_value(color):
+    color.red = 64
+    assert color.red == 64
+    assert str(color) =='#4021d3'
 
-        aliceblue = Color('aliceblue')
-        assert aliceblue.red == 240 
-        assert aliceblue.green == 248 
-        assert aliceblue.blue == 255
 
-        brown4 = Color('brown4')
-        assert brown4.red == 139 
-        assert brown4.green == 35 
-        assert brown4.blue == 35
+def test_set_green_value(color):
+    color.green = 64
+    assert color.green == 64
+    assert str(color) == '#0c40d3'
 
-        cadetblue = Color('cadetblue')
-        assert cadetblue.red == 95 
-        assert cadetblue.green == 158 
-        assert cadetblue.blue == 160
 
-        self.assertRaises(ValueError, Color, 'no-existo')
+def test_set_blue_value(color):
+    color.blue = 64
+    assert color.blue == 64
+    assert str(color) == '#0c2140'
 
-    def test_hexcodes(self):
-        c = Color('#32BF98')
-        self.assertEqual(c.red, 50)
-        self.assertEqual(c.green, 191)
-        self.assertEqual(c.blue, 152)
 
-    def test_create_by_values(self):
-        for r in random.sample(range(0, 256), 12):
-            for g in random.sample(range(0, 256), 12):
-                for b in random.sample(range(0, 256), 12):
-                    c = Color(r, g, b)
-                    self.assertEqual(c.red, r)
-                    self.assertEqual(c.green, g)
-                    self.assertEqual(c.blue, b)
+def test_creation_from_tuple(color):
+    assert color.red == 12
+    assert color.r == 12
+    assert color.green == 33
+    assert color.g == 33
+    assert color.blue == 211
+    assert color.b == 211
+
+
+def test_as_rgb(color):
+    assert color.as_rgb() == (12, 33, 211)
+
+
+def test_as_hex(color):
+    assert color.as_hex() == '#0c21d3'
+
+
+def test_as_rgb(color):
+    assert color.as_svg() == 'rgb(12,33,211)'
+
+
+def test_equal():
+    r1 = Color('azure')
+    r2 = Color(240, 255, 255)
+    assert r1 == r2
+
+
+_named_colors = {
+    'aliceblue': (240, 248, 255),
+    'brown4': (139, 35, 35),
+    'cadetblue': (95, 158, 160),
+    'white': (255, 255, 255),
+    'red': (255, 0, 0),
+    'blue': (0, 0, 255),
+    'green': (0, 128, 0),
+    'yellow': (255, 255, 0),
+    'black': (0, 0, 0),
+    }
+
+@pytest.fixture(params=_named_colors.items(), ids=_named_colors.keys())
+def named_colors(request): 
+    name, rgb = request.param
+    return Color(name), rgb 
+
+
+def test_names(named_colors):
+    color, (red, green, blue) = named_colors
+    assert color.red == red
+    assert color.green == green
+    assert color.blue == blue
+
+
+def test_wrong_color_name():
+    with pytest.raises(ValueError):
+        Color('non-existing-color')
+
+
+def test_hexcodes():
+    c = Color('#32BF98')
+    assert c.red == 50
+    assert c.green == 191
+    assert c.blue == 152
+
+
+def test_create_by_random_values():
+    for r in random.sample(range(0, 256), 12):
+        for g in random.sample(range(0, 256), 12):
+            for b in random.sample(range(0, 256), 12):
+                c = Color(r, g, b)
+                assert c.red == r
+                assert c.green == g
+                assert c.blue == b
+
 
 if __name__ == '__main__':
-    unittest.main()
+    pytest.main()
