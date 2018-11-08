@@ -2,16 +2,12 @@
 # -*- coding: utf-8 -*-
 
 import sys
-import argparse
 
 import pygame
 import language
 
-import vectors
 import actions
-from control import Scheduler
 from studio import Stage
-from engines import PyGameEngine
 import config
 import logs
 
@@ -22,13 +18,13 @@ opts = config.get_options()
 if opts.script:
     parser = language.get_parser()
     try:
-        tree = parser.parseFile(opts.script)
+        parser.parseFile(opts.script)
     except language.ParseException as err:
-        print('Error de parseo en {}'.format(opts.script))
-        print(err)
-        print('num línea: {}'.format(err.lineno))
-        print('>>> {}'.format(err.line))
-        print('---' + '-'*err.col + '^')
+        logger.error('Error de parseo en {}'.format(opts.script))
+        logger.error(err)
+        logger.error('num línea: {}'.format(err.lineno))
+        logger.error('>>> {}'.format(err.line))
+        logger.error('---' + '-'*err.col + '^')
         sys.exit()
 
     actors = [language.get_actor(_) for _ in language.actors_list()]
