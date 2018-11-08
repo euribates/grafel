@@ -12,7 +12,6 @@ import config
 import logs
 
 logger = logs.create(__name__)
-
 opts = config.get_options()
 
 if opts.script:
@@ -31,10 +30,9 @@ if opts.script:
     stage = Stage(options=opts)
     stage.add_actors(*actors)
     for t in language.get_actions():
-        (interval, action_name, actor_name) = t[0:3]
+        interval, action_name, actor_name, *args = t
         from_frame, to_frame = interval
         actor = language.get_actor(actor_name)
-        args = t[3:]
         action = actions.create_action(
             action_name, actor,
             from_frame, to_frame,
