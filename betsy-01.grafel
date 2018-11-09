@@ -1,0 +1,100 @@
+Cast:
+
+   n_1 = Label text "63.27" pos 80x-100 color #1212FF
+   n_2 = Label text "-797.41" pos 240x-100 color red
+   n_3 = Label text "-120.84" pos 400x-100 color red
+   n_4 = Label text "905.04" pos 560x-100 color #1212FF
+   n_5 = Label text "-559.56" pos 720x-100 color red
+   n_6 = Label text "-358.85" pos 880x-100 color red
+   n_7 = Label text "173.14" pos 1040x-100 color #1212FF
+   n_8 = Label text "695.21" pos 1200x-100 color #1212FF
+   n_9 = Label text "261.16" pos 80x-100 color #1212FF
+   n_10 = Label text "937.44" pos 240x-100 color #1212FF
+   n_11 = Label text "99.88" pos 400x-100 color #1212FF
+   n_12 = Label text "396.07" pos 560x-100 color #1212FF
+   n_13 = Label text "333.73" pos 720x-100 color #1212FF
+   n_14 = Label text "114.91" pos 880x-100 color #1212FF
+   n_15 = Label text "104.67" pos 1040x-100 color #1212FF
+   n_16 = Label text "139.79" pos 1200x-100 color #1212FF
+   n_17 = Label text "31.29" pos 80x-100 color #1212FF
+   n_18 = Label text "450.57" pos 240x-100 color #1212FF
+   n_19 = Label text "281.47" pos 400x-100 color #1212FF
+   n_20 = Label text "47.77" pos 560x-100 color #1212FF
+   n_21 = Label text "361.52" pos 720x-100 color #1212FF
+   n_22 = Label text "504.21" pos 880x-100 color #1212FF
+   n_23 = Label text "633.64" pos 1040x-100 color #1212FF
+   n_24 = Label text "588.81" pos 1200x-100 color #1212FF
+   n_25 = Label text "332.01" pos 80x-100 color #1212FF
+   n_26 = Label text "924.77" pos 240x-100 color #1212FF
+   n_27 = Label text "535.43" pos 400x-100 color #1212FF
+   n_28 = Label text "561.64" pos 560x-100 color #1212FF
+   n_29 = Label text "692.6" pos 720x-100 color #1212FF
+   n_30 = Label text "863.49" pos 880x-100 color #1212FF
+   n_31 = Label text "694.42" pos 1040x-100 color #1212FF
+   n_32 = Label text "532.03" pos 1200x-100 color #1212FF
+   n_33 = Label text "782.65" pos 80x-100 color #1212FF
+   n_34 = Label text "753.82" pos 240x-100 color #1212FF
+   n_35 = Label text "945.49" pos 400x-100 color #1212FF
+   n_36 = Label text "278.17" pos 560x-100 color #1212FF
+   n_37 = Label text "355.55" pos 720x-100 color #1212FF
+   n_38 = Label text "915.07" pos 880x-100 color #1212FF
+   n_39 = Label text "477.39" pos 1040x-100 color #1212FF
+   n_40 = Label text "807.34" pos 1200x-100 color #1212FF
+   n_41 = Label text "203.59" pos 80x-100 color #1212FF
+   n_42 = Label text "861.63" pos 240x-100 color #1212FF
+   n_43 = Label text "23.9" pos 400x-100 color #1212FF
+   n_44 = Label text "244.41" pos 560x-100 color #1212FF
+   n_45 = Label text "523.72" pos 720x-100 color #1212FF
+   n_46 = Label text "940.06" pos 880x-100 color #1212FF
+   n_47 = Label text "304.99" pos 1040x-100 color #1212FF
+   n_48 = Label text "997.76" pos 1200x-100 color #1212FF
+Actions:
+
+    12-79 EaseIn n_1 80x60
+    13-87 EaseIn n_2 240x60
+    18-79 EaseIn n_3 400x60
+    13-88 EaseIn n_4 560x60
+    12-81 EaseIn n_5 720x60
+    20-83 EaseIn n_6 880x60
+    17-80 EaseIn n_7 1040x60
+    12-77 EaseIn n_8 1200x60
+    14-80 EaseIn n_9 80x180
+    20-80 EaseIn n_10 240x180
+    23-78 EaseIn n_11 400x180
+    14-75 EaseIn n_12 560x180
+    18-87 EaseIn n_13 720x180
+    13-89 EaseIn n_14 880x180
+    21-81 EaseIn n_15 1040x180
+    13-75 EaseIn n_16 1200x180
+    17-86 EaseIn n_17 80x300
+    19-76 EaseIn n_18 240x300
+    12-76 EaseIn n_19 400x300
+    22-77 EaseIn n_20 560x300
+    14-87 EaseIn n_21 720x300
+    12-79 EaseIn n_22 880x300
+    18-84 EaseIn n_23 1040x300
+    19-79 EaseIn n_24 1200x300
+    19-88 EaseIn n_25 80x420
+    12-87 EaseIn n_26 240x420
+    16-80 EaseIn n_27 400x420
+    20-87 EaseIn n_28 560x420
+    19-78 EaseIn n_29 720x420
+    21-85 EaseIn n_30 880x420
+    20-84 EaseIn n_31 1040x420
+    24-80 EaseIn n_32 1200x420
+    12-81 EaseIn n_33 80x540
+    24-85 EaseIn n_34 240x540
+    20-81 EaseIn n_35 400x540
+    22-83 EaseIn n_36 560x540
+    22-87 EaseIn n_37 720x540
+    22-84 EaseIn n_38 880x540
+    19-83 EaseIn n_39 1040x540
+    22-81 EaseIn n_40 1200x540
+    17-83 EaseIn n_41 80x660
+    12-88 EaseIn n_42 240x660
+    24-85 EaseIn n_43 400x660
+    14-86 EaseIn n_44 560x660
+    13-89 EaseIn n_45 720x660
+    19-85 EaseIn n_46 880x660
+    16-77 EaseIn n_47 1040x660
+    17-80 EaseIn n_48 1200x660
