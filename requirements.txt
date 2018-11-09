@@ -3,3 +3,4 @@ freetype-py
 pyparsing
 pytest
 pygame
+paver
