@@ -1,0 +1,11 @@
+Cast:
+
+    bob = Box width 90 height 60 pos 110x260 color #336699
+    txt = Label text "Hola, mundo" pos 110x160 color red
+
+Actions:
+
+    10-90 FadeOut txt
+    10-90 FadeOut bob
+
+
