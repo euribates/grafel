@@ -32,11 +32,6 @@ if opts.script:
     stage.add_actors(*actors)
     for t in language.get_actions():
         interval, action_name, actor_name,  *args = t
-        logger.error('interval from {} to {}'.format(*interval))
-        logger.error('actor_name is {}'.format(actor_name))
-        logger.error('action_name is {}'.format(action_name))
-
-        logger.error('interval from {} to {}'.format(*interval))
         from_frame, to_frame = interval
         actor = language.get_actor(actor_name)
         action = actions.create_action(
