@@ -13,10 +13,12 @@ for filename in sorted(glob.glob('./tmp/frame_*.svg')):
     else:
         print('.', end="")
         sys.stdout.flush()
+    print("rsvg", filename, target_filename)
     subprocess.call([
-        "rsvg", 
-        filename,
+        "rsvg",
+        "-o",
         target_filename,
+        filename,
         ])
 print('Preparando vídeo', end=' ')
 subprocess.call([

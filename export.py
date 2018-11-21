@@ -19,11 +19,11 @@ if opts.script:
     try:
         tree = parser.parseFile(opts.script)
     except language.ParseException as err:
-        print('Error de parseo en {}'.format(opts.script))
-        print(err)
-        print('num línea: {}'.format(err.lineno))
-        print('>>> {}'.format(err.line))
-        print('---' + '-'*err.col + '^')
+        logger.error('Error de parseo en {}'.format(opts.script))
+        logger.error(err)
+        logger.error('num línea: {}'.format(err.lineno))
+        logger.error('>>> {}'.format(err.line))
+        logger.error('---' + '-'*err.col + '^')
         sys.exit()
 
     actors = [language.get_actor(_) for _ in language.actors_list()]
@@ -31,10 +31,9 @@ if opts.script:
     stage = Stage(engine, options=opts)
     stage.add_actors(*actors)
     for t in language.get_actions():
-        (interval, action_name, actor_name) = t[0:3]
+        interval, action_name, actor_name,  *args = t
         from_frame, to_frame = interval
         actor = language.get_actor(actor_name)
-        args = t[3:]
         action = actions.create_action(
             action_name, actor,
             from_frame, to_frame,

@@ -1,15 +1,10 @@
 #!/usr/bni/env python3
 
-import re
-import sys
 import math
-from copy import copy
-import pprint
-from collections import defaultdict
 
-from vectors import Vector, origin, zero
+from vectors import Vector, zero
 import colors
-from colors import Color, black, white
+from colors import Color, white
 import logs
 from enum import IntEnum
 import fileutils
