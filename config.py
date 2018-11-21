@@ -38,7 +38,7 @@ options_parser.add_argument(
     )
 
 options_parser.add_argument(
-    "--output_dir", help="Directorio de salida (./tmp por defecto)",
+    "--output-dir", help="Directorio de salida (./tmp por defecto)",
     default='./tmp'
     )
 

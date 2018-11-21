@@ -3,13 +3,9 @@
 
 import sys
 
-import pygame
 import language
-import argparse
 
-import vectors
 import actions
-from control import Scheduler
 from studio import Stage
 from engines import SVGEngine
 import config
@@ -35,7 +31,7 @@ if opts.script:
     stage = Stage(engine, options=opts)
     stage.add_actors(*actors)
     for t in language.get_actions():
-        (interval, actor_name, action_name) = t[0:3]
+        (interval, action_name, actor_name) = t[0:3]
         from_frame, to_frame = interval
         actor = language.get_actor(actor_name)
         args = t[3:]
@@ -45,7 +41,5 @@ if opts.script:
             *args
             )
         stage.add_action(action)
-    force_exit = False
     for frame in range(stage.num_frames):
-        stage.draw(frame) 
-
+        stage.draw(frame)

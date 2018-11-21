@@ -1,0 +1,12 @@
+Cast:
+    
+    hola = Text text "Hola" pos 70x160 color white
+    mundo = Label text "Hola" pos 150x160 color red 
+
+Actions:
+
+    1-12  FadeIn hola
+    1-12  FadeIn mundo
+
+    25-50 FadeOut hola
+    25-50 FadeOut mundo
