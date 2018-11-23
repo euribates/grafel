@@ -1,100 +1,197 @@
 Cast:
 
-   n_1 = Label text "63.27" pos 80x-100 color #1212FF
-   n_2 = Label text "-797.41" pos 240x-100 color red
-   n_3 = Label text "-120.84" pos 400x-100 color red
-   n_4 = Label text "905.04" pos 560x-100 color #1212FF
-   n_5 = Label text "-559.56" pos 720x-100 color red
-   n_6 = Label text "-358.85" pos 880x-100 color red
-   n_7 = Label text "173.14" pos 1040x-100 color #1212FF
-   n_8 = Label text "695.21" pos 1200x-100 color #1212FF
-   n_9 = Label text "261.16" pos 80x-100 color #1212FF
-   n_10 = Label text "937.44" pos 240x-100 color #1212FF
-   n_11 = Label text "99.88" pos 400x-100 color #1212FF
-   n_12 = Label text "396.07" pos 560x-100 color #1212FF
-   n_13 = Label text "333.73" pos 720x-100 color #1212FF
-   n_14 = Label text "114.91" pos 880x-100 color #1212FF
-   n_15 = Label text "104.67" pos 1040x-100 color #1212FF
-   n_16 = Label text "139.79" pos 1200x-100 color #1212FF
-   n_17 = Label text "31.29" pos 80x-100 color #1212FF
-   n_18 = Label text "450.57" pos 240x-100 color #1212FF
-   n_19 = Label text "281.47" pos 400x-100 color #1212FF
-   n_20 = Label text "47.77" pos 560x-100 color #1212FF
-   n_21 = Label text "361.52" pos 720x-100 color #1212FF
-   n_22 = Label text "504.21" pos 880x-100 color #1212FF
-   n_23 = Label text "633.64" pos 1040x-100 color #1212FF
-   n_24 = Label text "588.81" pos 1200x-100 color #1212FF
-   n_25 = Label text "332.01" pos 80x-100 color #1212FF
-   n_26 = Label text "924.77" pos 240x-100 color #1212FF
-   n_27 = Label text "535.43" pos 400x-100 color #1212FF
-   n_28 = Label text "561.64" pos 560x-100 color #1212FF
-   n_29 = Label text "692.6" pos 720x-100 color #1212FF
-   n_30 = Label text "863.49" pos 880x-100 color #1212FF
-   n_31 = Label text "694.42" pos 1040x-100 color #1212FF
-   n_32 = Label text "532.03" pos 1200x-100 color #1212FF
-   n_33 = Label text "782.65" pos 80x-100 color #1212FF
-   n_34 = Label text "753.82" pos 240x-100 color #1212FF
-   n_35 = Label text "945.49" pos 400x-100 color #1212FF
-   n_36 = Label text "278.17" pos 560x-100 color #1212FF
-   n_37 = Label text "355.55" pos 720x-100 color #1212FF
-   n_38 = Label text "915.07" pos 880x-100 color #1212FF
-   n_39 = Label text "477.39" pos 1040x-100 color #1212FF
-   n_40 = Label text "807.34" pos 1200x-100 color #1212FF
-   n_41 = Label text "203.59" pos 80x-100 color #1212FF
-   n_42 = Label text "861.63" pos 240x-100 color #1212FF
-   n_43 = Label text "23.9" pos 400x-100 color #1212FF
-   n_44 = Label text "244.41" pos 560x-100 color #1212FF
-   n_45 = Label text "523.72" pos 720x-100 color #1212FF
-   n_46 = Label text "940.06" pos 880x-100 color #1212FF
-   n_47 = Label text "304.99" pos 1040x-100 color #1212FF
-   n_48 = Label text "997.76" pos 1200x-100 color #1212FF
+   n_0 = Text text "940.06" pos 80x-100 color #CECECE
+   n_1 = Text text "-304.99" pos 240x-100 color #CECECE
+   n_2 = Text text "-635.07" pos 400x-100 color #CECECE
+   n_3 = Text text "63.27" pos 560x-100 color #CECECE
+   n_4 = Text text "-797.41" pos 720x-100 color #CECECE
+   n_5 = Text text "-120.84" pos 880x-100 color #CECECE
+   n_6 = Text text "905.04" pos 1040x-100 color #CECECE
+   n_7 = Text text "-559.56" pos 1200x-100 color #CECECE
+   n_8 = Text text "-358.85" pos 80x-100 color #CECECE
+   n_9 = Text text "173.14" pos 240x-100 color #CECECE
+   n_10 = Text text "695.21" pos 400x-100 color #CECECE
+   n_11 = Text text "333.73" pos 560x-100 color #CECECE
+   n_12 = Text text "114.91" pos 720x-100 color #CECECE
+   n_13 = Text text "104.67" pos 880x-100 color #CECECE
+   n_14 = Text text "139.79" pos 1040x-100 color #CECECE
+   n_15 = Text text "-693.10" pos 1200x-100 color #CECECE
+   n_16 = Text text "-261.16" pos 80x-100 color #CECECE
+   n_17 = Text text "-937.44" pos 240x-100 color #CECECE
+   n_18 = Text text "-99.88" pos 400x-100 color #CECECE
+   n_19 = Text text "1298.48" pos 560x-100 color #CECECE
+   n_20 = Text text "450.57" pos 720x-100 color #CECECE
+   n_21 = Text text "281.47" pos 880x-100 color #CECECE
+   n_22 = Text text "47.77" pos 1040x-100 color #CECECE
+   n_23 = Text text "-361.52" pos 1200x-100 color #CECECE
+   n_24 = Text text "-504.21" pos 80x-100 color #CECECE
+   n_25 = Text text "-633.64" pos 240x-100 color #CECECE
+   n_26 = Text text "719.56" pos 400x-100 color #CECECE
+   n_27 = Text text "-332.01" pos 560x-100 color #CECECE
+   n_28 = Text text "-924.77" pos 720x-100 color #CECECE
+   n_29 = Text text "535.43" pos 880x-100 color #CECECE
+   n_30 = Text text "561.64" pos 1040x-100 color #CECECE
+   n_31 = Text text "692.60" pos 1200x-100 color #CECECE
+   n_32 = Text text "863.49" pos 80x-100 color #CECECE
+   n_33 = Text text "-1396.38" pos 240x-100 color #CECECE
+   n_34 = Text text "532.03" pos 400x-100 color #CECECE
+   n_35 = Text text "-782.65" pos 560x-100 color #CECECE
+   n_36 = Text text "-753.82" pos 720x-100 color #CECECE
+   n_37 = Text text "945.49" pos 880x-100 color #CECECE
+   n_38 = Text text "-278.17" pos 1040x-100 color #CECECE
+   n_39 = Text text "355.55" pos 1200x-100 color #CECECE
+   n_40 = Text text "915.07" pos 80x-100 color #CECECE
+   n_41 = Text text "-933.50" pos 240x-100 color #CECECE
+   n_42 = Text text "477.39" pos 400x-100 color #CECECE
+   n_43 = Text text "807.34" pos 560x-100 color #CECECE
+   n_44 = Text text "203.59" pos 720x-100 color #CECECE
+   n_45 = Text text "861.63" pos 880x-100 color #CECECE
+   n_46 = Text text "23.90" pos 1040x-100 color #CECECE
+   n_47 = Text text "244.41" pos 1200x-100 color #CECECE
+   n_48 = Text text "-2618.26" pos 80x-100 color #CECECE
 Actions:
 
-    12-79 EaseIn n_1 80x60
-    13-87 EaseIn n_2 240x60
-    18-79 EaseIn n_3 400x60
-    13-88 EaseIn n_4 560x60
-    12-81 EaseIn n_5 720x60
-    20-83 EaseIn n_6 880x60
-    17-80 EaseIn n_7 1040x60
-    12-77 EaseIn n_8 1200x60
-    14-80 EaseIn n_9 80x180
-    20-80 EaseIn n_10 240x180
-    23-78 EaseIn n_11 400x180
-    14-75 EaseIn n_12 560x180
-    18-87 EaseIn n_13 720x180
-    13-89 EaseIn n_14 880x180
-    21-81 EaseIn n_15 1040x180
-    13-75 EaseIn n_16 1200x180
-    17-86 EaseIn n_17 80x300
-    19-76 EaseIn n_18 240x300
-    12-76 EaseIn n_19 400x300
-    22-77 EaseIn n_20 560x300
-    14-87 EaseIn n_21 720x300
-    12-79 EaseIn n_22 880x300
-    18-84 EaseIn n_23 1040x300
-    19-79 EaseIn n_24 1200x300
-    19-88 EaseIn n_25 80x420
-    12-87 EaseIn n_26 240x420
-    16-80 EaseIn n_27 400x420
-    20-87 EaseIn n_28 560x420
-    19-78 EaseIn n_29 720x420
-    21-85 EaseIn n_30 880x420
-    20-84 EaseIn n_31 1040x420
-    24-80 EaseIn n_32 1200x420
-    12-81 EaseIn n_33 80x540
-    24-85 EaseIn n_34 240x540
-    20-81 EaseIn n_35 400x540
-    22-83 EaseIn n_36 560x540
-    22-87 EaseIn n_37 720x540
-    22-84 EaseIn n_38 880x540
-    19-83 EaseIn n_39 1040x540
-    22-81 EaseIn n_40 1200x540
-    17-83 EaseIn n_41 80x660
-    12-88 EaseIn n_42 240x660
-    24-85 EaseIn n_43 400x660
-    14-86 EaseIn n_44 560x660
-    13-89 EaseIn n_45 720x660
-    19-85 EaseIn n_46 880x660
-    16-77 EaseIn n_47 1040x660
-    17-80 EaseIn n_48 1200x660
+    12-26 Land n_0 80x60
+    13-35 Land n_1 240x60
+    18-32 Land n_2 400x60
+    13-36 Land n_3 560x60
+    12-28 Land n_4 720x60
+    20-38 Land n_5 880x60
+    17-32 Land n_6 1040x60
+    12-24 Land n_7 1200x60
+    14-29 Land n_8 80x180
+    20-35 Land n_9 240x180
+    23-36 Land n_10 400x180
+    14-24 Land n_11 560x180
+    18-40 Land n_12 720x180
+    13-37 Land n_13 880x180
+    21-37 Land n_14 1040x180
+    13-23 Land n_15 1200x180
+    17-38 Land n_16 80x300
+    19-30 Land n_17 240x300
+    12-23 Land n_18 400x300
+    22-34 Land n_19 560x300
+    14-36 Land n_20 720x300
+    12-26 Land n_21 880x300
+    18-37 Land n_22 1040x300
+    19-33 Land n_23 1200x300
+    19-42 Land n_24 80x420
+    12-34 Land n_25 240x420
+    16-31 Land n_26 400x420
+    20-42 Land n_27 560x420
+    19-32 Land n_28 720x420
+    21-41 Land n_29 880x420
+    20-39 Land n_30 1040x420
+    24-39 Land n_31 1200x420
+    12-28 Land n_32 80x540
+    24-44 Land n_33 240x540
+    20-36 Land n_34 400x540
+    22-40 Land n_35 560x540
+    22-44 Land n_36 720x540
+    22-41 Land n_37 880x540
+    19-37 Land n_38 1040x540
+    22-38 Land n_39 1200x540
+    17-35 Land n_40 80x660
+    12-35 Land n_41 240x660
+    24-44 Land n_42 400x660
+    14-35 Land n_43 560x660
+    13-37 Land n_44 720x660
+    19-39 Land n_45 880x660
+    16-28 Land n_46 1040x660
+    17-32 Land n_47 1200x660
+    20-36 Land n_48 80x780
+    75-100 Colorize n_0 #FFF68F
+    75-100 Colorize n_1 #FFF68F
+    75-100 Colorize n_2 #FFF68F
+    75-100 Colorize n_3 #7FFFD4
+    75-100 Colorize n_4 #7FFFD4
+    75-100 Colorize n_5 #7FFFD4
+    75-100 Colorize n_6 #7FFFD4
+    75-100 Colorize n_7 #7FFFD4
+    75-100 Colorize n_8 #7FFFD4
+    75-100 Colorize n_9 #7FFFD4
+    75-100 Colorize n_10 #7FFFD4
+    75-100 Colorize n_11 #FF7F50
+    75-100 Colorize n_12 #FF7F50
+    75-100 Colorize n_13 #FF7F50
+    75-100 Colorize n_14 #FF7F50
+    75-100 Colorize n_15 #FF7F50
+    75-100 Colorize n_16 #18838B
+    75-100 Colorize n_17 #18838B
+    75-100 Colorize n_18 #18838B
+    75-100 Colorize n_19 #18838B
+    75-100 Colorize n_20 #9C661F
+    75-100 Colorize n_21 #9C661F
+    75-100 Colorize n_22 #9C661F
+    75-100 Colorize n_23 #9C661F
+    75-100 Colorize n_24 #9C661F
+    75-100 Colorize n_25 #9C661F
+    75-100 Colorize n_26 #9C661F
+    75-100 Colorize n_27 #FF6103
+    75-100 Colorize n_28 #FF6103
+    75-100 Colorize n_29 #FF6103
+    75-100 Colorize n_30 #FF6103
+    75-100 Colorize n_31 #FF6103
+    75-100 Colorize n_32 #FF6103
+    75-100 Colorize n_33 #FF6103
+    75-100 Colorize n_34 #ED9121
+    75-100 Colorize n_35 #ED9121
+    75-100 Colorize n_36 #ED9121
+    75-100 Colorize n_37 #ED9121
+    75-100 Colorize n_38 #ED9121
+    75-100 Colorize n_39 #ED9121
+    75-100 Colorize n_40 #ED9121
+    75-100 Colorize n_41 #ED9121
+    75-100 Colorize n_42 #8FBC8F
+    75-100 Colorize n_43 #8FBC8F
+    75-100 Colorize n_44 #8FBC8F
+    75-100 Colorize n_45 #8FBC8F
+    75-100 Colorize n_46 #8FBC8F
+    75-100 Colorize n_47 #8FBC8F
+    75-100 Colorize n_48 #8FBC8F
+    150-175 FadeOut n_3
+    150-175 FadeOut n_4
+    150-175 FadeOut n_5
+    150-175 FadeOut n_6
+    150-175 FadeOut n_7
+    150-175 FadeOut n_8
+    150-175 FadeOut n_9
+    150-175 FadeOut n_10
+    150-175 FadeOut n_11
+    150-175 FadeOut n_12
+    150-175 FadeOut n_13
+    150-175 FadeOut n_14
+    150-175 FadeOut n_15
+    150-175 FadeOut n_16
+    150-175 FadeOut n_17
+    150-175 FadeOut n_18
+    150-175 FadeOut n_19
+    150-175 FadeOut n_20
+    150-175 FadeOut n_21
+    150-175 FadeOut n_22
+    150-175 FadeOut n_23
+    150-175 FadeOut n_24
+    150-175 FadeOut n_25
+    150-175 FadeOut n_26
+    150-175 FadeOut n_27
+    150-175 FadeOut n_28
+    150-175 FadeOut n_29
+    150-175 FadeOut n_30
+    150-175 FadeOut n_31
+    150-175 FadeOut n_32
+    150-175 FadeOut n_33
+    150-175 FadeOut n_34
+    150-175 FadeOut n_35
+    150-175 FadeOut n_36
+    150-175 FadeOut n_37
+    150-175 FadeOut n_38
+    150-175 FadeOut n_39
+    150-175 FadeOut n_40
+    150-175 FadeOut n_41
+    150-175 FadeOut n_42
+    150-175 FadeOut n_43
+    150-175 FadeOut n_44
+    150-175 FadeOut n_45
+    150-175 FadeOut n_46
+    150-175 FadeOut n_47
+    150-175 FadeOut n_48

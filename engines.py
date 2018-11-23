@@ -140,7 +140,7 @@ class SVGEngine(BaseEngine):
                 opacity=alpha,
                 ))
 
-    def bitmap(self, x, y, filename):
+    def bitmap(self, x, y, filename, alpha=1.0):
         (w, h) = fileutils.get_image_size(filename)
         target_name = os.path.join(self.output_dir, filename)
         if not os.path.exists(target_name):
@@ -149,6 +149,7 @@ class SVGEngine(BaseEngine):
             self.dwg.image(
                 fileutils.get_image_data(filename),
                 insert=(x - w / 2, y - h / 2),
+                opacity=alpha,
                 ))
         if self.debug:
             self.line(x-10, y, x+10, y)
@@ -307,8 +308,10 @@ class PyGameEngine(BaseEngine):
         rect.center = (x, y)
         self.screen.blit(s, rect)
 
-    def bitmap(self, x, y, filename):
+    def bitmap(self, x, y, filename, alpha=1.0):
         img = pygame.image.load(filename)
+        if alpha < 1.0:
+            img.set_alpha(alpha*255)
         rect = img.get_rect()
         rect.center = (x, y)
         self.screen.blit(img, rect)

@@ -396,7 +396,7 @@ class Text(Actor):
             )
 
     def draw(self, engine):
-        logger.info('Text {} draw method called'.format(self.name))
+        logger.info('Text.draw method called'.format(self.name))
         pos = self.pos + self.get_offset()
         x = pos.x
         y = pos.y
@@ -419,7 +419,11 @@ class Bitmap(Actor):
         self.filename = filename
 
     def draw(self, engine):
-        engine.bitmap(self.pos.x, self.pos.y, self.filename)
+        engine.bitmap(
+            self.pos.x, self.pos.y,
+            self.filename,
+            alpha=self.alpha,
+            )
 
 
 class Label(RoundRect):
@@ -459,6 +463,10 @@ class Label(RoundRect):
         return self._text.text
 
     text = property(get_text, set_text)
+
+    def draw(self, engine):
+        super().draw(engine)
+        self._text.draw(engine)
 
 
 def create_actor(name, role, **kwargs):
