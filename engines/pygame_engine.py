@@ -4,8 +4,8 @@
 import pygame
 import logs
 
-from .. import colors
-from .base import BaseEngine
+import colors
+from .base_engine import BaseEngine
 
 logger = logs.create(__name__)
 
@@ -15,7 +15,7 @@ class PyGameEngine(BaseEngine):
     def pygame_init(self):
         pygame.display.init()
         pygame.joystick.init()
-        pygame.threads.init()
+        # pygame.threads.init()
         pygame.font.init()
         pygame.scrap.init()
         pygame.fastevent.init()

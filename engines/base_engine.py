@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from .. import colors
-from colors import white
+import colors
 import vectors
 import logs
 
@@ -44,18 +43,18 @@ class BaseEngine:
             f' color {color} alpha {alpha}'
             )
 
-    def rect(self, x, y, width, height, color=white, alpha=1.0):
+    def rect(self, x, y, width, height, color=colors.white, alpha=1.0):
         logger.info('Draw rect ({}, {}, {}, {}) [color:{}|alpha:{}]'.format(
             x, y, width, height, color, alpha,
             ))
 
-    def circle(self, x, y, r, color=white, alpha=1.0):
+    def circle(self, x, y, r, color=colors.white, alpha=1.0):
         logger.info(
             f'Draw circle at {x}x{y}'
             f' radius {r} color {color} alpha {alpha}]'
             )
 
-    def polygon(self, x, y, rpoints, color=white, alpha=1.0):
+    def polygon(self, x, y, rpoints, color=colors.white, alpha=1.0):
         n_points = len(rpoints)
         logger.info(
             f'Draw polygon starting as {x}x{y}'

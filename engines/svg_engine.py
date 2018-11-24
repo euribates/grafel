@@ -8,8 +8,8 @@ import svgwrite
 import logs
 import fileutils
 
-from .. import colors
-from .base import BaseEngine
+import colors
+from .base_engine import BaseEngine
 
 logger = logs.create(__name__)
 

@@ -1,11 +1,13 @@
 Cast:
     
+    box = Box pos 70x80 color red
     hola = Text text "Hola" pos 70x160 color white
-    mundo = Label text "Hola" pos 150x160 color red 
-    bm = Bitmap filename "xwing.png" pos 340x360
+    mundo = Label text "Hola" pos 70x240 color red 
+    bm = Bitmap filename "xwing.png" pos 70x320
 
 Actions:
 
+    10-149 FadeOut box
     10-149 FadeOut hola
     10-149 FadeOut mundo
     10-149 FadeOut bm
