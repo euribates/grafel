@@ -132,6 +132,10 @@ class PyGameEngine(BaseEngine):
             italic=False,
             )
         s = f.render(text, True, color)
+        if alpha < 1.0:
+            s.convert_alpha()
+            s.set_alpha(alpha*255)
+            s.fill((255, 255, 255, alpha*255), None, pygame.BLEND_RGBA_MULT) 
         rect = s.get_rect()
         rect.center = (x, y)
         self.screen.blit(s, rect)
