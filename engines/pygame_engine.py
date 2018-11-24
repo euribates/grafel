@@ -139,11 +139,13 @@ class PyGameEngine(BaseEngine):
     def bitmap(self, x, y, filename, alpha=1.0):
         img = pygame.image.load(filename)
         if alpha < 1.0:
+            img.convert_alpha()
             img.set_alpha(alpha*255)
+            img.fill((255, 255, 255, alpha*255), None, pygame.BLEND_RGBA_MULT) 
         rect = img.get_rect()
         rect.center = (x, y)
         self.screen.blit(img, rect)
-        if self.debug:
+        if not self.debug:
             self.line(x-20, y, x+20, y)
             self.line(x, y-20, x, y+20)
 

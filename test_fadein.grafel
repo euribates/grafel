@@ -1,0 +1,21 @@
+Cast:
+    
+    circle = Circle pos 770x300 radius 100 color red
+    box = Box pos 70x80 color red
+    hola = Text text "Hola" pos 70x160 color white
+    mundo = Label text "Hola" pos 70x240 color red 
+    bm = Bitmap filename "xwing.png" pos 512x384
+
+Actions:
+
+    0-9 FadeOut circle
+    0-9 FadeOut box
+    0-9 FadeOut hola
+    0-9 FadeOut mundo
+    0-9 FadeOut bm
+
+    10-140 FadeIn circle
+    10-140 FadeIn box
+    10-140 FadeIn hola
+    10-140 FadeIn mundo
+    10-140 FadeIn bm

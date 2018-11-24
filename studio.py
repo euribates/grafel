@@ -1,17 +1,12 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import os
-import sys
-
 from actors import Level
 from colors import Color
 from vectors import Vector
 from control import Scheduler
 from engines import PyGameEngine
 
-import svgwrite
-import pygame
 import logs
 import defaults
 

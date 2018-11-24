@@ -3,7 +3,7 @@ Cast:
     box = Box pos 70x80 color red
     hola = Text text "Hola" pos 70x160 color white
     mundo = Label text "Hola" pos 70x240 color red 
-    bm = Bitmap filename "xwing.png" pos 70x320
+    bm = Bitmap filename "xwing.png" pos 512x384
 
 Actions:
 
