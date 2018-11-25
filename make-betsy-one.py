@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
 
-import math
 import random
 from decimal import Decimal
 from collections import OrderedDict
 
+SELECTED = '#FF6103'
+
 random.seed(123)
+
 
 class OpVal:
 
@@ -35,32 +37,32 @@ class OpVal:
 
 samples = OrderedDict([
     ('#FFF68F', (940.06, -304.99, -635.07)),
-    ('#7FFFD4', (63.27, -797.41, -120.84, 905.04, -559.56, -358.85, 173.14, 695.21)),
+    ('#7FFFD4', (63.27, -797.41, -120.84, 905.04,
+                 -559.56, -358.85, 173.14, 695.21)),
     ('#FF7F50', (333.73, 114.91, 104.67, 139.79, -693.10)),
     ('#18838B', (-261.16, -937.44, -99.88, 1298.48)),
     ('#9C661F', (450.57, 281.47, 47.77, -361.52, -504.21, -633.64, 719.56)),
     ('#FF6103', (-332.01, -924.77, 535.43, 561.64, 692.6, 863.49, -1396.38)),
-    ('#ED9121', (532.03, -782.65, -753.82, 945.49, -278.17, 355.55, 915.07, -933.5)),
+    ('#ED9121', (532.03, -782.65, -753.82, 945.49,
+                 -278.17, 355.55, 915.07, -933.5)),
     ('#8FBC8F', (477.39, 807.34, 203.59, 861.63, 23.9, 244.41, -2618.26)),
     ])
 
 for color in samples:
     samples[color] = [OpVal(v, color) for v in samples[color]]
 
-numbers = [ num for color in samples for num in samples[color] ]
+numbers = [
+    num for color in samples for num in samples[color]
+    ]
 
 color = '#FFF68F'
-print([v.value for v in samples[color]])
-print([type(v.value) for v in samples[color]])
-print(sum([v.value for v in samples[color]]))
-
 for color in samples:
     acc = sum([v.value for v in samples[color]])
     print(acc)
     assert acc == Decimal('0.0')
 
 
-# random.shuffle(numbers)
+random.shuffle(numbers)
 
 
 def get_col_row(n):
@@ -77,11 +79,11 @@ with open('betsy-01.grafel', 'w') as f:
         col, row = get_col_row(i)
         x, y = get_coords(col, row)
         pos = '{}x{}'.format(x, -100)
-        f.write('   {act} = Text text "{num}" pos {pos} color {clr}\n'.format(
+        f.write('   {act} = Label text "{num}" pos {pos} color {clr}\n'.format(
             act=n.name,
             num=str(n),
             pos=pos,
-            clr='#CECECE',
+            clr=n.color,
             ))
     f.write('Actions:\n\n')
     # Numbers fall
@@ -101,9 +103,9 @@ with open('betsy-01.grafel', 'w') as f:
             actor=n.name,
             color=n.color,
             ))
-    # Fade Out all except first group (yellow)
+    # Fade Out all except selected group
     for n in numbers:
-        if n.color == '#FFF68F':
+        if n.color == SELECTED:
             continue
         f.write('    {start}-{finish} FadeOut {actor}\n'.format(
             start=150,
@@ -111,5 +113,8 @@ with open('betsy-01.grafel', 'w') as f:
             actor=n.name,
             ))
 
-
-
+    # put selected group in a column
+    for i, n in enumerate(samples[SELECTED]):
+        y = 50 + i * 100
+        start, finish = 175, 200
+        f.write(f'   {start}-{finish} Land {n.name} 400x{y}')

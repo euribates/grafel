@@ -25,7 +25,7 @@ class Actor():
         result = {
             'pos': self._pos,
             'color': self._color,
-            'alpha': self.alpha,
+            'alpha': self._alpha,
             'scale': self.scale,
             'level': self.level,
             'debug': self.debug,
@@ -48,7 +48,7 @@ class Actor():
         if isinstance(self._color, str):
             self._color = Color(self.color)
         self.scale = kwargs.pop('scale', Vector(1, 1))
-        self.alpha = kwargs.pop('alpha', 1.0)
+        self._alpha = kwargs.pop('alpha', 1.0)
         self.sons = []
         self.parent = None
         self.debug = False
@@ -63,6 +63,14 @@ class Actor():
 
     def get_pos(self):
         return self._pos
+
+    def set_alpha(self, alpha):
+        self._alpha = alpha
+
+    def get_alpha(self):
+        return self._alpha
+
+    alpha = property(get_alpha, set_alpha)
 
     def set_pos(self, new_pos):
         if isinstance(new_pos, tuple):
@@ -426,20 +434,14 @@ class Bitmap(Actor):
             )
 
 
-class Label(RoundRect):
+class Label(Actor):
 
     def __init__(self, name, text='', **kwargs):
         self.font_size = kwargs.pop('fontsize', 32)
         height = kwargs.pop('height', None)
         width = kwargs.pop('width', None)
         color = kwargs.pop('color', white)
-        if isinstance(color, str):
-            color = colors.Color(color)
-        background = kwargs.pop('background', None)
-        if isinstance(background, str):
-            background = colors.Color(background)
-        if not background:
-            background = color.inverse()
+        background = kwargs.pop('background', color.inverse())
         self._text = Text(
             '{}.text'.format(name),
             text,
@@ -447,13 +449,15 @@ class Label(RoundRect):
             fontsize=self.font_size,
             pos=(0, 0),
             )
-        super().__init__(
-            name,
+        self._frame = RoundRect(
+            '{}.frame'.format(name),
             width=width or self._text.width,
             height=height or self._text.height,
-            color=color.inverse(),
-            **kwargs
+            color=background,
+            pos=(0, 0),
             )
+        super().__init__(name, **kwargs)
+        self.add_son(self._frame)
         self.add_son(self._text)
 
     def set_text(self, text):
@@ -464,8 +468,18 @@ class Label(RoundRect):
 
     text = property(get_text, set_text)
 
+    def set_alpha(self, alpha):
+        super().set_alpha(alpha)
+        self._text.alpha = alpha
+        self._frame.alpha = alpha
+
+    def get_alpha(self):
+        return super().get_alpha()
+
+    alpha = property(get_alpha, set_alpha)
+
     def draw(self, engine):
-        super().draw(engine)
+        self._frame.draw(engine)
         self._text.draw(engine)
 
 

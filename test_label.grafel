@@ -1,0 +1,10 @@
+Cast:
+
+    lbl = Label text "I'm a label" pos 0x0 color red
+
+Actions:
+
+    0-24 Move lbl 400x300
+    25-49 FadeOut lbl
+    50-74 FadeIn lbl
+
