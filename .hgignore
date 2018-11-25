@@ -3,3 +3,4 @@ syntax: glob
 *.pyc
 ./tmp/*
 .venv/*
+.pytest_cache/
