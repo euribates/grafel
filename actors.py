@@ -441,7 +441,7 @@ class Label(Actor):
         height = kwargs.pop('height', None)
         width = kwargs.pop('width', None)
         color = kwargs.pop('color', white)
-        background = kwargs.pop('background', color.inverse())
+        self._background = kwargs.pop('background', color.inverse())
         self._text = Text(
             '{}.text'.format(name),
             text,
@@ -453,7 +453,7 @@ class Label(Actor):
             '{}.frame'.format(name),
             width=width or self._text.width,
             height=height or self._text.height,
-            color=background,
+            color=self._background,
             pos=(0, 0),
             )
         super().__init__(name, **kwargs)
@@ -477,6 +477,17 @@ class Label(Actor):
         return super().get_alpha()
 
     alpha = property(get_alpha, set_alpha)
+
+    def set_color(self, value):
+        super().set_color(value)
+        self._background = self._color.inverse()
+        self._text.color = self._color
+        self._frame.color = self._background
+
+    def get_color(self):
+        return super().get_color() 
+
+    color = property(get_color, set_color)
 
     def draw(self, engine):
         self._frame.draw(engine)

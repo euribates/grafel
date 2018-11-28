@@ -17,7 +17,7 @@ class PyGameEngine(BaseEngine):
         pygame.joystick.init()
         # pygame.threads.init()
         pygame.font.init()
-        pygame.scrap.init()
+        # pygame.scrap.init()
         pygame.fastevent.init()
 
     def __init__(self, width=1280, height=720, fps=25):

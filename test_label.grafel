@@ -4,7 +4,7 @@ Cast:
 
 Actions:
 
+    75-90 Colorize lbl #FFFFFF
     0-24 Move lbl 400x300
     25-49 FadeOut lbl
     50-74 FadeIn lbl
-
