@@ -1,6 +1,6 @@
 Cast:
 
-    box = Box pos 110x160 color red
+    box = Circle radius 5 pos 110x160 color white
 
 Actions:
 
