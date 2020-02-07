@@ -440,7 +440,7 @@ class Label(Actor):
         self.font_size = kwargs.pop('fontsize', 32)
         height = kwargs.pop('height', None)
         width = kwargs.pop('width', None)
-        color = kwargs.pop('color', white)
+        color = Color(kwargs.pop('color', white))
         self._background = kwargs.pop('background', color.inverse())
         self._text = Text(
             '{}.text'.format(name),

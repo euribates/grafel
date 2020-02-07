@@ -1,4 +1,4 @@
-svgwrite==1.1.6
+svgwrite
 freetype-py
 pyparsing
 pytest
