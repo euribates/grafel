@@ -204,8 +204,7 @@ class Color:
     def __str__(self):
         if hasattr(self, "name"):
             return self.name
-        else:
-            return self.as_hex()
+        return self.as_hex()
 
     def lower(self):
         return str(self).lower()
@@ -213,8 +212,7 @@ class Color:
     def __repr__(self):
         if hasattr(self, "name"):
             return 'Color("{}")'.format(self.name)
-        else:
-            return 'Color("{}")'.format(self.as_hex())
+        return 'Color("{}")'.format(self.as_hex())
 
     def get_red(self):
         return self.r
