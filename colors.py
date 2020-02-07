@@ -211,6 +211,9 @@ class Color:
         else:
             return self.as_hex()
 
+    def lower(self):
+        return str(self).lower()
+
     def __repr__(self):
         if hasattr(self, 'name'):
             return 'Color("{}")'.format(self.name)
